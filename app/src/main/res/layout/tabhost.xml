@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--注意：此处TabHost的id必须是@android:id/tabhost-->
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff000000"
+    android:keepScreenOn="true"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--TabWidget的id必须是@android:id/tabs-->
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+            </TabWidget>
+
+            <!--FrameLayout的id必须是@android:id/tabcontent-->
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"></FrameLayout>
+
+            <!--注意：checkedButton="@id/rbtnAlarm" 设置默认选中第一个按钮-->
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:checkedButton="@id/rbtnAlarm"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <!--在style中用layout_weight等分按钮，因此这里的layout_width设置为0dp-->
+                <RadioButton
+                    android:id="@+id/rbtnAlarm"
+                    style="@style/main_btn_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/btn_alarm"
+                    android:text="@string/action_alarm"
+                    android:textColor="@color/radio_btn" />
+                <RadioButton
+                    android:id="@+id/rbtnChart"
+                    style="@style/main_btn_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/btn_chart"
+                    android:text="@string/action_chart"
+                    android:textColor="@color/radio_btn"/>
+
+                <RadioButton
+                    android:id="@+id/rbtnDVR"
+                    style="@style/main_btn_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_action_video"
+                    android:text="@string/action_DVR"
+                    android:textColor="@color/radio_btn" />
+
+                <RadioButton
+                    android:id="@+id/rbtnNightView"
+                    style="@style/main_btn_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_action_cloud"
+                    android:text="@string/action_night_view"
+                    android:textColor="@color/radio_btn" />
+
+                <RadioButton
+                    android:id="@+id/rbtnSettings"
+                    style="@style/main_btn_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/btn_settings"
+                    android:text="@string/action_settings"
+                    android:textColor="@color/radio_btn" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/connectionInfoBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ddeee8aa"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/ic_action_warning" />
+
+            <Button
+                android:id="@+id/connectionInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#00000000"
+                android:gravity="center_horizontal"
+                android:onClick="onConnectionInfoClicked"
+                android:text="@string/connection_no"
+                android:textColor="#ff000000"
+                android:textSize="@dimen/connectionInfo_text_size" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</TabHost>

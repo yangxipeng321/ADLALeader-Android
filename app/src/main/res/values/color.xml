@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="apptheme_color">#22B14C</color>-->
+    <color name="warning_green">#ff22B14C</color>
+    <color name="warning_red">#ffff0000</color>
+    <color name="warning_yellow">#ffffff00</color>
+    <color name="waring_white">#ffffffff</color>
+    <color name="settings_item_background">#ff000000</color>
+    <color name="settings_item_seperater">#ff999999</color>
+    <color name="settings_info_color">#ff999999</color>
+    <color name="settings_warning_color">#ffff5555</color>
+
+</resources>

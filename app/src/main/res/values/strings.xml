@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ADASLeader</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_alarm">报警</string>
+    <string name="action_chart">统计</string>
+    <string name="action_DVR">操作</string>
+    <string name="action_night_view">夜视</string>
+    <string name="action_settings">设置</string>
+    <string name="action_exit">退    出</string>
+    <string name="action_about">关于</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="action_search">Search</string>
+    <string name="action_cloud">Cloud</string>
+    <string name="action_accept">Accept</string>
+    <string name="action_call">Call</string>
+    <string name="action_email">Email</string>
+    <string name="title_activity_alarm">AlarmActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_night_view">NightViewActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="settings_hw_ticks">跟车距离预警</string>
+    <string name="settings_volume">报警音量</string>
+    <string name="settings_VB">虚拟保险杠灵敏度</string>
+    <string name="settings_LDW">车道偏离预警</string>
+    <string name="settings_LDW_speed">偏离预警启用速度</string>
+    <string name="settings_warning">为了您的安全，请在停车时进行设置</string>
+    <string name="settings_next_acc_on">设置将在下次点火后生效</string>
+    <string name="settings_new_app_upgrade">有应用更新</string>
+    <string name="settings_new_firmware_upgrade">有固件更新</string>
+    <string name="settings_check_upgrade">检查更新</string>
+    <string name="connection_can">已连接到设备</string>
+    <string name="connection_wifi">未连接到设备。请连接到ADASLeader。点击设置>></string>
+    <string name="connection_no">未连接到设备。请打开Wifi并连接到ADASLeader。点击设置>></string>
+    <string name="send_ok">发送成功</string>
+    <string name="send_error">发送错误</string>
+    <string name="socket_null">IP地址为空</string>
+    <string name="toast_twice_press_back_to_exit">再按一次退出应用</string>
+    <string name="title_activity_about">关于</string>
+
+    <string name="checking_upgrade">正在检查更新......</string>
+    <string name="no_upgrade">当前已是最新版本</string>
+    <string name="find_upgrade">找到新的版本</string>
+    <string name="download_upgrade">下载更新</string>
+    <string name="click_to_download">点击下载</string>
+    <string name="click_to_upgrade">点击更新固件</string>
+    <string name="connect_can_to_upgrade">已下载，请连接设备进行更新</string>
+    <string name="device_info_differ">设备版本不一致，请重新下载</string>
+    <string name="upload_firmware_complete">更新固件完毕，准备重启设备......</string>
+    <string name="upload_firmware_fail">更新固件失败</string>
+    <string name="firmware_not_exist">找不到固件文件</string>
+    <string name="upload_title">更新设备固件</string>
+    <string name="uploading_firmware">正在更新固件......</string>
+    <string name="waiting_device_restart">设备正在重启，约需18秒，请稍侯......</string>
+    <string name="restart_complete">设备重启完成。</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="close">关闭</string>
+    <string name="downloading_upgrade">正在下载更新......</string>
+    <string name="test_mode">测试模式开启</string>
+    <string name="cant_open_test">无法开启测试模式</string>
+
+    <string name="download_ok">下载完成</string>
+    <string name="download_fail">下载失败</string>
+    <string name="settings_apply">&#160;&#160;&#160;&#160;设置已修改，需重启设备才能生效。整个过程需要20秒，是否立即重启设备？</string>
+    <string name="settings_writing_config">正在更新设置......</string>
+    <string name="settings_prepare_reset">设置更新完毕，准备重启......</string>
+    <string name="title_activity_dvr">DVRActivity</string>
+
+
+    <string name="dvr_home">主页</string>
+    <string name="dvr_confirm">确定</string>
+    <string name="dvr_cancel">返回</string>
+    <string name="dvr_up">上</string>
+    <string name="dvr_down">下</string>
+    <string name="dvr_photo">拍照</string>
+
+    <string name="screen_car">原车屏</string>
+    <string name="screen_mobileye">天眼</string>
+    <string name="screen_dvr">记录仪</string>
+    <string name="screen_video">视频</string>
+    <string name="write_mcu">MCU</string>
+    <string name="write_hi3">HI3</string>
+    <string name="write_pic">PIC</string>
+    <string name="play_video">播放</string>
+    <string name="stop_video">停止</string>
+
+    <string name="FCW">FCW</string>
+    <string name="LDW">LDW</string>
+    <string name="PCW">PCW</string>
+    <string name="Speeding">超速</string>
+    <string name="HMW">HMW</string>
+    <string name="Total">合计</string>
+
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially">
+    <!--<objectAnimator-->
+        <!--android:propertyName="textColor"-->
+        <!--android:duration="1000"-->
+        <!--android:valueTo="#ff000000"/>-->
+
+    <objectAnimator
+        android:propertyName="alpha"
+        android:duration="300"
+        android:valueFrom="0.0"
+        android:valueTo="0.0"
+        android:repeatMode="restart"
+        android:valueType="floatType"/>
+
+    <objectAnimator
+        android:propertyName="alpha"
+        android:duration="300"
+        android:valueFrom="1.0"
+        android:valueTo="1.0"
+        android:repeatMode="restart"
+        android:valueType="floatType"/>
+</set>
