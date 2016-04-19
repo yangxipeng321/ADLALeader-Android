@@ -33,7 +33,8 @@ public class DVRActivity extends Activity
         setContentView(R.layout.activity_dvr);
 
         Fragment fragment = getFragmentManager().findFragmentById(R.id.videoContainer);
-        videoView = (VideoView) fragment.getView().findViewById(R.id.videoView);
+        if (fragment.getView() != null)
+            videoView = (VideoView) fragment.getView().findViewById(R.id.videoView);
     }
 
     private long mExitTime = 0;
@@ -78,18 +79,20 @@ public class DVRActivity extends Activity
 
     public void onFragmentInteraction(View view) {
         Fragment fragment = getFragmentManager().findFragmentById(R.id.videoContainer);
-        TextView textView = (TextView) fragment.getView().findViewById(R.id.textView);
+        if (fragment.getView() != null) {
+            TextView textView = (TextView) fragment.getView().findViewById(R.id.textView);
 
-        String desc = view.getContentDescription().toString();
-        textView.setText(view.getContentDescription());
+            String desc = view.getContentDescription().toString();
+            textView.setText(view.getContentDescription());
 
-        dealKey(desc);
-        dealSwitchScreen(desc);
-        dealVideoControl(desc);
+            dealKey(desc);
+            dealSwitchScreen(desc);
+            dealVideoControl(desc);
+        }
     }
 
     private void dealKey(String desc) {
-        byte key = 0;
+        byte key;
         if (desc.equals(getString(R.string.dvr_up))) {
             key = 1;
         } else if (desc.equals(getString(R.string.dvr_down))) {
@@ -112,7 +115,7 @@ public class DVRActivity extends Activity
     }
 
     private void dealSwitchScreen(String desc) {
-        byte id = 0;
+        byte id;
         if (desc.equals(getString(R.string.screen_car))) {
             id = 1;
         } else if (desc.equals(getString(R.string.screen_mobileye))) {
@@ -132,6 +135,9 @@ public class DVRActivity extends Activity
 
     private void dealVideoControl(String desc) {
         Fragment fragment = getFragmentManager().findFragmentById(R.id.controlContainer);
+        if (fragment.getView() == null)
+            return;
+
         Button button = (Button) fragment.getView().findViewById(R.id.btnPlayVideo);
 
         if (desc.equals(getString(R.string.play_video))) {
@@ -140,7 +146,7 @@ public class DVRActivity extends Activity
             try {
                 //videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
                 //videoView.setVideoPath("rtsp://192.168.168.102:6880/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
-                videoView.setVideoPath("rtsp://192.168.168.1:6880/test");
+                videoView.setVideoPath("rtsp://192.168.168.1:6880/test:network-caching=1000");
                 MediaController mc = new MediaController(this);
                 videoView.setMediaController(mc);
                 videoView.start();
