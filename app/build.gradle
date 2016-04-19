@@ -25,12 +25,12 @@ android {
             storePassword 'mobileye'
         }
     }
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 'Google Inc.:Google APIs:23'
+    buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId "hk.com.mobileye.jason.adlaleader"
         minSdkVersion 16
-        targetSdkVersion 21
+        targetSdkVersion 23
         versionCode 215111701
         versionName "1.2.9"
     }
@@ -69,12 +69,12 @@ android {
 }
 
 repositories {
-    maven { url "https://jitpack.io"}
+    maven { url "https://jitpack.io" }
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:21.0.2'
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.2'
 }
 

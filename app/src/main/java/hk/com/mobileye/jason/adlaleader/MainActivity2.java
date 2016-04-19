@@ -582,7 +582,7 @@ public class MainActivity2 extends TabActivity {
                         crc, ((FileReadResp) msg).getFileCRC()));
 
                 mApp.mMHConfigFile = new AM_AWS_SETUP(buffer, 0, buffer.length);
-                writeMHConfigToPhone(buffer);
+                //writeMHConfigToPhone(buffer);
             } else {
                 Log.e(TAG, "Receive file para is null !");
             }

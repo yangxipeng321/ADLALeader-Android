@@ -2,6 +2,7 @@ package hk.com.mobileye.jason.adlaleader.Net.Message;
 
 /**
  * Created by Jason on 2015/1/4.
+ *
  */
 public class MsgConst {
     public static final int MSG_MAX_BUFFER = 2048;

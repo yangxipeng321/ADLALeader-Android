@@ -2,6 +2,7 @@ package hk.com.mobileye.jason.adlaleader.common;
 
 /**
  * Created by Jason on 2015/1/7.
+ *
  */
 public final class Constants {
     public static final boolean DEVELOPER_MODE=false;
