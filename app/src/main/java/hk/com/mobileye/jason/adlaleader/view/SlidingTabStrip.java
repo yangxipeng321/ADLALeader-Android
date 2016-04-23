@@ -17,9 +17,10 @@ import android.widget.TextView;
  */
 public class SlidingTabStrip extends LinearLayout {
     private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 6;
-    private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0X26;
-    private static final int SELECTED_INDICATOR_THICKNESS_DIPS = 6;
+    private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26;
+    private static final int SELECTED_INDICATOR_THICKNESS_DIPS = 4;
     private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
+    private static final int DEFAULT_TITLE_COLOR_ALPHA = 0xA0;
 
     private static final int DEFAULT_DIVIDER_THICKNESS_DIPS = 1;
     private static final byte DEFAULT_DIVIDER_COLOR_ALPHA = 0x20;
@@ -149,6 +150,9 @@ public class SlidingTabStrip extends LinearLayout {
         //Change Tab text color
         if (mSelectionOffset == 0) {
             for (int i = 0; i < childCount; i++) {
+                int curColor = tabColorizer.getIndicatorColor(i);
+                int textColor = Color.argb(DEFAULT_TITLE_COLOR_ALPHA, Color.red(curColor),
+                        Color.green(curColor), Color.blue(curColor));
                 View tabView = getChildAt(i);
                 if (TextView.class.isInstance(tabView)) {
                     TextView titleView = (TextView)tabView;
@@ -156,7 +160,7 @@ public class SlidingTabStrip extends LinearLayout {
                     if (i == mSelectedPosition) {
                         titleView.setTextColor(tabColorizer.getIndicatorColor(i));
                     } else {
-                        titleView.setTextColor(Color.LTGRAY);
+                        titleView.setTextColor(textColor);
                     }
                 }
             }

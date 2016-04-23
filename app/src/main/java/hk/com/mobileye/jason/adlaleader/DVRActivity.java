@@ -1,9 +1,11 @@
 package hk.com.mobileye.jason.adlaleader;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,25 +18,38 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import hk.com.mobileye.jason.adlaleader.Control.CtrlFragment;
+import hk.com.mobileye.jason.adlaleader.Control.CtrlInteractionListener;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
 
 
-public class DVRActivity extends Activity
-        implements DVRControlFragment.OnFragmentInteractionListener {
+public class DVRActivity extends FragmentActivity
+        implements CtrlInteractionListener {
 
     public static final String TAG = "DVRActivity";
 
-    private VideoView videoView;
+    //private VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dvr);
 
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.videoContainer);
-        if (fragment.getView() != null)
-            videoView = (VideoView) fragment.getView().findViewById(R.id.videoView);
+//        Fragment fragment = getFragmentManager().findFragmentById(R.id.videoContainer);
+//        if (fragment.getView() != null)
+//            videoView = (VideoView) fragment.getView().findViewById(R.id.videoView);
+
+
+        if (savedInstanceState == null) {
+//            android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//            DVRControlFragment ctrlFragment = new DVRControlFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            CtrlFragment ctrlFragment = new CtrlFragment();
+
+            transaction.replace(R.id.controlContainer, ctrlFragment);
+            transaction.commit();
+        }
     }
 
     private long mExitTime = 0;
@@ -89,6 +104,11 @@ public class DVRActivity extends Activity
             dealSwitchScreen(desc);
             dealVideoControl(desc);
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     private void dealKey(String desc) {
@@ -146,20 +166,22 @@ public class DVRActivity extends Activity
             try {
                 //videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
                 //videoView.setVideoPath("rtsp://192.168.168.102:6880/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
-                videoView.setVideoPath("rtsp://192.168.168.1:6880/test:network-caching=1000");
-                MediaController mc = new MediaController(this);
-                videoView.setMediaController(mc);
-                videoView.start();
-                videoView.requestFocus();
+//                videoView.setVideoPath("rtsp://192.168.168.1:6880/test:network-caching=1000");
+//                MediaController mc = new MediaController(this);
+//                videoView.setMediaController(mc);
+//                videoView.start();
+//                videoView.requestFocus();
             } catch (Exception e) {
                 Log.e(TAG, "error: " + e.getMessage());
             }
         } else if (desc.equals(getString(R.string.stop_video))) {
             button.setText(getString(R.string.play_video));
             button.setContentDescription(getString(R.string.play_video));
-            videoView.stopPlayback();
+//            videoView.stopPlayback();
         }
     }
+
+
 
 
 }
