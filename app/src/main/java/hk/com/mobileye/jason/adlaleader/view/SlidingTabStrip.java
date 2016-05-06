@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -148,20 +149,20 @@ public class SlidingTabStrip extends LinearLayout {
 //        }
 
         //Change Tab text color
-        if (mSelectionOffset == 0) {
-            for (int i = 0; i < childCount; i++) {
-                int curColor = tabColorizer.getIndicatorColor(i);
-                int textColor = Color.argb(DEFAULT_TITLE_COLOR_ALPHA, Color.red(curColor),
-                        Color.green(curColor), Color.blue(curColor));
-                View tabView = getChildAt(i);
-                if (TextView.class.isInstance(tabView)) {
-                    TextView titleView = (TextView)tabView;
+        for (int i = 0; i < childCount; i++) {
+            int curColor = tabColorizer.getIndicatorColor(i);
+            int textColor = Color.argb(DEFAULT_TITLE_COLOR_ALPHA, Color.red(curColor),
+                    Color.green(curColor), Color.blue(curColor));
+            View tabView = getChildAt(i);
+            if (TextView.class.isInstance(tabView)) {
+                TextView titleView = (TextView)tabView;
 
-                    if (i == mSelectedPosition) {
-                        titleView.setTextColor(tabColorizer.getIndicatorColor(i));
-                    } else {
-                        titleView.setTextColor(textColor);
-                    }
+                if (i == mSelectedPosition && mSelectionOffset <= 0.7) {
+                    titleView.setTextColor(tabColorizer.getIndicatorColor(i));
+                } else if (i == mSelectedPosition + 1 && mSelectionOffset > 0.7 ) {
+                    titleView.setTextColor(tabColorizer.getIndicatorColor(i));
+                } else {
+                    titleView.setTextColor(textColor);
                 }
             }
         }

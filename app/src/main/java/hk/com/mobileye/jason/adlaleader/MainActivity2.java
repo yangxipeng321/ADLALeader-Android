@@ -76,7 +76,7 @@ public class MainActivity2 extends TabActivity {
                 new Intent(this, ChartActivity.class));
         TabSpec dvrSpec = tabHost.newTabSpec("DVR").setIndicator("DVR").setContent(
                 new Intent(this, DVRActivity.class));
-        TabSpec nightViewSpce = tabHost.newTabSpec("NightView").setIndicator("Night View").setContent(
+        TabSpec nightViewSpce = tabHost.newTabSpec("Debug").setIndicator("Debug").setContent(
                 new Intent(this, NightViewActivity.class));
         TabSpec settingSpec = tabHost.newTabSpec("Settings").setIndicator("Settings").setContent(
                 new Intent(this, SettingsActivity.class));
@@ -86,11 +86,11 @@ public class MainActivity2 extends TabActivity {
         tabHost.addTab(nightViewSpce);
         tabHost.addTab(settingSpec);
 
-        RadioButton nightViewBtn = (RadioButton) findViewById(R.id.rbtnNightView);
+        RadioButton debugViewBtn = (RadioButton) findViewById(R.id.rbtnDebugView);
         if (Constants.DEVELOPER_MODE) {
-            nightViewBtn.setVisibility(View.VISIBLE);
+            debugViewBtn.setVisibility(View.VISIBLE);
         } else {
-            nightViewBtn.setVisibility(View.GONE);
+            debugViewBtn.setVisibility(View.GONE);
         }
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
@@ -156,8 +156,8 @@ public class MainActivity2 extends TabActivity {
                 case R.id.rbtnDVR:
                     tabHost.setCurrentTabByTag("DVR");
                     break;
-                case R.id.rbtnNightView:
-                    tabHost.setCurrentTabByTag("NightView");
+                case R.id.rbtnDebugView:
+                    tabHost.setCurrentTabByTag("Debug");
                     break;
                 case R.id.rbtnSettings:
                     tabHost.setCurrentTabByTag("Settings");
@@ -168,15 +168,7 @@ public class MainActivity2 extends TabActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
+    //
 
 
     public void onConnectionInfoClicked(View view) {

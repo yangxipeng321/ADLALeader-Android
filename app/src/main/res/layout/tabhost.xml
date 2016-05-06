@@ -73,12 +73,12 @@
                     android:textColor="@color/radio_btn" />
 
                 <RadioButton
-                    android:id="@+id/rbtnNightView"
+                    android:id="@+id/rbtnDebugView"
                     style="@style/main_btn_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_action_cloud"
-                    android:text="@string/action_night_view"
+                    android:text="@string/action_debug_view"
                     android:textColor="@color/radio_btn" />
 
                 <RadioButton
