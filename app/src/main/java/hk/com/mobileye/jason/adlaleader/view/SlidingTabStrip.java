@@ -157,7 +157,7 @@ public class SlidingTabStrip extends LinearLayout {
             if (TextView.class.isInstance(tabView)) {
                 TextView titleView = (TextView)tabView;
 
-                if (i == mSelectedPosition && mSelectionOffset <= 0.5) {
+                if (i == mSelectedPosition && mSelectionOffset <= 0.7) {
                     titleView.setTextColor(tabColorizer.getIndicatorColor(i));
                 } else if (i == mSelectedPosition + 1 && mSelectionOffset > 0.7 ) {
                     titleView.setTextColor(tabColorizer.getIndicatorColor(i));
