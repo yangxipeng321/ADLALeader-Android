@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import java.io.FileOutputStream;
 
+import hk.com.mobileye.jason.adlaleader.Debug.DebugActivity;
 import hk.com.mobileye.jason.adlaleader.Net.Message.Factory.MsgFactory;
 import hk.com.mobileye.jason.adlaleader.Net.Message.MessageType;
 import hk.com.mobileye.jason.adlaleader.Net.Message.MsgBase;
@@ -77,7 +78,7 @@ public class MainActivity2 extends TabActivity {
         TabSpec dvrSpec = tabHost.newTabSpec("DVR").setIndicator("DVR").setContent(
                 new Intent(this, DVRActivity.class));
         TabSpec nightViewSpce = tabHost.newTabSpec("Debug").setIndicator("Debug").setContent(
-                new Intent(this, NightViewActivity.class));
+                new Intent(this, DebugActivity.class));
         TabSpec settingSpec = tabHost.newTabSpec("Settings").setIndicator("Settings").setContent(
                 new Intent(this, SettingsActivity.class));
         tabHost.addTab(alarmSpec);
@@ -168,7 +169,22 @@ public class MainActivity2 extends TabActivity {
         }
     }
 
-    //
+    //Show debug view
+    private long lastClickTime;
+    private int clickCount;
+    public void onShowDebugClicked(View view) {
+        if (System.currentTimeMillis() - lastClickTime > 2000) {
+            clickCount = 1;
+        } else {
+            clickCount++;
+            if (clickCount > 5) {
+                clickCount = 0;
+                RadioButton rBtn = (RadioButton) findViewById(R.id.rbtnDebugView);
+                rBtn.setVisibility(View.VISIBLE);
+            }
+        }
+        lastClickTime = System.currentTimeMillis();
+    }
 
 
     public void onConnectionInfoClicked(View view) {

@@ -88,6 +88,7 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/btn_settings"
                     android:text="@string/action_settings"
+                    android:onClick="onShowDebugClicked"
                     android:textColor="@color/radio_btn" />
             </RadioGroup>
         </LinearLayout>

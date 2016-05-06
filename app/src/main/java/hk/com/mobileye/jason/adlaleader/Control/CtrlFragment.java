@@ -174,7 +174,4 @@ public class CtrlFragment extends Fragment {
 
         }
     }
-
-
-
 }
