@@ -9,7 +9,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +47,7 @@ import hk.com.mobileye.jason.adlaleader.common.AM_AWS_SETUP;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
+import hk.com.mobileye.jason.adlaleader.common.logger.Log;
 
 
 public class MainActivity2 extends TabActivity {

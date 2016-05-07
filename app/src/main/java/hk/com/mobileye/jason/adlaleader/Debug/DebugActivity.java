@@ -9,11 +9,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 
 import hk.com.mobileye.jason.adlaleader.R;
 import hk.com.mobileye.jason.adlaleader.view.SlidingTabLayout;
 
 public class DebugActivity extends FragmentActivity {
+    private static final String TAG = "DebugActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,13 +1,47 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Debug.DebugLogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="log" />
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"/>
+        <CheckBox
+            android:id="@+id/cbAppLog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/btnClear"
+            android:layout_toRightOf="@id/btnClear"
+            android:text="App"/>
+        <CheckBox
+            android:id="@+id/cbHI3Log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/cbAppLog"
+            android:layout_toRightOf="@id/cbAppLog"
+            android:text="HI3"/>
+        <CheckBox
+            android:id="@+id/cbMCU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/cbHI3Log"
+            android:layout_toRightOf="@id/cbHI3Log"
+            android:text="MCU"/>
+    </RelativeLayout>
+    <fragment
+        android:id="@+id/debug_log_fragment"
+        android:name="hk.com.mobileye.jason.adlaleader.common.logger.LogFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-</FrameLayout>
+</LinearLayout>
