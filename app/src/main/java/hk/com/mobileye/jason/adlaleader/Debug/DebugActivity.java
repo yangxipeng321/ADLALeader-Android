@@ -1,32 +1,53 @@
 package hk.com.mobileye.jason.adlaleader.Debug;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 
 import hk.com.mobileye.jason.adlaleader.R;
+import hk.com.mobileye.jason.adlaleader.common.Constants;
+import hk.com.mobileye.jason.adlaleader.common.logger.Log;
 import hk.com.mobileye.jason.adlaleader.view.SlidingTabLayout;
 
 public class DebugActivity extends FragmentActivity {
     private static final String TAG = "DebugActivity";
 
+    private ViewPager mViewPager;
+    private DebugPagerAdapter mPagerAdapter;
+    private DebugFirmwareFragment mFirmwareFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
 
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mViewPager.setAdapter(new DebugPagerAdapter(getSupportFragmentManager()));
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mPagerAdapter = new DebugPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mPagerAdapter);
 
         SlidingTabLayout mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setViewPager(mViewPager);
         mSlidingTabLayout.setSelectedIndicatorColors(Color.WHITE);
+
+        initLocalReceiver();
+    }
+
+    private void initLocalReceiver() {
+        //Register BroadcastReceiver to track local work status
+        IntentFilter filter = new IntentFilter(Constants.FIRMWARE_UPLOAD_RESULT_ACTION);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        LocalBroadcastReceiver localReceiver = new LocalBroadcastReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
     }
 
     class DebugPagerAdapter extends FragmentPagerAdapter {
@@ -39,7 +60,9 @@ public class DebugActivity extends FragmentActivity {
             Fragment fragment;
             switch (position) {
                 case 0:
-                    fragment = new DebugFirmwareFragment();
+                    if (mFirmwareFragment == null)
+                        mFirmwareFragment = new DebugFirmwareFragment();
+                    fragment = mFirmwareFragment;
                     break;
                 case 1:
                     fragment = new DebugLogFragment();
@@ -75,5 +98,28 @@ public class DebugActivity extends FragmentActivity {
             return 3;
         }
     }
+
+    private class LocalBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
+
+            Log.d(TAG, String.format("Receive broadcast : %s. Sender : %s", action, sender));
+
+            switch (action) {
+                case Constants.FIRMWARE_UPLOAD_RESULT_ACTION:
+                    dealFirmwareUploadResult(intent);
+                    break;
+            }
+
+        }
+
+        private void dealFirmwareUploadResult(Intent intent) {
+            if (mFirmwareFragment != null)
+                mFirmwareFragment.dealUpdateResult(intent);
+        }
+    }
+
 
 }

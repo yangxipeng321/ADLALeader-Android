@@ -72,9 +72,9 @@ public class UdpHelper implements Runnable {
                 socket.receive(packet);
                 byte[] buf = new byte[packet.getLength()];
                 System.arraycopy(packet.getData(), 0, buf, 0, buf.length);
-                Log.d(TAG, String.format("UDP recv : %tT %s len=0x%X\n%s\n",
-                        new Date(), packet.getAddress().getHostAddress(),
-                        buf.length, MsgUtils.bytes2HexString(buf)));
+//                Log.d(TAG, String.format("UDP recv : %tT %s len=0x%X\n%s\n",
+//                        new Date(), packet.getAddress().getHostAddress(),
+//                        buf.length, MsgUtils.bytes2HexString(buf)));
                 processRecv(buf);
             }
             //socket.close();
@@ -103,12 +103,12 @@ public class UdpHelper implements Runnable {
         byte serviceType = buf[10];
         byte msgType = buf[11];
 
-        Log.d(TAG, "serviceType " + serviceType);
+//        Log.d(TAG, "serviceType " + serviceType);
         if (mHandler != null) {
             switch (serviceType) {
                 case ServiceType.SERVICE_WARNING:
                     mHandler.obtainMessage(Constants.MSG_WARNING, buf).sendToTarget();
-                    Log.d(TAG, "Handler send message [WARNING]");
+//                    Log.d(TAG, "Handler send message [WARNING]");
                     break;
                 case ServiceType.SERVICE_HEARTBEAT:
                     break;

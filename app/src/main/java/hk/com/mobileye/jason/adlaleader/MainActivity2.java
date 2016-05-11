@@ -21,6 +21,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import java.io.FileOutputStream;
+import java.util.Locale;
 
 import hk.com.mobileye.jason.adlaleader.Debug.DebugActivity;
 import hk.com.mobileye.jason.adlaleader.Net.Message.Factory.MsgFactory;
@@ -89,7 +90,7 @@ public class MainActivity2 extends TabActivity {
         tabHost.addTab(settingSpec);
 
         RadioButton debugViewBtn = (RadioButton) findViewById(R.id.rbtnDebugView);
-        if (Constants.DEVELOPER_MODE) {
+        if (true) {
             debugViewBtn.setVisibility(View.VISIBLE);
         } else {
             debugViewBtn.setVisibility(View.GONE);
@@ -344,8 +345,8 @@ public class MainActivity2 extends TabActivity {
             String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
             int description = intent.getIntExtra(Constants.EXTENTED_DESCRIPTION, Constants.DESC_UNKNOW);
 
-            Log.d(TAG, String.format("Receive TcpIntentService broadcast. Sender : %s " +
-                    " Status : %d Desc : %d", sender, status, description));
+            Log.d(TAG, String.format(Locale.getDefault(), "Receive TcpIntentService broadcast. " +
+                    "Sender : %s  Status : %d Desc : %d", sender, status, description));
             switch (status) {
                 case Constants.STATE_ACTION_STARTED:
                     break;
@@ -552,12 +553,12 @@ public class MainActivity2 extends TabActivity {
         }
         int fileLen = ((FileWriteResp)msg).getFileLength();
         if (fileLen>0){
-            Log.d(TAG, String.format("file length : %d", fileLen));
+            Log.d(TAG, String.format(Locale.getDefault(), "file length : %d", fileLen));
         } else {
-            Log.e(TAG, String.format("file length : %d", fileLen));
+            Log.e(TAG, String.format(Locale.getDefault(), "file length : %d", fileLen));
         }
 
-        if (fileName != null && fileName.endsWith(Constants.FIRMWARE_EXTENSION)) {
+        if (fileName != null && fileName.toLowerCase().endsWith(Constants.FIRMWARE_EXTENSION)) {
             broadcastUploadFirmwareReslut(fileName, fileLen);
         }
         if (fileName != null && fileName.equals(Constants.MH_CONFIG_FILE)) {
@@ -583,12 +584,13 @@ public class MainActivity2 extends TabActivity {
             if (null != tlv && null != tlv.getValueBytes()) {
                 byte[] buffer = tlv.getValueBytes();
 
-                Log.i(TAG, String.format("Receive file size is %d bytes", buffer.length));
+                Log.i(TAG, String.format(Locale.getDefault(),"Receive file size is %d bytes",
+                        buffer.length));
 
                 //Calculate the file crc
                 int crc = MsgUtils.getCrc32(buffer, buffer.length);
-                Log.d(TAG, String.format("%d -- CRC calculated      %d -- CRC in message",
-                        crc, ((FileReadResp) msg).getFileCRC()));
+                Log.d(TAG, String.format(Locale.getDefault(), "%d -- CRC calculated      %d -- " +
+                        "CRC in message", crc, ((FileReadResp) msg).getFileCRC()));
 
                 mApp.mMHConfigFile = new AM_AWS_SETUP(buffer, 0, buffer.length);
                 //writeMHConfigToPhone(buffer);
@@ -634,7 +636,7 @@ public class MainActivity2 extends TabActivity {
         tlv = msg.getBody().get(TLVType.TP_TIME_ID);
         if (null != tlv && null != tlv.getValue()) {
             long t = (long) tlv.getValue();
-            Log.d(TAG, String.format("Time is %tF %tT", t, t));
+            Log.d(TAG, String.format(Locale.getDefault(), "Time is %tF %tT", t, t));
         } else {
             Log.e(TAG, "Time is null !");
         }
@@ -647,7 +649,7 @@ public class MainActivity2 extends TabActivity {
         TLVClass tlv = msg.getBody().get(TLVType.TP_DEV_VER_ID);
         if (tlv != null && tlv.getValue() != null) {
             mApp.mDevVersion = (DevVersion) tlv.getValue();
-            Log.d(TAG, String.format("Receive DevVersion SN[%d]  SW[%d]  HW[%d]",
+            Log.d(TAG, String.format(Locale.getDefault(), "Receive DevVersion SN[%d]  SW[%d]  HW[%d]",
                     mApp.mDevVersion.getDevSn(), mApp.mDevVersion.getDevSwVer(),
                     mApp.mDevVersion.getDevHwVer()));
             mApp.saveDevVersion();
@@ -688,7 +690,7 @@ public class MainActivity2 extends TabActivity {
         tlv = msg.getBody().get(TLVType.TP_TIME_ID);
         if (null != tlv && null != tlv.getValue()) {
             long t = (long) (tlv.getValue());
-            Log.d(TAG, String.format("Time is %tF %tT\n%s", t, t,
+            Log.d(TAG, String.format(Locale.getDefault(), "Time is %tF %tT\n%s", t, t,
                     MsgUtils.bytes2HexString(tlv.getValueBytes())));
         } else {
             Log.e(TAG, "Time is null !");
@@ -708,7 +710,7 @@ public class MainActivity2 extends TabActivity {
         int delay = -1;
         if (tlv != null && tlv.getValue() != null) {
             delay = (int) tlv.getValue();
-            Log.d(TAG, String.format("Receive CmdResetResp delay = %d", delay));
+            Log.d(TAG, String.format(Locale.getDefault(), "Receive CmdResetResp delay = %d", delay));
         } else {
             Log.e(TAG, "delay is null !");
         }
@@ -722,7 +724,7 @@ public class MainActivity2 extends TabActivity {
         int delay = -1;
         if (tlv != null && tlv.getValue() != null) {
             delay = (int) tlv.getValue();
-            Log.d(TAG, String.format("Receive CmdResetMEResp delay = %d", delay));
+            Log.d(TAG, String.format(Locale.getDefault(), "Receive CmdResetMEResp delay = %d", delay));
         } else {
             Log.e(TAG, "delay is null !");
         }
@@ -736,7 +738,7 @@ public class MainActivity2 extends TabActivity {
         int workTime = -1;
         if (tlv != null && tlv.getValue() != null) {
             workTime = (int) tlv.getValue();
-            Log.d(TAG, String.format("Receive CmdTestResp workTime = %d", workTime));
+            Log.d(TAG, String.format(Locale.getDefault(), "Receive CmdTestResp workTime = %d", workTime));
         } else {
             Log.e(TAG, "workTime is null !");
         }
@@ -753,8 +755,8 @@ public class MainActivity2 extends TabActivity {
             int runTime = stat.getRunTime();
             double mileage = stat.getMileage() / 10.0;
             int statIndex = stat.getIndex();
-            Log.d(TAG, String.format("Receive day statistics index: %d date: %d run time: %d " +
-                  "mileage: %f",  statIndex, statDate, runTime, mileage));
+            Log.d(TAG, String.format(Locale.getDefault(), "Receive day statistics index: %d " +
+                    "date: %d run time: %d mileage: %f",  statIndex, statDate, runTime, mileage));
             //mApp.mDayStats[0] = stat;
             if (runTime > 0)
                 mApp.mDayStats.update(stat);

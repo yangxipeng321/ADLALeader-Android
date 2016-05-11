@@ -1101,11 +1101,6 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
                     return;
                 }
 
-                if (action.equals(Constants.CMD_WRITE_FIRMWARE_REQ_ACTION)) {
-                    dealWriteFirmware(intent);
-                    return;
-                }
-
                 //Only process the broadcast which is started by self
                 if (sender.equals(getLocalClassName())) {
                     switch (action) {
@@ -1284,107 +1279,11 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
             refreshControls();
         }
-
-        private void dealWriteFirmware(Intent intent) {
-            byte fwid = 0;
-            fwid = intent.getByteExtra(Constants.EXTNED_FIRMWARE_ID, fwid);
-            if (fwid == 0)
-                return;
-            String filename;
-            switch (fwid) {
-                case 1:
-                    filename = Constants.MCU_FIRMWARE;
-                    break;
-                case 2:
-                    filename = Constants.HI3_FIRMWARE;
-                    break;
-                case 3:
-                    filename = Constants.PIC_FILE;
-                    break;
-                default:
-                    return;
-            }
-
-            String filePath = UpgradeManager.getExternalStorageFilePath(filename);
-            File file = new File(filePath);
-
-            if (!file.exists()) {
-                Log.e(TAG, filePath + "is not exist. Write firmware failed");
-                Toast toast = Toast.makeText(SettingsActivity.this, getString(R.string.firmware_not_exist),
-                        Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                return;
-            }
-            String fileName = file.getName();
-
-            Log.d(TAG, String.format("Write file name : %s  ip : %s   port : %d", fileName,
-                    mApp.mIp, mApp.mPort));
-
-            if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
-                //new Thread(new WriteFileRunnable()).start();
-                FileWriteReq msg = (FileWriteReq) MsgFactory.getInstance().create(
-                        ServiceType.SERVICE_FILE,
-                        MessageType.FILE_WRITE_REQ,
-                        ResponseType.REQUEST);
-
-                //add file name tlv value
-                msg.getBody().get(TLVType.TP_FILE_NAME_ID).setValue(fileName);
-                //add file content
-                try {
-                    InputStream inputStream = new FileInputStream(filePath);
-                    byte[] temp = new byte[2 * 1024 * 1024];
-                    int readlen = inputStream.read(temp);
-                    byte[] buffer = new byte[readlen];
-                    Log.d(TAG, "file size : " + readlen);
-                    System.arraycopy(temp, 0, buffer, 0, readlen);
-                    msg.getBody().get(TLVType.TP_FILE_PARA_ID).setValue(buffer);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
-                if (msg.encode()) {
-                    Log.d(TAG, "startActionFileService");
-                    //Intent can't send data over 48K, it will report error
-                    //"FAILED BINDER TRANSACTION!!!". So we usa a global variable.
-                    if (msg.getMsgLength() > (48 * 1024)) {
-                        mApp.setSendBuf(msg.getData());
-                        TcpIntentService.startActionFileService(SettingsActivity.this, null,
-                                Constants.DESC_WRITE_FIRMWARE);
-                    } else {
-                        TcpIntentService.startActionFileService(SettingsActivity.this, msg.getData(),
-                                Constants.DESC_WRITE_FIRMWARE);
-                    }
-                    upgradeManager.showUploadDialog();
-                }
-            }
-        }
     }
 
     public void onBtnAboutClicked(View view) {
         Log.d(TAG, "open about activity");
         startActivity(new Intent(this, AboutActivity.class));
-    }
-
-    public void onBtnWriteFirmwareClicked(View view) {
-        byte id = 0;
-
-        Log.d(TAG, "onBtnWriteFirmwareClicked");
-        String desc = view.getContentDescription().toString();
-
-        if (desc.equals(getString(R.string.write_mcu))){
-            id = 1;
-        }else if (desc.equals(getString(R.string.write_hi3))) {
-            id = 2;
-        }else if (desc.equals(getString(R.string.write_pic))) {
-            id = 3;
-        } else {
-            return;
-        }
-
-        Intent intent = new Intent(Constants.CMD_WRITE_FIRMWARE_REQ_ACTION);
-        intent.putExtra(Constants.EXTNED_FIRMWARE_ID, id);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
 

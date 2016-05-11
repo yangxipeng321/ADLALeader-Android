@@ -333,43 +333,7 @@
                     android:onClick="onBtnAboutClicked"/>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <Button
-                    android:id="@+id/btnMCUFW"
-                    android:layout_width="80dp"
-                    android:layout_height="@dimen/dvr_button_size"
-                    android:text="@string/write_mcu"
-                    android:contentDescription="@string/write_mcu"
-                    android:onClick="onBtnWriteFirmwareClicked"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
-                <Button
-                    android:id="@+id/btnHI3FW"
-                    android:layout_width="80dp"
-                    android:layout_height="@dimen/dvr_button_size"
-                    android:text="@string/write_hi3"
-                    android:contentDescription="@string/write_hi3"
-                    android:onClick="onBtnWriteFirmwareClicked"
-                    android:layout_centerInParent="true"          />
-                <Button
-                    android:id="@+id/btnPIC"
-                    android:layout_width="80dp"
-                    android:layout_height="@dimen/dvr_button_size"
-                    android:text="@string/write_pic"
-                    android:contentDescription="@string/write_pic"
-                    android:onClick="onBtnWriteFirmwareClicked"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
-            <!--just for test-->
+           <!--just for test-->
 
             <LinearLayout
                 android:layout_width="match_parent"
