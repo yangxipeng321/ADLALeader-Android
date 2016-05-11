@@ -60,6 +60,7 @@ public class DebugActivity extends FragmentActivity {
             Fragment fragment;
             switch (position) {
                 case 0:
+                    Log.e(TAG, "Fragment getItem");
                     if (mFirmwareFragment == null)
                         mFirmwareFragment = new DebugFirmwareFragment();
                     fragment = mFirmwareFragment;
