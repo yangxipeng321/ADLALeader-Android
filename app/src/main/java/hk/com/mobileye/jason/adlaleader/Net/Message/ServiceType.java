@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Net.Message;
+package hk.com.mobileye.jason.adlaleader.net.Message;
 
 /**
  * Created by Jason on 2015/1/4.

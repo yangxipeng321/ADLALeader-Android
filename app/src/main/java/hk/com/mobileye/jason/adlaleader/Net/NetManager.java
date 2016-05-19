@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Net;
+package hk.com.mobileye.jason.adlaleader.net;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

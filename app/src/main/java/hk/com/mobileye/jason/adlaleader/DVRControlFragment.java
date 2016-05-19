@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hk.com.mobileye.jason.adlaleader.Control.CtrlInteractionListener;
+import hk.com.mobileye.jason.adlaleader.control.CtrlInteractionListener;
 
 
 public class DVRControlFragment extends Fragment implements View.OnClickListener {

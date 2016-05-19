@@ -1,9 +1,9 @@
-package hk.com.mobileye.jason.adlaleader.Net.Message;
+package hk.com.mobileye.jason.adlaleader.net.Message;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Settings.DevVersion;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Settings.MHVersion;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Settings.WifiPassword;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Warning.DayStat;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.DevVersion;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.MHVersion;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.WifiPassword;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.DayStat;
 
 /**
  * Created by Jason on 2015/1/4.

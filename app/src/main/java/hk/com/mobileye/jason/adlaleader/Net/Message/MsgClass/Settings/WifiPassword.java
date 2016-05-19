@@ -1,7 +1,7 @@
-package hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Settings;
+package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgConst;
-import hk.com.mobileye.jason.adlaleader.Net.Message.TLVValue;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgConst;
+import hk.com.mobileye.jason.adlaleader.net.Message.TLVValue;
 
 /**
  * Created by Jason on 2015/1/28.

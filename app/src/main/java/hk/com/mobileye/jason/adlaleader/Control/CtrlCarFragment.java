@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Control;
+package hk.com.mobileye.jason.adlaleader.control;
 
 import android.content.Context;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Net;
+package hk.com.mobileye.jason.adlaleader.net;
 
 import android.net.wifi.WifiManager;
 import android.os.Handler;
@@ -12,11 +12,11 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Date;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgConst;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgUtils;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ServiceType;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.logger.Log;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgConst;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgUtils;
+import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
 
 /**
  * Created by Jason on 2014/12/30.

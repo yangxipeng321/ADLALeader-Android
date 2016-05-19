@@ -13,7 +13,6 @@ import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,25 +37,25 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import hk.com.mobileye.jason.adlaleader.Net.CheckUpgradeIntentService;
-import hk.com.mobileye.jason.adlaleader.Net.DownloadIntentService;
-import hk.com.mobileye.jason.adlaleader.Net.Message.Factory.MsgFactory;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MessageType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Cmd.CmdResetMEReq;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Cmd.CmdResetReq;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.File.FileReadReq;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.File.FileWriteReq;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Settings.ParameterReadReq;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ResponseType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ServiceType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.TLVType;
-import hk.com.mobileye.jason.adlaleader.Net.TcpIntentService;
-import hk.com.mobileye.jason.adlaleader.Upgrade.UpgradeManager;
-import hk.com.mobileye.jason.adlaleader.Upgrade.UploadDialogFragment;
 import hk.com.mobileye.jason.adlaleader.common.AM_AWS_SETUP;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
+import hk.com.mobileye.jason.adlaleader.net.CheckUpgradeIntentService;
+import hk.com.mobileye.jason.adlaleader.net.DownloadIntentService;
+import hk.com.mobileye.jason.adlaleader.net.Message.Factory.MsgFactory;
+import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdResetMEReq;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdResetReq;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileReadReq;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileWriteReq;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.ParameterReadReq;
+import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
+import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
+import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
+import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
+import hk.com.mobileye.jason.adlaleader.upgrade.UpgradeManager;
+import hk.com.mobileye.jason.adlaleader.upgrade.UploadDialogFragment;
 
 
 public class SettingsActivity extends Activity implements UpgradeManager.TaskUpgradeMethods,

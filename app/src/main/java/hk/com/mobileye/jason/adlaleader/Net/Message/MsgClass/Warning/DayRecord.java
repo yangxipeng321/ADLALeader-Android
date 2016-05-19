@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Warning;
+package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning;
 
 /**
  * Created by Jason on 2016/2/3.

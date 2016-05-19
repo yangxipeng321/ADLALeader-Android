@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Debug;
+package hk.com.mobileye.jason.adlaleader.debug;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

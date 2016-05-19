@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Net;
+package hk.com.mobileye.jason.adlaleader.net;
 
 import android.app.Service;
 import android.content.Intent;

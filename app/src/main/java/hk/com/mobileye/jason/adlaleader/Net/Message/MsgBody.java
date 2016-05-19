@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Net.Message;
+package hk.com.mobileye.jason.adlaleader.net.Message;
 
 import java.util.ArrayList;
 import java.util.List;

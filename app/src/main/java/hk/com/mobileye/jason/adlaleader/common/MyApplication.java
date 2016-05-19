@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Settings.DevVersion;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Settings.MHVersion;
-import hk.com.mobileye.jason.adlaleader.Statistics.StatisticsData;
-import hk.com.mobileye.jason.adlaleader.Upgrade.FirmwareInfo;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.DevVersion;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.MHVersion;
+import hk.com.mobileye.jason.adlaleader.statistics.StatisticsData;
+import hk.com.mobileye.jason.adlaleader.upgrade.FirmwareInfo;
 
 /**
  * Created by Jason on 2015/1/30.

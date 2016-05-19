@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Control;
+package hk.com.mobileye.jason.adlaleader.control;
 
 
 import android.content.Intent;
@@ -41,6 +41,7 @@ public class CtrlDVRFragment extends Fragment {
         view.findViewById(R.id.btnDVRConfirm).setOnClickListener(listener);
         view.findViewById(R.id.btnDVRCancel).setOnClickListener(listener);
         view.findViewById(R.id.btnDVRHome).setOnClickListener(listener);
+        view.findViewById(R.id.btnScrVideo).setOnClickListener(listener);
     }
 
     private class BtnClickListener implements View.OnClickListener {
@@ -60,6 +61,12 @@ public class CtrlDVRFragment extends Fragment {
                 key = 5;
             } else if (desc.equals(getString(R.string.dvr_photo))) {
                 key = 6;
+            } else if (desc.equals(getString(R.string.screen_video))) {
+                Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
+                byte id = 4;
+                intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                return;
             } else {
                 return;
             }

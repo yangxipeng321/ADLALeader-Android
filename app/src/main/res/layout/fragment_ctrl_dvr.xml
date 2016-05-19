@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -66,5 +65,12 @@
             android:layout_alignStart="@id/btnDVRHome"
             android:text="@string/dvr_down"
             android:contentDescription="@string/dvr_down"/>
+        <Button
+            android:id="@+id/btnScrVideo"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:layout_below="@id/btnDVRConfirm"
+            android:text="@string/screen_video"
+            android:contentDescription="@string/screen_video"/>
     </RelativeLayout>
 </LinearLayout>

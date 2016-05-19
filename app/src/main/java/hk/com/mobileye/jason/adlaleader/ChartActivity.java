@@ -30,21 +30,21 @@ import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.Factory.MsgFactory;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MessageType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Warning.DayStat;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Warning.WarnDayStatReq;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Warning.WarnRecord;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgUtils;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ResponseType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ServiceType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.TLVType;
-import hk.com.mobileye.jason.adlaleader.Net.TcpIntentService;
-import hk.com.mobileye.jason.adlaleader.Statistics.StatisticsData;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
 import hk.com.mobileye.jason.adlaleader.custom.MyYAxisValueFormatter;
+import hk.com.mobileye.jason.adlaleader.net.Message.Factory.MsgFactory;
+import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.DayStat;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.WarnDayStatReq;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.WarnRecord;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgUtils;
+import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
+import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
+import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
+import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
+import hk.com.mobileye.jason.adlaleader.statistics.StatisticsData;
 
 
 public class ChartActivity extends Activity {

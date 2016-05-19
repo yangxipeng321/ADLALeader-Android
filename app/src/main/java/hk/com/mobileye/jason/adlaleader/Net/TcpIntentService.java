@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Net;
+package hk.com.mobileye.jason.adlaleader.net;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -13,11 +13,11 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgConst;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgUtils;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ServiceType;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgConst;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgUtils;
+import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in

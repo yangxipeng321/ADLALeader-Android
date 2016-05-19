@@ -1,6 +1,6 @@
-package hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Warning;
+package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgBase;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgBase;
 
 /**
  * Created by Jason on 2016/2/3.

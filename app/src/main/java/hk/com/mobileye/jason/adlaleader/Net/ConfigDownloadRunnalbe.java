@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Net;
+package hk.com.mobileye.jason.adlaleader.net;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -7,12 +7,12 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.MessageType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgConst;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgUtils;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ResponseType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ServiceType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.TLVType;
+import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgConst;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgUtils;
+import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
+import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
+import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 
 /**
  * Created by Jason on 2015/1/14.

@@ -54,30 +54,24 @@
             android:exported="false" />
 
         <service
-            android:name=".Net.UdpService"
+            android:name=".net.UdpService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".Net.TcpIntentService"
+            android:name=".net.TcpIntentService"
             android:exported="false" />
         <service
-            android:name=".Net.DownloadIntentService"
+            android:name=".net.DownloadIntentService"
             android:exported="false" />
         <service
-            android:name=".Net.CheckUpgradeIntentService"
+            android:name=".net.CheckUpgradeIntentService"
             android:exported="false" />
 
         <activity
             android:name=".DVRActivity"
             android:label="@string/title_activity_dvr" />
         <activity android:name=".ChartActivity" />
-        <activity android:name=".Debug.DebugActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".debug.DebugActivity"/>
     </application>
 
 </manifest>

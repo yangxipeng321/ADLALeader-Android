@@ -4,8 +4,8 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,15 +13,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import hk.com.mobileye.jason.adlaleader.Control.CtrlFragment;
-import hk.com.mobileye.jason.adlaleader.Control.CtrlInteractionListener;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
+import hk.com.mobileye.jason.adlaleader.control.CtrlFragment;
+import hk.com.mobileye.jason.adlaleader.control.CtrlInteractionListener;
 
 
 public class DVRActivity extends FragmentActivity

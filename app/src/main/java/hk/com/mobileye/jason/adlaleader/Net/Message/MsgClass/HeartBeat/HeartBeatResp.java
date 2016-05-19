@@ -1,6 +1,6 @@
-package hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.HeartBeat;
+package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.HeartBeat;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.ResponseType;
+import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
 
 /**
  * Created by Jason on 2015/1/4.

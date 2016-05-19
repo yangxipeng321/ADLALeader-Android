@@ -1,6 +1,6 @@
-package hk.com.mobileye.jason.adlaleader.Net;
+package hk.com.mobileye.jason.adlaleader.net;
 
-import hk.com.mobileye.jason.adlaleader.Net.ConfigDownloadRunnalbe.TaskRunnableDownloadMethods;
+import hk.com.mobileye.jason.adlaleader.net.ConfigDownloadRunnalbe.TaskRunnableDownloadMethods;
 
 /**
  * Created by Jason on 2015/1/14.

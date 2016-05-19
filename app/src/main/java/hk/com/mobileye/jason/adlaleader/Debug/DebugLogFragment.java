@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Debug;
+package hk.com.mobileye.jason.adlaleader.debug;
 
 
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import hk.com.mobileye.jason.adlaleader.common.logger.MessageOnlyLogFilter;
 public class DebugLogFragment extends Fragment implements View.OnClickListener{
 
     private static final String TAG = "DebugLogFragment";
+
     private LogFragment mLogFragment;
     MessageOnlyLogFilter msgFilter;
 

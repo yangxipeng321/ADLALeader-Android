@@ -33,22 +33,22 @@ import java.lang.ref.WeakReference;
 import java.net.SocketAddress;
 import java.util.Date;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.Factory.MsgFactory;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MessageType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgBase;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Cmd.CmdSwitchScreen;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Cmd.CmdTestReq;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.DVR.DvrKey;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Warning.WarningData;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ResponseType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ServiceType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.TLVType;
-import hk.com.mobileye.jason.adlaleader.Net.NetManager;
-import hk.com.mobileye.jason.adlaleader.Net.TcpIntentService;
-import hk.com.mobileye.jason.adlaleader.Net.UdpHelper;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
+import hk.com.mobileye.jason.adlaleader.net.Message.Factory.MsgFactory;
+import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgBase;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdSwitchScreen;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdTestReq;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrKey;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.WarningData;
+import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
+import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
+import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
+import hk.com.mobileye.jason.adlaleader.net.NetManager;
+import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
+import hk.com.mobileye.jason.adlaleader.net.UdpHelper;
 
 
 public class AlarmActivity extends Activity {

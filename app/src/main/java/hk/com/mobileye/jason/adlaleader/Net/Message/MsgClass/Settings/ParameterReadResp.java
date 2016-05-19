@@ -1,12 +1,12 @@
-package hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.Settings;
+package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.MessageType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgBase;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgConst;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgUtils;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ResponseType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ServiceType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.TLVType;
+import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgBase;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgConst;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgUtils;
+import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
+import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
+import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 
 /**
  * Created by Jason on 2015/1/27.

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="hk.com.mobileye.jason.adlaleader.Debug.DebugActivity">
+    tools:context="hk.com.mobileye.jason.adlaleader.debug.DebugActivity">
     <hk.com.mobileye.jason.adlaleader.view.SlidingTabLayout
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"

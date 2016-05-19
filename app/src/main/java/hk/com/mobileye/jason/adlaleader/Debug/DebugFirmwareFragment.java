@@ -1,16 +1,14 @@
-package hk.com.mobileye.jason.adlaleader.Debug;
+package hk.com.mobileye.jason.adlaleader.debug;
 
 
 import android.content.Intent;
-import android.content.pm.FeatureGroupInfo;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,32 +24,29 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import hk.com.mobileye.jason.adlaleader.Net.Message.Factory.MsgFactory;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MessageType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.MsgClass.File.FileWriteReq;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ResponseType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.ServiceType;
-import hk.com.mobileye.jason.adlaleader.Net.Message.TLVType;
-import hk.com.mobileye.jason.adlaleader.Net.TcpIntentService;
 import hk.com.mobileye.jason.adlaleader.R;
-import hk.com.mobileye.jason.adlaleader.Upgrade.UpgradeManager;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
 import hk.com.mobileye.jason.adlaleader.common.logger.Log;
+import hk.com.mobileye.jason.adlaleader.net.Message.Factory.MsgFactory;
+import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileWriteReq;
+import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
+import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
+import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
+import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DebugFirmwareFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "DebugFirmwareFragment";
-    private static final String KEY_UPDATING_FILE_NAME = "KEY_UPDATING_FILE_NAME";
+
     private RecyclerView mRecycleView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -85,6 +80,7 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
 
         return view;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -123,6 +119,15 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 200:
+
+        }
+    }
+
     public void dealUpdateResult(Intent intent) {
         Log.e(TAG, "dealUpdateResult");
         String fileName = intent.getStringExtra(Constants.EXTEND_FILE_NAME);
@@ -151,11 +156,16 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
         int result = 0;
         mFilesList.clear();
 
-        File appDir = Environment.getExternalStoragePublicDirectory(Constants.APP_DIR);
-        if (appDir.exists()) {
 
-            for (File file : appDir.listFiles(new FirmwareFilter())) {
-                mFilesList.add(new FirmwareEntry(file.getName(), file.length()));
+        File appDir = Environment.getExternalStoragePublicDirectory(Constants.APP_DIR);
+        Log.d(TAG, appDir.getAbsolutePath());
+
+        if (appDir.exists()) {
+            File[] files = appDir.listFiles(new FirmwareFilter());
+            if (null != files) {
+                for (File file : appDir.listFiles(new FirmwareFilter())) {
+                    mFilesList.add(new FirmwareEntry(file.getName(), file.length()));
+                }
             }
 
             if (mFilesList.size() > 1) {

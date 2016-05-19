@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.Upgrade;
+package hk.com.mobileye.jason.adlaleader.upgrade;
 
 import android.app.Activity;
 import android.app.Dialog;
