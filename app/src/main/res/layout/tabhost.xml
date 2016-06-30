@@ -68,7 +68,7 @@
                     style="@style/main_btn_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_action_video"
+                    android:drawableTop="@drawable/btn_ctrl"
                     android:text="@string/action_DVR"
                     android:textColor="@color/radio_btn" />
 
@@ -77,7 +77,7 @@
                     style="@style/main_btn_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_action_cloud"
+                    android:drawableTop="@drawable/btn_debug"
                     android:text="@string/action_debug_view"
                     android:textColor="@color/radio_btn" />
 

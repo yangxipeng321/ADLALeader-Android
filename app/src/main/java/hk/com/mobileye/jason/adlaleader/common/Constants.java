@@ -107,6 +107,8 @@ public final class Constants {
     public static final int DESC_TEST = 7;
     public static final int DESC_WARN_DAY_STAT = 8;
     public static final int DESC_WARN_MONTH_STAT = 9;
+    public static final int DESC_CMD_SAVE_FRAME = 10;
+    public static final int DESC_CMD_DOWNLOAD_FRAME = 11;
 
 
     // Status values of TcpIntentService to broadcast to the Activity

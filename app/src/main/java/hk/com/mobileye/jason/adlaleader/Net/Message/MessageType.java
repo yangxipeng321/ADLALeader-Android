@@ -43,5 +43,11 @@ public class MessageType {
     public static final int CMD_SWITCH_SCREEN_REQ = 0x09;
     public static final int CMD_SWITCH_SCREEN_RESP = 0x09;
 
+    public static final int MSG_CMD_POWER_OFF_REQ = 0x0A;
+    public static final int MSG_CMD_POWER_OFF_RESP = 0x0A;
+
+    public static final int MSG_CMD_SAVE_FRAME_REQ = 0x0B;
+    public static final int MSG_CMD_SAVE_FRAME_RESP = 0x0B;
+
     public static final int DVR_KEY_INFO = 0x01;
 }

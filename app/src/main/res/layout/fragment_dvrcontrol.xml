@@ -12,8 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/btnDVRDown"
         android:text="@string/dvr_home"
-        android:contentDescription="@string/dvr_home"
-        android:src="@drawable/ic_action_web_site" />
+        android:contentDescription="@string/dvr_home"/>
 
     <Button
         android:id="@+id/btnDVRConfirm"
@@ -23,8 +22,7 @@
         android:layout_toEndOf="@id/btnDVRHome"
         android:layout_toRightOf="@id/btnDVRHome"
         android:text="@string/dvr_confirm"
-        android:contentDescription="@string/dvr_confirm"
-        android:src="@drawable/ic_action_forward" />
+        android:contentDescription="@string/dvr_confirm"/>
 
     <Button
         android:id="@+id/btnDVRCancel"
@@ -34,8 +32,7 @@
         android:layout_toLeftOf="@id/btnDVRHome"
         android:layout_toStartOf="@id/btnDVRHome"
         android:text="@string/dvr_cancel"
-        android:contentDescription="@string/dvr_cancel"
-        android:src="@drawable/ic_action_undo" />
+        android:contentDescription="@string/dvr_cancel"/>
 
     <Button
         android:id="@+id/btnDVRUp"
@@ -45,8 +42,7 @@
         android:layout_above="@id/btnDVRHome"
         android:layout_alignLeft="@id/btnDVRHome"
         android:layout_alignStart="@id/btnDVRHome"
-        android:contentDescription="@string/dvr_up"
-        android:src="@drawable/ic_action_collapse" />
+        android:contentDescription="@string/dvr_up"/>
 
     <Button
         android:id="@+id/btnDVRDown"
@@ -56,8 +52,7 @@
         android:layout_alignLeft="@id/btnDVRHome"
         android:layout_alignStart="@id/btnDVRHome"
         android:layout_above="@+id/btnScrMobileye"
-        android:contentDescription="@string/dvr_down"
-        android:src="@drawable/ic_action_expand" />
+        android:contentDescription="@string/dvr_down"/>
 
     <Button
         android:id="@+id/btnDVRPhoto"

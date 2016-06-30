@@ -59,7 +59,6 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -234,6 +233,7 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
                         for (int i = 0; i < mFilesList.size(); i++) {
                             FirmwareAdapter.ViewHolder vh = (FirmwareAdapter.ViewHolder)
                                     mRecycleView.findViewHolderForAdapterPosition(i);
+                            if (null == vh) continue;
                             vh.setEnabled(false);
                             if (i == position) {
                                 vh.setUpdating(true);
@@ -251,6 +251,7 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
                         for (int i = 0; i < mFilesList.size(); i++) {
                             FirmwareAdapter.ViewHolder vh = (FirmwareAdapter.ViewHolder)
                                     mRecycleView.findViewHolderForAdapterPosition(i);
+                            if (null == vh) continue;
                             vh.setEnabled(true);
                             vh.setUpdating(false);
                             if (i == position) {
@@ -290,6 +291,10 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
             else if (filename.toUpperCase().startsWith("PIC_"))
                 return true;
             else if (filename.toUpperCase().startsWith("ADASGATE_"))
+                return true;
+            else if (filename.toUpperCase().startsWith("ADASD_"))
+                return true;
+            else if (filename.toUpperCase().startsWith("RTSP_"))
                 return true;
             else
                 return false;

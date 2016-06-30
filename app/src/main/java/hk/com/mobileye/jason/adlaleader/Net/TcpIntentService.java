@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.Locale;
 
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
@@ -23,24 +23,19 @@ import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p/>
- * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
 public class TcpIntentService extends IntentService {
     private static final String TAG = "TcpIntentService";
 
-    // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_FILE_SERVICE = "hk.com.mobileye.jason.adlaleader.Net.action.FileService";
 
-    // TODO: Rename parameters
     private static final String EXTRA_MESSAGE_PACK = "hk.com.mobileye.jason.adlaleader.Net.extra.MessagePack";
     private static final String EXTRA_SENDER = "hk.com.mobileye.jason.adlaleader.Net.extra.SENDER";
     private static final String EXTRA_DECRIPTION = "hk.com.mobileye.jason.adlaleader.Net.extra.DESCRIPTION";
 
     private LocalBroadcastManager mBroadcaster;
-
-    private int waitTimeout = Constants.SOCKET_READ_TIMEOUT;
 
     /**
      * Starts this service to perform action File Service with the given parameters. If
@@ -48,7 +43,6 @@ public class TcpIntentService extends IntentService {
      *
      * @see IntentService
      */
-    // TODO: Customize helper method
     public static void startActionFileService(Context context, byte[] aMsgPack, int description) {
         Intent intent = new Intent(context, TcpIntentService.class);
         intent.setAction(ACTION_FILE_SERVICE);
@@ -103,6 +97,7 @@ public class TcpIntentService extends IntentService {
         try {
             Thread.sleep(Constants.TCP_SLEEP);
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         String aIp = app.mIp;
@@ -124,7 +119,7 @@ public class TcpIntentService extends IntentService {
             socket.connect(addr, Constants.SOCKET_CONNECT_TIMEOUT);
 
             //Calculate wait time depend on message size. The speed is 10kB/s
-            waitTimeout = Math.max((msgPack.length / (1024*5))*1000, Constants.SOCKET_READ_TIMEOUT);
+            int waitTimeout = Math.max((msgPack.length / (1024*5))*1000, Constants.SOCKET_READ_TIMEOUT);
             //Set socket receive timeout.
             Log.d(TAG, String.format("socket receive timeout %d", waitTimeout));
             socket.setSoTimeout(waitTimeout);
@@ -138,12 +133,6 @@ public class TcpIntentService extends IntentService {
             broadcastIntentTcpStatus(sender, Constants.STATE_ACTION_RECEIVE,description);
 
             recvBuf = recvMsg(socket);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            Log.e(TAG, e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e(TAG, e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, e.getMessage());
@@ -152,7 +141,9 @@ public class TcpIntentService extends IntentService {
                 try {
                     Log.d(TAG, "close socket");
                     socket.close();
-                } catch (IOException e) { }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         //Report the response result
@@ -185,8 +176,8 @@ public class TcpIntentService extends IntentService {
             InputStream inputStream = socket.getInputStream();
             int len = inputStream.read(header);
             if (len < MsgConst.MSG_LEN_HEADER) {
-                throw new IOException(String.format("[Read Header] receive %d bytes, " +
-                        "less than header size.", len));
+                throw new IOException(String.format(Locale.getDefault(), "[Read Header] receive " +
+                        "%d bytes, less than header size.", len));
             }
             Log.d(TAG, String.format("[Read Header] : %s", MsgUtils.bytes2HexString(header)));
 
@@ -199,8 +190,8 @@ public class TcpIntentService extends IntentService {
                 len += (header[6] & 0xff) << 16;
 
             if (len <= MsgConst.MSG_LEN_HEADER) {
-                throw new IOException(String.format("[Read Header] the length in header is %d, " +
-                    "less than header size.", len));
+                throw new IOException(String.format(Locale.getDefault(), "[Read Header] the " +
+                        "length in header is %d, less than header size.", len));
             }
 
             //get the crc in header
@@ -222,15 +213,16 @@ public class TcpIntentService extends IntentService {
             Log.d(TAG, String.format("[Read Body]Total receive %d bytes. " +
                     "The body size is %d bytes.", offset, body.length));
             if (offset != body.length) {
-                throw new IOException(String.format("[Read Body]Total receive data size[%d] " +
-                        "is not equal the body size[%d]", offset, body.length));
+                throw new IOException(String.format(Locale.getDefault(),
+                        "[Read Body]Total receive data size[%d] is not equal the body size[%d]",
+                        offset, body.length));
             }
             //Calculate the CRC of body.
             int crc = MsgUtils.getCrc32(body, body.length);
             Log.d(TAG, String.format("%d -- CRC in Header   %d -- Calculated", crcinHeader, crc));
             if (crcinHeader != crc) {
-                throw new IOException(String.format("The CRC[%d] in Header is not equal " +
-                        "the body CRC[%d]  ", crcinHeader, crc));
+                throw new IOException(String.format(Locale.getDefault(),
+                        "The CRC[%d] in Header is not equal the body CRC[%d]  ", crcinHeader, crc));
             }
 
             //Create the complete message pack

@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     style="@style/main_btn_style"
                     android:text="@string/action_alarm"
-                    android:drawableTop="@drawable/ic_action_call"
+                    android:drawableTop="@drawable/ic_action_alarm"
                     android:id="@+id/rbtnAlarm" />
 
                 <RadioButton
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     style="@style/main_btn_style"
                     android:text="@string/action_night_view"
-                    android:drawableTop="@drawable/ic_action_cloud"
+                    android:drawableTop="@drawable/ic_action_ctrl"
                     android:id="@+id/rbtnNightView" />
 
                 <RadioButton
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     style="@style/main_btn_style"
                     android:text="@string/action_settings"
-                    android:drawableTop="@drawable/ic_action_email"
+                    android:drawableTop="@drawable/ic_action_settings"
                     android:id="@+id/rbtnSettings" />
             </RadioGroup>
         </LinearLayout>

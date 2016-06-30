@@ -230,8 +230,6 @@ public class ChartActivity extends Activity {
 
             if (msg.encode()) {
                 Log.d(TAG, "startActionFileService");
-                //Intent can't send data over 48K, it will report error
-                //"FAILED BINDER TRANSACTION!!!". So we usa a global variable.
                 TcpIntentService.startActionFileService(this, msg.getData(),
                         Constants.DESC_WARN_DAY_STAT);
             }

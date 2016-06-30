@@ -20,5 +20,6 @@ public class TLVType {
     public static final int TP_WIFI_NAME_ID=        0x0F;
     public static final int TP_GATE_VER_ID=         0x10;
     public static final int TP_WARN_DAT_STAT=       0x11;
-    public static final int TP_DATE_INDEX_ID =               0x12;
+    public static final int TP_DATE_INDEX_ID =      0x12;
+    public static final int TP_FRAME_COUNT_ID =     0x13;
 }
