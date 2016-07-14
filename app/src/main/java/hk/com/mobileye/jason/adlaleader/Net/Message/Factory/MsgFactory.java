@@ -9,7 +9,11 @@ import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdResetResp;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdSwitchScreen;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdTestReq;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdTestResp;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrFileListResp;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrKey;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrPlayFileResp;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.LogAdasgateContent;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.LogMCUContent;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileReadReq;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileReadResp;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileWriteReq;
@@ -85,6 +89,9 @@ public class MsgFactory {
                 break;
             case ServiceType.SERVICE_DVR:
                 obj = createDVR(aMsgType, aResponseType);
+                break;
+            case ServiceType.SERVICE_DEBUG:
+                obj = createDebug(aMsgType, aResponseType);
                 break;
             default:
                 obj = null;
@@ -251,8 +258,35 @@ public class MsgFactory {
                         break;
                 }
                 break;
+            case ResponseType.RESPONSE:
+                switch (aMsgType) {
+                    case  MessageType.DVR_FILE_LIST_RESP:
+                        obj = new DvrFileListResp();
+                        break;
+                    case MessageType.DVR_PLAY_FILE_RESP:
+                        obj = new DvrPlayFileResp();
+                        break;
+                }
+                break;
         }
         return obj;
+    }
+
+    private MsgBase createDebug(int aMsgType, int aResponseType) {
+        MsgBase obj = null;
+        switch (aResponseType) {
+            case ResponseType.INFO:
+                switch (aMsgType) {
+                    case MessageType.LOG_ADASGATE_CONTENT:
+                        obj = new LogAdasgateContent();
+                        break;
+                    case MessageType.LOG_MCU_CONTENT:
+                        obj = new LogMCUContent();
+                        break;
+                }
+                break;
+        }
+        return  obj;
     }
 
 }

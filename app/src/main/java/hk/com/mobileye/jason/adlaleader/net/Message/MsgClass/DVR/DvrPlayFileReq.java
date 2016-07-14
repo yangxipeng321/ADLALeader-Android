@@ -1,4 +1,4 @@
-package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File;
+package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR;
 
 import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgBase;
@@ -10,36 +10,32 @@ import hk.com.mobileye.jason.adlaleader.net.Message.TLVClass;
 import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 
 /**
- * Created by Jason on 2015/1/26.
+ * Created by Jason on 2016/7/6.
+ *
  */
-public class FileReadReq extends MsgBase {
+public class DvrPlayFileReq extends MsgBase {
     @Override
     public void initMsg() {
+        getHeader().MsgServiceType = ServiceType.SERVICE_DVR;
+        getHeader().MsgType = MessageType.DVR_PLAY_FILE_REQ;
         getHeader().MsgResponseType = ResponseType.REQUEST;
-        getHeader().MsgServiceType = ServiceType.SERVICE_FILE;
-        getHeader().MsgType = MessageType.FILE_READ_REQ;
-
-        getBody().add(TLVType.TP_FILE_NAME_ID, String.class);
+        getBody().add(TLVType.TP_DVR_PLAY_FILE_ID, DvrPlay.class);
     }
 
     @Override
     public boolean encode() {
-        //getBody().add(TLVType.TP_FILE_NAME_ID, );
         boolean result = true;
         try {
-            byte[] bytesTLVs = new byte[64 + 4 + 4];
+            byte[] bytesTLVs = new byte[100];
             int index = 0;
-
-            TLVClass tlv = getBody().get(TLVType.TP_FILE_NAME_ID);
+            TLVClass tlv = getBody().get(TLVType.TP_DVR_PLAY_FILE_ID);
             if (null == tlv || null == tlv.getValueBytes()) {
-                throw new Exception("The file name tlv is null or valuebytes is null");
+                throw new Exception("The DVR Play file tlv is null or valuebytes is null ");
             }
-            System.arraycopy(tlv.getValueBytes(), 0, bytesTLVs, 0, tlv.getValueBytes().length);
-            index += 64 + 4;
 
-            int CRC = 0xBBBBBBBB;
-            System.arraycopy(MsgUtils.int2Bytes(CRC), 0, bytesTLVs, index, 4);
-            index += 4;
+            //just value, this is not a regular tlv
+            System.arraycopy(tlv.getTLVBytes(), 0, bytesTLVs, index, tlv.getTLVBytes().length);
+            index += tlv.getTLVBytes().length;
 
             this.setVar(MsgConst.MSG_LEN_HEADER + index);
             this.setCRC(MsgUtils.getCrc32(bytesTLVs, index));
@@ -54,11 +50,6 @@ public class FileReadReq extends MsgBase {
             e.printStackTrace();
             result = false;
         }
-        return result;
-    }
-
-    @Override
-    public boolean decode() {
-        return super.decode();
+        return  result;
     }
 }

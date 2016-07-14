@@ -36,6 +36,18 @@ public class MsgUtils {
         }
     }
 
+    public static String bytes2HexString(byte[] buffer, int offset, int len) {
+        if (null != buffer && offset >= 0 && len > 0 && buffer.length >= (offset + len)) {
+            char[] hexChars = new char[len * 2];
+            for (int i = 0; i < len; i++) {
+                hexChars[i * 2] = hexArray[(buffer[offset + i] & 0xf0) >>> 4];
+                hexChars[i * 2 + 1] = hexArray[buffer[offset + i] & 0x0f];
+            }
+            return new String(hexChars);
+        }
+        return "";
+    }
+
     public static byte[] hexString2bytes(String hexStr) {
         if (hexStr==null ||hexStr.equals(""))
             return null;
@@ -68,6 +80,14 @@ public class MsgUtils {
             long lo = bytes2Int(input, offset);
             long hi = bytes2Int(input, offset + 4);
             return lo + hi << 32;
+        } else {
+            return 0;
+        }
+    }
+
+    public static int bytes2Short(byte[] input, int offset) {
+        if (null != input && (input.length - offset) >= 2) {
+            return (input[offset] & 0xff) + ((input[offset + 1] & 0xff) << 8);
         } else {
             return 0;
         }

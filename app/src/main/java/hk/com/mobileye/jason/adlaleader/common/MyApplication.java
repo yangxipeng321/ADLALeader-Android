@@ -61,6 +61,8 @@ public class MyApplication extends Application {
 
     public int speed = -1;
 
+    public byte curScreen = 1;
+
     public int getAppVersionCode() {
         int code = -1;
         PackageManager manager = this.getPackageManager();

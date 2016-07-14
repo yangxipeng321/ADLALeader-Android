@@ -53,6 +53,26 @@ public class CmdSwitchScreen extends MsgBase {
 
     @Override
     public boolean decode() {
-        return super.decode();
+        boolean result = true;
+        try {
+            //Decode the message header
+            if (!super.decode()) {return false;}
+            getBody().clear();
+            int index = MsgConst.MSG_LEN_HEADER;
+            int tlvType, tlvLen;
+            if (getData().length < (index + 4)) { return  false; }
+
+            tlvType = (getData()[index] & 0xff)
+                    + ((getData()[index + 1] & 0xff) << 8);
+            tlvLen = (getData()[index + 2] & 0xff)
+                    + ((getData()[index + 3] & 0xff) << 8);
+            if (tlvLen!=5) {return false;}
+            byte screenId = getData()[index + 4];
+            getBody().add(TLVType.TP_SWITCH_SCREEN, byte.class).setValue(screenId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return  result;
     }
 }

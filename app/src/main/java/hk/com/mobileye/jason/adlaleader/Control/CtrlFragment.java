@@ -29,6 +29,7 @@ import hk.com.mobileye.jason.adlaleader.view.SlidingTabLayout;
 public class CtrlFragment extends Fragment {
 
     private CtrlInteractionListener mListener;
+    public static CtrlDVRFragment dvrFragment;
 
 
     @Override
@@ -96,7 +97,7 @@ public class CtrlFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new ContorlPagerAdapter(getActivity().getSupportFragmentManager()));
+        mViewPager.setAdapter(new ControlPagerAdapter(getActivity().getSupportFragmentManager()));
 
         mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setViewPager(mViewPager);
@@ -104,9 +105,9 @@ public class CtrlFragment extends Fragment {
         mSlidingTabLayout.setOnPageChangeListener(new CtrlPageChangeListener());
     }
 
-    class ContorlPagerAdapter extends FragmentPagerAdapter {
+    class ControlPagerAdapter extends FragmentPagerAdapter {
 
-        public ContorlPagerAdapter(FragmentManager fm) {
+        public ControlPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -123,6 +124,7 @@ public class CtrlFragment extends Fragment {
                     break;
                 case  2:
                     fragment = new CtrlDVRFragment();
+                    dvrFragment = (CtrlDVRFragment)fragment;
                     break;
                 default:
                     fragment = null;
@@ -173,5 +175,9 @@ public class CtrlFragment extends Fragment {
         public void onPageScrollStateChanged(int state) {
 
         }
+    }
+
+    public void setCurrentPage(int index){
+        mViewPager.setCurrentItem(index, true);
     }
 }

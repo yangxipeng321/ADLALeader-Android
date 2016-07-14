@@ -22,4 +22,9 @@ public class TLVType {
     public static final int TP_WARN_DAT_STAT=       0x11;
     public static final int TP_DATE_INDEX_ID =      0x12;
     public static final int TP_FRAME_COUNT_ID =     0x13;
+    public static final int TP_DVR_FILE_TYPE_ID =   0x14;
+    public static final int TP_DVR_FILE_LIST_ID =   0x15;
+    public static final int TP_DVR_PLAY_FILE_ID =   0x16;
+    public static final int TP_LOG_SWITCH_ID =      0x17;
+    public static final int TP_LOG_CONTENT_ID =     0x18;
 }

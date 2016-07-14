@@ -12,31 +12,59 @@
             android:id="@+id/btnClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:text="Clear"/>
         <CheckBox
             android:id="@+id/cbAppLog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_toEndOf="@id/btnClear"
             android:layout_toRightOf="@id/btnClear"
+            android:layout_alignParentTop="true"
             android:text="App"/>
-        <CheckBox
-            android:id="@+id/cbHI3Log"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/cbAppLog"
-            android:layout_toRightOf="@id/cbAppLog"
-            android:text="HI3"/>
         <CheckBox
             android:id="@+id/cbMCU"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/cbAppLog"
+            android:layout_toRightOf="@id/cbAppLog"
+            android:layout_alignTop="@id/cbAppLog"
+            android:text="MCU"/>
+
+        <CheckBox
+            android:id="@+id/cbHI3Log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/cbAppLog"
+            android:layout_alignStart="@id/cbAppLog"
+            android:layout_below="@id/cbAppLog"
+            android:text="HI3"/>
+        <CheckBox
+            android:id="@+id/cbHI3MCU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toEndOf="@id/cbHI3Log"
             android:layout_toRightOf="@id/cbHI3Log"
-            android:text="MCU"/>
+            android:layout_alignTop="@id/cbHI3Log"
+            android:text="mcu"/>
+        <CheckBox
+            android:id="@+id/cbHI3DVR"
+            android:text="DVR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/cbHI3MCU"
+            android:layout_toRightOf="@id/cbHI3MCU"
+            android:layout_alignTop="@id/cbHI3Log"/>
+        <CheckBox
+            android:id="@+id/cbHI3Stat"
+            android:text="Stat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/cbHI3DVR"
+            android:layout_toRightOf="@id/cbHI3DVR"
+            android:layout_alignTop="@id/cbHI3Log"/>
     </RelativeLayout>
     <fragment
         android:id="@+id/debug_log_fragment"

@@ -11,4 +11,6 @@ public class ServiceType {
     public static final byte SERVICE_HEARTBEAT = 0x05;
     public static final byte SERVICE_CMD = 0x06;
     public static final byte SERVICE_DVR = 0x07;
+    public static final byte SERVICE_DEBUG = 0x08;
+
 }

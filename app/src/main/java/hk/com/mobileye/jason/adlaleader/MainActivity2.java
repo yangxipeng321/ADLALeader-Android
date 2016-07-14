@@ -31,6 +31,8 @@ import hk.com.mobileye.jason.adlaleader.debug.DebugActivity;
 import hk.com.mobileye.jason.adlaleader.net.Message.Factory.MsgFactory;
 import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgBase;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrFileList;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrPlay;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileReadReq;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileReadResp;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileWriteResp;
@@ -534,6 +536,15 @@ public class MainActivity2 extends TabActivity {
                         break;
                 }
                 break;
+            case ServiceType.SERVICE_DVR:
+                switch (msg.getHeader().MsgType) {
+                    case MessageType.DVR_FILE_LIST_RESP:
+                        processFileListResp(msg);
+                        break;
+                    case MessageType.DVR_PLAY_FILE_RESP:
+                        processPlayFileResp(msg);
+                        break;
+                }
             default:
                 break;
         }
@@ -774,4 +785,41 @@ public class MainActivity2 extends TabActivity {
         Log.d(TAG, "Warn month statistic response");
 
     }
+
+    private void processFileListResp(MsgBase msg) {
+        Log.d(TAG, "Process FileList response");
+
+        TLVClass tlv = msg.getBody().get(TLVType.TP_DVR_FILE_LIST_ID);
+        if (tlv != null && tlv.getValue() != null) {
+            DvrFileList fileList = (DvrFileList) tlv.getValue();
+            Log.d(TAG, "Receive file name " + fileList.getFileList().size());
+
+            Intent intent = new Intent(Constants.DVR_FILE_LIST_ACTION);
+            intent.putStringArrayListExtra(Constants.EXTEND_DVR_FILE_LIST, fileList.getFileList());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        } else {
+            Log.e(TAG, "Receive file list is null");
+        }
+    }
+
+    private void processPlayFileResp(MsgBase msg) {
+        Log.d(TAG, "Process FileList response");
+
+        TLVClass tlv = msg.getBody().get(TLVType.TP_DVR_PLAY_FILE_ID);
+        if (tlv != null && tlv.getValue() != null) {
+            DvrPlay dvrPlay = (DvrPlay) tlv.getValue();
+            Log.d(TAG, String.format(Locale.getDefault(),
+                    "Receive Play file resp. Type:%d Ctrl:%d Name:%s" + dvrPlay.getFileType(),
+                    dvrPlay.getCtrl(), dvrPlay.getFileName()));
+
+            Intent intent = new Intent(Constants.DVR_PLAY_FILE_ACTION);
+            intent.putExtra(Constants.EXTEND_DVR_PLAY_FILE_TYPE, dvrPlay.getFileType());
+            intent.putExtra(Constants.EXTEND_DVR_PLAY_CTRL, dvrPlay.getCtrl());
+            intent.putExtra(Constants.EXTEND_DVR_PLAY_FILE_NAME, dvrPlay.getFileName());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        } else {
+            Log.e(TAG, "Receive file list is null");
+        }
+    }
+
 }

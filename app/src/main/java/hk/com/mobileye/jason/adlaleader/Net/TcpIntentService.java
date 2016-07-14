@@ -127,12 +127,12 @@ public class TcpIntentService extends IntentService {
             //Broadcast an Intent indicating that the service is sending request data to the CAN.
             broadcastIntentTcpStatus(sender, Constants.STATE_ACTION_SEND, description);
 
-            sendMsg(socket, msgPack);
+            sendMsg(socket, msgPack, sender, description);
 
             //Broadcast an Intent indicating that the service is waiting the response from the CAN.
             broadcastIntentTcpStatus(sender, Constants.STATE_ACTION_RECEIVE,description);
 
-            recvBuf = recvMsg(socket);
+            recvBuf = recvMsg(socket, sender, description);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, e.getMessage());
@@ -150,7 +150,7 @@ public class TcpIntentService extends IntentService {
         broadcastIntentTcpResult(sender, Constants.STATE_ACTION_COMPLETE, recvBuf,description);
     }
 
-    private void sendMsg(Socket socket, byte[] buffer) {
+    private void sendMsg(Socket socket, byte[] buffer, String sender, int description) {
         try {
             if (null != buffer && buffer.length > 0) {
                 DataOutputStream writer = new DataOutputStream(socket.getOutputStream());
@@ -161,16 +161,17 @@ public class TcpIntentService extends IntentService {
                 Log.e(TAG, "Buffer is null or length = 0");
             }
         } catch (IOException e) {
+            //Broadcast an Intent indicating that the service failed to send data.
+            broadcastIntentTcpStatus(sender, Constants.STATE_ACTION_SEND_FAILED, description);
             Log.e(TAG, e.toString());
         }
     }
 
-    private byte[] recvMsg(Socket socket) {
+    private byte[] recvMsg(Socket socket, String sender, int description) {
         if (null == socket) { return null;}
 
         byte[] result = null;
         try {
-
             //First read the message header, get the total length of the message.
             byte[] header = new byte[MsgConst.MSG_LEN_HEADER];
             InputStream inputStream = socket.getInputStream();
@@ -190,6 +191,8 @@ public class TcpIntentService extends IntentService {
                 len += (header[6] & 0xff) << 16;
 
             if (len <= MsgConst.MSG_LEN_HEADER) {
+                //Broadcast an Intent indicating that the service is timeout to wait receive.
+                broadcastIntentTcpStatus(sender, Constants.STATE_ACTION_TIMEOUT, description);
                 throw new IOException(String.format(Locale.getDefault(), "[Read Header] the " +
                         "length in header is %d, less than header size.", len));
             }

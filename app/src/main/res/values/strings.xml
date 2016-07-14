@@ -76,11 +76,14 @@
     <string name="dvr_up">上</string>
     <string name="dvr_down">下</string>
     <string name="dvr_photo">拍照</string>
+    <string name="dvr_video_list">视频</string>
+    <string name="dvr_pic_list">照片</string>
+    <string name="dvr_play_file">播放</string>
 
     <string name="screen_car">原车屏</string>
     <string name="screen_mobileye">天眼</string>
     <string name="screen_dvr">记录仪</string>
-    <string name="screen_video">视频</string>
+    <string name="screen_video">0x83</string>
     <string name="write_mcu">MCU</string>
     <string name="write_hi3">HI3</string>
     <string name="write_pic">PIC</string>

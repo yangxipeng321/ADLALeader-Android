@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.SocketAddress;
 import java.util.Date;
+import java.util.Locale;
 
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
@@ -45,6 +46,7 @@ import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrKey;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.WarningData;
 import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
 import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
+import hk.com.mobileye.jason.adlaleader.net.Message.TLVClass;
 import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 import hk.com.mobileye.jason.adlaleader.net.NetManager;
 import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
@@ -257,6 +259,7 @@ public class AlarmActivity extends Activity {
         private final WeakReference<AlarmActivity> mActivity;
 
         public AlarmHandler(AlarmActivity activity) {
+
             mActivity = new WeakReference<>(activity);
         }
 
@@ -276,7 +279,11 @@ public class AlarmActivity extends Activity {
                         //Log.d(TAG, " recv MSG_REFRESH_WARNING");
                         activity.dealRefreshWarning();
                         break;
-                    default:
+                    case Constants.MSG_SWITCH_SCREEN:
+                        activity.dealSwitchScreenNotify((byte[]) msg.obj);
+                        break;
+                    case Constants.MSG_LOG_CONTENT:
+                        activity.dealLogContent((byte[]) msg.obj);
                         break;
                 }
             }
@@ -665,6 +672,9 @@ public class AlarmActivity extends Activity {
 
         filter = new IntentFilter(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+
+        filter = new IntentFilter(Constants.UDP_SEND_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
     }
 
     private void releaseLocalReceiver() {
@@ -686,17 +696,12 @@ public class AlarmActivity extends Activity {
 
                 if (action.equals(Constants.CMD_TEST_RESP_ACTION)) {
                     dealCmdTestResp(intent);
-                    return;
-                }
-
-                if (action.equals(Constants.DVR_KEY_ACTION)) {
+                } else if (action.equals(Constants.DVR_KEY_ACTION)) {
                     dealDVRKey(intent);
-                    return;
-                }
-
-                if (action.equals(Constants.CMD_SWITCH_SCREEN_REQ_ACTION)) {
+                } else if (action.equals(Constants.CMD_SWITCH_SCREEN_REQ_ACTION)) {
                     dealCmdSwitchScreen(intent);
-                    return;
+                } else if (action.equals(Constants.UDP_SEND_ACTION)) {
+                    dealUdpSend(intent);
                 }
             }
         }
@@ -750,6 +755,40 @@ public class AlarmActivity extends Activity {
                 new SendUdpTask().execute(buffer);
             }
         }
+
+        private void dealUdpSend(Intent intent) {
+            Log.d(TAG, "dealUdpSend()");
+            byte[] buffer = intent.getByteArrayExtra(Constants.EXTEND_UDP_SEND_BUFFER);
+            if (null != buffer) {
+                try {
+                    new SendUdpTask().execute(buffer);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
+    private void dealSwitchScreenNotify(byte[] buf) {
+        CmdSwitchScreen data = (CmdSwitchScreen) (MsgFactory.getInstance().create(buf));
+
+        if (data != null && data.decode()) {
+            TLVClass tlv = data.getBody().get(TLVType.TP_SWITCH_SCREEN);
+            if (null != tlv && null != tlv.getValue()){
+                Log.e(TAG, String.format(Locale.getDefault(), "screen id %d", mApp.curScreen));
+                mApp.curScreen = (byte) tlv.getValue();
+                Intent intent = new Intent(Constants.CMD_SWITHCH_SCREEN_NOTIFY_ACTION);
+                intent.putExtra(Constants.EXTEND_SCREEN_ID, mApp.curScreen);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            }
+        } else {
+            Log.e(TAG, "data is null");
+        }
+    }
+
+    private void dealLogContent(byte[] buf) {
+        Intent intent = new Intent(Constants.LOG_CONTENT_ACTION);
+        intent.putExtra(Constants.EXTEND_LOG_CONTENT, buf);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
 }

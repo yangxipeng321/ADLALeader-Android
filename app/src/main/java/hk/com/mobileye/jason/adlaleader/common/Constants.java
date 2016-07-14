@@ -10,12 +10,15 @@ public final class Constants {
     public static final int MSG_WARNING = 1;
     public static final int MSG_SEND_HEARTBEAT = 2;
     public static final int MSG_REFRESH_WARNING =3;
+    public static final int MSG_SWITCH_SCREEN = 4;
+    public static final int MSG_LOG_CONTENT = 5;
+
     public static final int HEAERBEAT_INTERVAL = 5000;  //ms
     public static final long REFRESH_WARNING_INTERVAL = 800; //ms
     public static final int READ_CONFIG_INTERVAL = 10000;
     public static final int WRITE_CONFIG_DELAY = 2000;
 
-    public static final int SOCKET_READ_TIMEOUT = 10000;  //10s
+    public static final int SOCKET_READ_TIMEOUT = 20000;  //10s
     public static final int SOCKET_CONNECT_TIMEOUT = 1000; //1s
 
     public static final int HTTP_CONNECT_TIMEOUT = 5000;  //2s
@@ -38,6 +41,19 @@ public final class Constants {
 
     //Constants for warning statistics
     public static final int HISTORY_DAYS = 15;
+
+    //Switch Screen ID
+    public static final byte SCREEN_CAR_CAR         = 1;  //原车屏显示原内容
+    public static final byte SCREEN_CAR_ME          = 2;  //原车屏显示天眼
+    public static final byte SCREEN_CAR_DVR         = 3;  //原车屏显示DVR
+    public static final byte SCREEN_APP_CAR         = -127;  //0x81  App显示原车内容
+    public static final byte SCREEN_APP_ME          = -126;  //0x82  App显示天眼
+    public static final byte SCREEN_APP_DVR         = -125;  //0x83  App显示DVR
+
+    //DVR File Tpye ID
+    public static final byte DVR_FILE_TYPE_VIDEO    = 1;
+    public static final byte DVR_FILE_TYPE_PIC      = 2;
+
 
     public static final String MH_CONFIG_FILE = "AM_AWS_SETUP.CONF";
     public static final String MCU_FIRMWARE = "MCU_.bin";
@@ -109,6 +125,9 @@ public final class Constants {
     public static final int DESC_WARN_MONTH_STAT = 9;
     public static final int DESC_CMD_SAVE_FRAME = 10;
     public static final int DESC_CMD_DOWNLOAD_FRAME = 11;
+    public static final int DESC_DVR_FILE_LIST = 12;
+    public static final int DESC_DVR_PLAY_FILE = 13;
+
 
 
     // Status values of TcpIntentService to broadcast to the Activity
@@ -122,15 +141,20 @@ public final class Constants {
     public static final int STATE_ACTION_RECEIVE = 3;
     //The background thread is done
     public static final int STATE_ACTION_COMPLETE = 4;
+    //The background thread is timeout
+    public static final int STATE_ACTION_TIMEOUT = 5;
+    //The background thread is send failed
+    public static  final  int STATE_ACTION_SEND_FAILED = 6;
 
     /**
      * When receive the settings from the Device, broadcast the updating settings message.
      * The settings activity refresh the data from MyApplication
      */
-    public static final String READ_MH_CONFIG_RESULT_ACTION = "hk.com.mobileye.jason.adlaLeader.READ_MH_CONFIG_RESULT";
+    public static final String READ_MH_CONFIG_RESULT_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.READ_MH_CONFIG_RESULT";
 
-
-    public static final String WRITE_MH_CONFIG_RESULT_ACTION = "hk.com.mobileye.jason.adlaLeader.WRITE_MH_CONFIG_RESULT";
+    public static final String WRITE_MH_CONFIG_RESULT_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.WRITE_MH_CONFIG_RESULT";
 
     /**
      * DownloadIntentService work status changed, broadcast the current status and
@@ -207,6 +231,8 @@ public final class Constants {
 
     public static final String CMD_SWITCH_SCREEN_REQ_ACTION =
             "hk.com.mobileye.jason.adlaLeader.CMD_SWITCH_SCREEN_REQ";
+    public static final String CMD_SWITHCH_SCREEN_NOTIFY_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.CMD_SWITCH_SCREEN_NOTIFY";
     public static final String EXTEND_SCREEN_ID =
             "hk.com.mobileye.jason.adlaLeader.EXTEND_SCREEN_ID";
 
@@ -214,12 +240,6 @@ public final class Constants {
             "hk.com.mobileye.jason.adlaLeader.SPEED_CHANGED";
     public static final String EXTEND_SPEED =
             "hk.com.mobileye.jason.adlaLeader.EXTEND_SPEED";
-
-    public static final String DVR_KEY_ACTION =
-            "hk.com.mobileye.jason.adlaLeader.DVR_KEY";
-    public static final String EXTEND_DVR_KEY =
-            "hk.com.mobileye.jason.adlaLeader.EXTENT_DVR_KEY";
-
 
     public static final String CMD_WRITE_FIRMWARE_REQ_ACTION =
             "hk.com.mobileye.jason.adlaLeader.WRITE_FIRMWARE";
@@ -240,6 +260,38 @@ public final class Constants {
 
     public static final String MONTH_STAT_UPDATE_ACTION =
             "hk.com.mobileye.jason.adlaLeader.MONTH_STAT_UPDATE";
+
+    public static final String DVR_KEY_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.DVR_KEY";
+    public static final String EXTEND_DVR_KEY =
+            "hk.com.mobileye.jason.adlaLeader.EXTEND_DVR_KEY";
+
+    public static final String DVR_FILE_LIST_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.DVR_FILE_LIST";
+    public static final String EXTEND_DVR_FILE_LIST =
+            "hk.com.mobileye.jason.adlaLeader.EXTEND_DVR_FILE_LIST";
+
+    public static final String DVR_PLAY_FILE_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.DVR_PLAY_FILE";
+    public static final String EXTEND_DVR_PLAY_FILE_TYPE =
+            "hk.com.mobileye.jason.adlaLeader.EXTEND_DVR_PLAY_FILE_TYPE";
+    public static final String EXTEND_DVR_PLAY_CTRL =
+            "hk.com.mobileye.jason.adlaLeader.EXTEND_DVR_PLAY_CTRL";
+    public static final String EXTEND_DVR_PLAY_FILE_NAME =
+            "hk.com.mobileye.jason.adlaLeader.EXTEND_DVR_FILE_NAME";
+
+    public static final String UDP_SEND_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.UDP_SEND";
+    public static final String EXTEND_UDP_SEND_BUFFER =
+            "hk.com.mobileye.jason.adlaLeader.EXTEND_UDP_SEND_BUFFER";
+
+    public static final String LOG_CONTENT_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.LOG_CONTENT";
+    public static final String EXTEND_LOG_CONTENT =
+            "hk.com.mobileye.jason.adlaLeader.EXTEND_LOG_CONTENT";
+
+
+
 
 }
 

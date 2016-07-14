@@ -19,4 +19,5 @@
     <dimen name="settings_row_padding_right">20dp</dimen>
     <dimen name="connectionInfo_text_size">16sp</dimen>
     <dimen name="dvr_button_size">64dp</dimen>
+    <dimen name="dvr_file_item_size">20sp</dimen>
 </resources>

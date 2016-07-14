@@ -80,6 +80,14 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getFiles() > 0) {
+            ((FirmwareAdapter) mAdapter).setList(mFilesList);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -108,12 +116,12 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
             if (file.exists()) {
                 updateFirmware(file);
             } else {
+                refreshUpdatingUI(UpdateState.Wait, "");
                 Log.e(TAG, file.toString() + "is not exist. Write firmware failed");
                 Toast toast = Toast.makeText(getActivity(), getString(R.string.firmware_not_exist),
                         Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
-
             }
         }
     }
@@ -138,7 +146,9 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
         refreshUpdatingUI(UpdateState.Wait, fileName);
 
         if (len > 0 ) {
-            Toast.makeText(getActivity(), fileName + " 更新成功", Toast.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(getActivity(), fileName + " 更新成功", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             Log.d(TAG, String.valueOf(mFilesList.size()));
         } else {
             Toast.makeText(getActivity(), R.string.upload_firmware_fail,
@@ -154,7 +164,6 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
     private int getFiles() {
         int result = 0;
         mFilesList.clear();
-
 
         File appDir = Environment.getExternalStoragePublicDirectory(Constants.APP_DIR);
         Log.d(TAG, appDir.getAbsolutePath());
@@ -313,6 +322,10 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
 
     class FirmwareAdapter extends RecyclerView.Adapter<FirmwareAdapter.ViewHolder> {
         private List<FirmwareEntry> mDataset;
+
+        public void setList(List<FirmwareEntry> aDataset) {
+            mDataset = aDataset;
+        }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public CardView mCardView;

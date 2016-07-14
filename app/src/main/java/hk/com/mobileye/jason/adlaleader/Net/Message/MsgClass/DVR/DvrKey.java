@@ -29,7 +29,7 @@ public class DvrKey extends MsgBase {
             byte[] bytesTLVs = new byte[5];
             int index = 0;
             TLVClass tlv = getBody().get(TLVType.TP_DVR_KEY);
-            if (null == tlv && null == tlv.getValueBytes()) {
+            if (null == tlv || null == tlv.getValueBytes()) {
                 throw new Exception("The DVR Key tlv is null or valuebytes is null");
             }
             System.arraycopy(tlv.getTLVBytes(), 0, bytesTLVs, index, tlv.getLength());

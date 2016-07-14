@@ -1,7 +1,10 @@
 package hk.com.mobileye.jason.adlaleader;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -12,9 +15,10 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
@@ -26,6 +30,8 @@ public class DVRActivity extends FragmentActivity
         implements CtrlInteractionListener {
 
     public static final String TAG = "DVRActivity";
+
+    private CtrlFragment ctrlFragment;
 
     //private VideoView videoView;
 
@@ -43,11 +49,29 @@ public class DVRActivity extends FragmentActivity
 //            android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //            DVRControlFragment ctrlFragment = new DVRControlFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            CtrlFragment ctrlFragment = new CtrlFragment();
-
+            ctrlFragment = new CtrlFragment();
             transaction.replace(R.id.controlContainer, ctrlFragment);
             transaction.commit();
         }
+
+        initLocalReceiver();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(TAG, "onResume");
+
+        byte id = (byte)(0);
+        Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
+        intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        releaseLocalReceiver();
+        super.onDestroy();
     }
 
     private long mExitTime = 0;
@@ -94,13 +118,7 @@ public class DVRActivity extends FragmentActivity
         Fragment fragment = getFragmentManager().findFragmentById(R.id.videoContainer);
         if (fragment.getView() != null) {
             TextView textView = (TextView) fragment.getView().findViewById(R.id.textView);
-
-            String desc = view.getContentDescription().toString();
             textView.setText(view.getContentDescription());
-
-            dealKey(desc);
-            dealSwitchScreen(desc);
-            dealVideoControl(desc);
         }
     }
 
@@ -109,77 +127,79 @@ public class DVRActivity extends FragmentActivity
 
     }
 
-    private void dealKey(String desc) {
-        byte key;
-        if (desc.equals(getString(R.string.dvr_up))) {
-            key = 1;
-        } else if (desc.equals(getString(R.string.dvr_down))) {
-            key = 2;
-        } else if (desc.equals(getString(R.string.dvr_confirm))) {
-            key = 3;
-        } else if (desc.equals(getString(R.string.dvr_cancel))) {
-            key = 4;
-        } else if (desc.equals(getString(R.string.dvr_home))) {
-            key = 5;
-        } else if (desc.equals(getString(R.string.dvr_photo))) {
-            key = 6;
-        } else {
-            return;
-        }
+    private LocalBroadCastReceiver localReceiver;
 
-        Intent intent = new Intent(Constants.DVR_KEY_ACTION);
-        intent.putExtra(Constants.EXTEND_DVR_KEY, key);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    private void initLocalReceiver() {
+        localReceiver = new LocalBroadCastReceiver();
+        IntentFilter filter = new IntentFilter(Constants.CMD_SWITHCH_SCREEN_NOTIFY_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+
+        filter = new IntentFilter(Constants.DVR_FILE_LIST_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+
+        filter = new IntentFilter(Constants.DVR_PLAY_FILE_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
     }
 
-    private void dealSwitchScreen(String desc) {
-        byte id;
-        if (desc.equals(getString(R.string.screen_car))) {
-            id = 1;
-        } else if (desc.equals(getString(R.string.screen_mobileye))) {
-            id = 2;
-        } else if (desc.equals(getString(R.string.screen_dvr))) {
-            id = 3;
-        }else if (desc.equals(getString(R.string.screen_video))) {
-            id = 4;
-        } else {
-            return;
+    private void releaseLocalReceiver() {
+        if (null != localReceiver) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(localReceiver);
+            localReceiver = null;
         }
-
-        Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
-        intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void dealVideoControl(String desc) {
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.controlContainer);
-        if (fragment.getView() == null)
-            return;
+    private class LocalBroadCastReceiver extends BroadcastReceiver {
+        private LocalBroadCastReceiver(){
+            //Prevents instantiation by other packages
+        }
 
-        Button button = (Button) fragment.getView().findViewById(R.id.btnPlayVideo);
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (null != intent) {
+                final String action = intent.getAction();
 
-        if (desc.equals(getString(R.string.play_video))) {
-            button.setText(getString(R.string.stop_video));
-            button.setContentDescription(getString(R.string.stop_video));
-            try {
-                //videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
-                //videoView.setVideoPath("rtsp://192.168.168.102:6880/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
-//                videoView.setVideoPath("rtsp://192.168.168.1:6880/test:network-caching=1000");
-//                MediaController mc = new MediaController(this);
-//                videoView.setMediaController(mc);
-//                videoView.start();
-//                videoView.requestFocus();
-            } catch (Exception e) {
-                Log.e(TAG, "error: " + e.getMessage());
+                switch (action) {
+                    case Constants.CMD_SWITHCH_SCREEN_NOTIFY_ACTION:
+                        dealSwitchScreenNotify(intent);
+                        break;
+                    case Constants.DVR_FILE_LIST_ACTION:
+                        dealFileList(intent);
+                        break;
+                    case Constants.DVR_PLAY_FILE_ACTION:
+                        dealPlayFile(intent);
+                        break;
+                }
             }
-        } else if (desc.equals(getString(R.string.stop_video))) {
-            button.setText(getString(R.string.play_video));
-            button.setContentDescription(getString(R.string.play_video));
-//            videoView.stopPlayback();
+        }
+
+        private void dealSwitchScreenNotify(Intent intent) {
+            byte id = 0;
+            id = intent.getByteExtra(Constants.EXTEND_SCREEN_ID, id);
+            switch (id) {
+                case Constants.SCREEN_CAR_CAR:
+                case Constants.SCREEN_APP_CAR:
+                    ctrlFragment.setCurrentPage(0);
+                    break;
+                case Constants.SCREEN_CAR_ME:
+                case Constants.SCREEN_APP_ME:
+                    ctrlFragment.setCurrentPage(1);
+                    break;
+                case Constants.SCREEN_CAR_DVR:
+                case Constants.SCREEN_APP_DVR:
+                    ctrlFragment.setCurrentPage(2);
+            }
+        }
+
+        private void dealFileList(Intent intent) {
+            ArrayList<String> fileList = intent.getStringArrayListExtra(Constants.EXTEND_DVR_FILE_LIST);
+            if (null != fileList && fileList.size() > 0) {
+                if (null != CtrlFragment.dvrFragment) {
+                    CtrlFragment.dvrFragment.SetListView(fileList);
+                }
+            }
+        }
+
+        private void dealPlayFile(Intent intent) {
         }
     }
-
-
-
-
 }

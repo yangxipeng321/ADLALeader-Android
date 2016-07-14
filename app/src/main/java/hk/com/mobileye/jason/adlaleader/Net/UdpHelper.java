@@ -11,15 +11,18 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.Locale;
 
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.logger.Log;
+import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgConst;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgUtils;
 import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
 
 /**
  * Created by Jason on 2014/12/30.
+ *
  */
 public class UdpHelper implements Runnable {
 
@@ -87,7 +90,7 @@ public class UdpHelper implements Runnable {
     private void processRecv(byte[] buf) {
         //Check receive data length
         if (buf.length < MsgConst.MSG_LEN_HEADER) {
-            Log.e(TAG, String.format("Receive data less than %d", MsgConst.MSG_LEN_HEADER));
+            Log.e(TAG, String.format(Locale.getDefault(),"Receive data less than %d", MsgConst.MSG_LEN_HEADER));
             return;
         }
 
@@ -103,6 +106,11 @@ public class UdpHelper implements Runnable {
         byte serviceType = buf[10];
         byte msgType = buf[11];
 
+        if (serviceType != ServiceType.SERVICE_WARNING) {
+            Log.e(TAG, MsgUtils.bytes2HexString(buf));
+        }
+
+
 //        Log.d(TAG, "serviceType " + serviceType);
         if (mHandler != null) {
             switch (serviceType) {
@@ -112,7 +120,20 @@ public class UdpHelper implements Runnable {
                     break;
                 case ServiceType.SERVICE_HEARTBEAT:
                     break;
-                default:
+                case ServiceType.SERVICE_CMD:
+                    switch (msgType) {
+                        case MessageType.CMD_SWITCH_SCREEN_RESP:
+                            mHandler.obtainMessage(Constants.MSG_SWITCH_SCREEN, buf).sendToTarget() ;
+                            break;
+                    }
+                    break;
+                case ServiceType.SERVICE_DEBUG:
+                    switch (msgType) {
+                        case MessageType.LOG_ADASGATE_CONTENT:
+                        case MessageType.LOG_MCU_CONTENT:
+                            mHandler.obtainMessage(Constants.MSG_LOG_CONTENT, buf).sendToTarget();
+                            break;
+                    }
                     break;
             }
         } else {
@@ -137,7 +158,7 @@ public class UdpHelper implements Runnable {
 
     public void send(byte[] buffer, SocketAddress sockAddr) {
         if (buffer == null || buffer.length == 0) {  return;   }
-        Log.d(TAG, String.format("UDP send : %tT %s\n%s\n",
+        Log.d(TAG, String.format(Locale.getDefault(), "UDP send : %tT %s\n%s\n",
                 new Date(), sockAddr.toString(), MsgUtils.bytes2HexString(buffer)));
         try {
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, sockAddr);
@@ -146,15 +167,15 @@ public class UdpHelper implements Runnable {
             } else {
                 throw new Exception("Udp socket is null. Can't send message!");
             }
-        } catch (SocketException e) {
-            e.printStackTrace();
-            Log.e(TAG, e.toString());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            Log.e(TAG, e.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e(TAG, e.toString());
+//        } catch (SocketException e) {
+//            e.printStackTrace();
+//            Log.e(TAG, e.toString());
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//            Log.e(TAG, e.toString());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Log.e(TAG, e.toString());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, e.toString());

@@ -24,6 +24,7 @@ public class DebugActivity extends FragmentActivity {
     private ViewPager mViewPager;
     private DebugPagerAdapter mPagerAdapter;
     private DebugFirmwareFragment mFirmwareFragment;
+    private DebugLogFragment mLogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,9 @@ public class DebugActivity extends FragmentActivity {
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         LocalBroadcastReceiver localReceiver = new LocalBroadcastReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+
+        filter = new IntentFilter(Constants.LOG_CONTENT_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
     }
 
     class DebugPagerAdapter extends FragmentPagerAdapter {
@@ -66,7 +70,9 @@ public class DebugActivity extends FragmentActivity {
                     fragment = mFirmwareFragment;
                     break;
                 case 1:
-                    fragment = new DebugLogFragment();
+                    if (null == mLogFragment)
+                        mLogFragment = new DebugLogFragment();
+                    fragment = mLogFragment;
                     break;
                 case 2:
                     fragment = new DebugTestFragment();
@@ -112,6 +118,9 @@ public class DebugActivity extends FragmentActivity {
                 case Constants.FIRMWARE_UPLOAD_RESULT_ACTION:
                     dealFirmwareUploadResult(intent);
                     break;
+                case Constants.LOG_CONTENT_ACTION:
+                    dealLogContent(intent);
+                    break;
             }
 
         }
@@ -119,6 +128,12 @@ public class DebugActivity extends FragmentActivity {
         private void dealFirmwareUploadResult(Intent intent) {
             if (mFirmwareFragment != null)
                 mFirmwareFragment.dealUpdateResult(intent);
+        }
+
+        private void dealLogContent(Intent intent) {
+            if (null != mLogFragment) {
+                mLogFragment.dealLogContent(intent);
+            }
         }
     }
 

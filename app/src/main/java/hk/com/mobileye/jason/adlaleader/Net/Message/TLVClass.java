@@ -1,5 +1,7 @@
 package hk.com.mobileye.jason.adlaleader.net.Message;
 
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrFileList;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrPlay;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.DevVersion;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.MHVersion;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.WifiPassword;
@@ -11,7 +13,8 @@ import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.DayStat;
 public class TLVClass {
     private int mType = 0x00;
     private Object mValue = null;
-    private byte[] mValueBytes = new byte[0];
+    private byte[]
+            mValueBytes = new byte[0];
     private Class mValueType = null;
 
     public TLVClass(int aTLVType, Class aVauleType) {
@@ -77,6 +80,13 @@ public class TLVClass {
                     break;
                 case "DayStat":
                     mValueBytes = ((DayStat) mValue).getBytes();
+                    break;
+                case "DvrFileList":
+                    mValueBytes = ((DvrFileList) mValue).getBytes();
+                    break;
+                case "DvrPlay":
+                    mValueBytes = ((DvrPlay) mValue).getBytes();
+                    break;
                 default:
                     break;
             }
