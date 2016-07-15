@@ -12,6 +12,7 @@ public final class Constants {
     public static final int MSG_REFRESH_WARNING =3;
     public static final int MSG_SWITCH_SCREEN = 4;
     public static final int MSG_LOG_CONTENT = 5;
+    public static final int MSG_DVR_PLAY_FILE = 6;
 
     public static final int HEAERBEAT_INTERVAL = 5000;  //ms
     public static final long REFRESH_WARNING_INTERVAL = 800; //ms
@@ -261,11 +262,6 @@ public final class Constants {
     public static final String MONTH_STAT_UPDATE_ACTION =
             "hk.com.mobileye.jason.adlaLeader.MONTH_STAT_UPDATE";
 
-    public static final String DVR_KEY_ACTION =
-            "hk.com.mobileye.jason.adlaLeader.DVR_KEY";
-    public static final String EXTEND_DVR_KEY =
-            "hk.com.mobileye.jason.adlaLeader.EXTEND_DVR_KEY";
-
     public static final String DVR_FILE_LIST_ACTION =
             "hk.com.mobileye.jason.adlaLeader.DVR_FILE_LIST";
     public static final String EXTEND_DVR_FILE_LIST =
@@ -289,9 +285,5 @@ public final class Constants {
             "hk.com.mobileye.jason.adlaLeader.LOG_CONTENT";
     public static final String EXTEND_LOG_CONTENT =
             "hk.com.mobileye.jason.adlaLeader.EXTEND_LOG_CONTENT";
-
-
-
-
 }
 

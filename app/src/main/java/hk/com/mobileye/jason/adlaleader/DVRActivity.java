@@ -200,6 +200,13 @@ public class DVRActivity extends FragmentActivity
         }
 
         private void dealPlayFile(Intent intent) {
+            byte fileType = intent.getByteExtra(Constants.EXTEND_DVR_PLAY_FILE_TYPE, (byte)0);
+            byte playCtrl = intent.getByteExtra(Constants.EXTEND_DVR_PLAY_CTRL, (byte)0);
+            String fileName = intent.getStringExtra(Constants.EXTEND_DVR_PLAY_FILE_NAME);
+
+            if (fileType > 0 && null != fileName && null != CtrlFragment.dvrFragment) {
+                CtrlFragment.dvrFragment.setPlayFile(fileType, playCtrl, fileName);
+            }
         }
     }
 }

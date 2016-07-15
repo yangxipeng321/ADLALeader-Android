@@ -127,6 +127,12 @@ public class UdpHelper implements Runnable {
                             break;
                     }
                     break;
+                case ServiceType.SERVICE_DVR:
+                    switch (msgType) {
+                        case MessageType.DVR_PLAY_FILE_RESP:
+                            mHandler.obtainMessage(Constants.MSG_DVR_PLAY_FILE, buf).sendToTarget();
+                    }
+                    break;
                 case ServiceType.SERVICE_DEBUG:
                     switch (msgType) {
                         case MessageType.LOG_ADASGATE_CONTENT:
@@ -167,15 +173,6 @@ public class UdpHelper implements Runnable {
             } else {
                 throw new Exception("Udp socket is null. Can't send message!");
             }
-//        } catch (SocketException e) {
-//            e.printStackTrace();
-//            Log.e(TAG, e.toString());
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//            Log.e(TAG, e.toString());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Log.e(TAG, e.toString());
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, e.toString());

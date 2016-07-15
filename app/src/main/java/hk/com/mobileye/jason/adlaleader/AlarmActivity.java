@@ -43,6 +43,7 @@ import hk.com.mobileye.jason.adlaleader.net.Message.MsgBase;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdSwitchScreen;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdTestReq;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrKey;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrPlay;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.WarningData;
 import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
 import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
@@ -285,6 +286,8 @@ public class AlarmActivity extends Activity {
                     case Constants.MSG_LOG_CONTENT:
                         activity.dealLogContent((byte[]) msg.obj);
                         break;
+                    case Constants.MSG_DVR_PLAY_FILE:
+                        activity.dealDVRPlayFile((byte[]) msg.obj);
                 }
             }
         }
@@ -790,5 +793,25 @@ public class AlarmActivity extends Activity {
         Intent intent = new Intent(Constants.LOG_CONTENT_ACTION);
         intent.putExtra(Constants.EXTEND_LOG_CONTENT, buf);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void dealDVRPlayFile(byte[] buf) {
+        MsgBase msg = MsgFactory.getInstance().create(buf);
+
+        if (null != msg && msg.decode()) {
+            TLVClass tlv = msg.getBody().get(TLVType.TP_DVR_PLAY_FILE_ID);
+            if (null != tlv && null != tlv.getValue()) {
+                DvrPlay dvrPlay = (DvrPlay) tlv.getValue();
+                Log.d(TAG, String.format(Locale.getDefault(),
+                        "Receive Play file resp. Type:%d Ctrl:%d Name:%s",  dvrPlay.getFileType(),
+                        dvrPlay.getCtrl(), dvrPlay.getFileName()));
+
+                Intent intent = new Intent(Constants.DVR_PLAY_FILE_ACTION);
+                intent.putExtra(Constants.EXTEND_DVR_PLAY_FILE_TYPE, dvrPlay.getFileType());
+                intent.putExtra(Constants.EXTEND_DVR_PLAY_CTRL, dvrPlay.getCtrl());
+                intent.putExtra(Constants.EXTEND_DVR_PLAY_FILE_NAME, dvrPlay.getFileName());
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            }
+        }
     }
 }

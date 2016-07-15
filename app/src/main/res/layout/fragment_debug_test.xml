@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
 
     tools:context=".debug.DebugTestFragment">
 
@@ -23,6 +24,74 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnDVRHome"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="@string/dvr_home"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"/>
+        <Button
+            android:id="@+id/btnDVRUp"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="@string/dvr_up"
+            android:layout_toEndOf="@id/btnDVRHome"
+            android:layout_toRightOf="@id/btnDVRHome"
+            android:layout_alignTop="@id/btnDVRHome"/>
+        <Button
+            android:id="@+id/btnDVRDown"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="@string/dvr_down"
+            android:layout_toEndOf="@id/btnDVRUp"
+            android:layout_toRightOf="@id/btnDVRUp"
+            android:layout_alignTop="@id/btnDVRHome"/>
+        <Button
+            android:id="@+id/btnDVRConfirm"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="@string/confirm"
+            android:layout_alignTop="@id/btnDVRHome"
+            android:layout_toEndOf="@id/btnDVRDown"
+            android:layout_toRightOf="@id/btnDVRDown"/>
+        <Button
+            android:id="@+id/btnDVRCancel"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="@string/dvr_cancel"
+            android:layout_alignTop="@id/btnDVRHome"
+            android:layout_toRightOf="@+id/btnDVRConfirm"
+            android:layout_toEndOf="@+id/btnDVRConfirm" />
+        <Button
+            android:id="@+id/btnKey10"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="K10"
+            android:layout_below="@id/btnDVRHome"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
+        <Button
+            android:id="@+id/btnKey11"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="K11"
+            android:layout_alignTop="@id/btnKey10"
+            android:layout_toRightOf="@id/btnKey10"
+            android:layout_toEndOf="@+id/btnKey10" />
+        <Button
+            android:id="@+id/btnKey12"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="K12"
+            android:layout_alignTop="@+id/btnKey10"
+            android:layout_toRightOf="@id/btnKey11"
+            android:layout_toEndOf="@+id/btnKey11" />
+    </RelativeLayout>
 
 
 </LinearLayout>

@@ -54,6 +54,8 @@ public class MessageType {
     public static final int DVR_FILE_LIST_RESP = 0x02;
     public static final int DVR_PLAY_FILE_REQ = 0x03;
     public static final int DVR_PLAY_FILE_RESP = 0x03;
+    public static final int DVR_RECORD = 0x04;
+
 
     public static final int LOG_ADASGATE_SWITCH = 0x01;
     public static final int LOG_ADASGATE_CONTENT = 0x02;

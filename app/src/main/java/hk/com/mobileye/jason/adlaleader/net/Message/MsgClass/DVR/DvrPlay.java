@@ -1,9 +1,11 @@
 package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR;
 
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgUtils;
 import hk.com.mobileye.jason.adlaleader.net.Message.TLVValue;
 
 /**
  * Created by Jason on 2016/7/8.
+ *
  */
 public class DvrPlay implements TLVValue {
     private byte mFileType;
@@ -16,7 +18,23 @@ public class DvrPlay implements TLVValue {
         if (buf.length > 2) {
             mFileType = buf[0];
             mCtrl = buf[1];
-            mFileName = new String(buf, 2, buf.length - 2);
+
+            String fileExt;
+            switch (mFileType) {
+                case 1:
+                    fileExt = ".MP4";
+                    break;
+                case 2:
+                    fileExt = ".JPG";
+                    break;
+                default:
+                    fileExt = "";
+                    break;
+            }
+
+            StringBuilder str = new StringBuilder(MsgUtils.bytes2HexString(buf, 2, len - 2));
+            str.insert(8, "_").append(fileExt);
+            mFileName = str.toString();
         }
     }
 
