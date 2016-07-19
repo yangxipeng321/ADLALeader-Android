@@ -42,7 +42,6 @@ import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgBase;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdSwitchScreen;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdTestReq;
-import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrKey;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrPlay;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Warning.WarningData;
 import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
@@ -670,9 +669,6 @@ public class AlarmActivity extends Activity {
         IntentFilter filter = new IntentFilter(Constants.CMD_TEST_RESP_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
-        filter = new IntentFilter(Constants.DVR_KEY_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
-
         filter = new IntentFilter(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
@@ -699,8 +695,6 @@ public class AlarmActivity extends Activity {
 
                 if (action.equals(Constants.CMD_TEST_RESP_ACTION)) {
                     dealCmdTestResp(intent);
-                } else if (action.equals(Constants.DVR_KEY_ACTION)) {
-                    dealDVRKey(intent);
                 } else if (action.equals(Constants.CMD_SWITCH_SCREEN_REQ_ACTION)) {
                     dealCmdSwitchScreen(intent);
                 } else if (action.equals(Constants.UDP_SEND_ACTION)) {
@@ -721,25 +715,6 @@ public class AlarmActivity extends Activity {
             Toast toast = Toast.makeText(AlarmActivity.this, strID, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
-        }
-
-        private void dealDVRKey(Intent intent) {
-            byte key = 0;
-            key = intent.getByteExtra(Constants.EXTEND_DVR_KEY, key);
-            if (key == 0)
-                return;
-
-            DvrKey msg = (DvrKey) MsgFactory.getInstance().create(
-                    ServiceType.SERVICE_DVR,
-                    MessageType.DVR_KEY_INFO,
-                    ResponseType.INFO);
-            msg.getBody().get(TLVType.TP_DVR_KEY).setValue(key);
-            msg.setSeq((UdpHelper.getSeq()));
-            if (msg.encode()) {
-                byte[] buffer = new byte[msg.getData().length];
-                System.arraycopy(msg.getData(), 0, buffer, 0, buffer.length);
-                new SendUdpTask().execute(buffer);
-            }
         }
 
         private void dealCmdSwitchScreen(Intent intent) {

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +22,13 @@ import hk.com.mobileye.jason.adlaleader.R;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
 import hk.com.mobileye.jason.adlaleader.common.logger.Log;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DVRRecord;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrFileListReq;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrPlay;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrPlayFileReq;
 import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
+import hk.com.mobileye.jason.adlaleader.net.UdpHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +41,8 @@ public class CtrlDVRFragment extends Fragment {
 
     private ListView listView;
     private FileAdapter mAdapter;
+    private Button btnPlay;
+    private byte curCtrl = 0;
 
     public CtrlDVRFragment() {
         // Required empty public constructor
@@ -55,19 +58,12 @@ public class CtrlDVRFragment extends Fragment {
         mApp = (MyApplication) getActivity().getApplication();
 
         BtnClickListener listener = new BtnClickListener();
-        view.findViewById(R.id.btnDVRUp).setOnClickListener(listener);
-        view.findViewById(R.id.btnDVRDown).setOnClickListener(listener);
-        view.findViewById(R.id.btnDVRConfirm).setOnClickListener(listener);
-        view.findViewById(R.id.btnDVRCancel).setOnClickListener(listener);
-        view.findViewById(R.id.btnDVRHome).setOnClickListener(listener);
         view.findViewById(R.id.btnScrVideo).setOnClickListener(listener);
+        view.findViewById(R.id.btnRecord).setOnClickListener(listener);
         view.findViewById(R.id.btnDVRFileList).setOnClickListener(listener);
         view.findViewById(R.id.btnDVRPicList).setOnClickListener(listener);
-        view.findViewById(R.id.btnDVRPlayFile).setOnClickListener(listener);
-        view.findViewById(R.id.btnKey10).setOnClickListener(listener);
-        view.findViewById(R.id.btnKey11).setOnClickListener(listener);
-        view.findViewById(R.id.btnKey12).setOnClickListener(listener);
-        view.findViewById(R.id.btnKey13).setOnClickListener(listener);
+        btnPlay = (Button) view.findViewById(R.id.btnDVRPlayFile);
+        btnPlay.setOnClickListener(listener);
 
         mAdapter = new FileAdapter(new ArrayList<String>());
         listView = (ListView) view.findViewById(R.id.listView);
@@ -77,15 +73,9 @@ public class CtrlDVRFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.setSelectedPosition(position);
                 mAdapter.notifyDataSetChanged();
+                dealPlayFile((byte)1);
             }
         });
-
-        ArrayList<String> temp = new ArrayList<>();
-        temp.add("111");
-        temp.add("222");
-        temp.add("333");
-        SetListView(temp);
-
         return view;
     }
 
@@ -94,48 +84,11 @@ public class CtrlDVRFragment extends Fragment {
         public void onClick(View v) {
             byte key;
             switch (v.getId()) {
-                case R.id.btnDVRUp:
-                    key = 1;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnDVRDown:
-                    key = 2;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnDVRConfirm:
-                    key = 3;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnDVRCancel:
-                    key = 4;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnDVRHome:
-                    key = 5;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnDVRPhoto:
-                    key = 6;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnKey10:
-                    key = 10;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnKey11:
-                    key = 11;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnKey12:
-                    key = 12;
-                    dealDVRKey(key);
-                    break;
-                case R.id.btnKey13:
-                    key = 13;
-                    dealDVRKey(key);
-                    break;
                 case R.id.btnScrVideo:
                     dealScreenVideo();
+                    break;
+                case R.id.btnRecord:
+                    dealRecord();
                     break;
                 case R.id.btnDVRFileList:
                     dealGetFileList(Constants.DVR_FILE_TYPE_VIDEO);
@@ -144,9 +97,10 @@ public class CtrlDVRFragment extends Fragment {
                     dealGetFileList(Constants.DVR_FILE_TYPE_PIC);
                     break;
                 case R.id.btnDVRPlayFile:
-                    if (mAdapter.getCount() > 0) {
-                        dealPlayFile();
-                    }
+                    if (curCtrl == 1)
+                        dealPlayFile((byte) 2);
+                    else
+                        dealPlayFile((byte) 1);
                     break;
             }
         }
@@ -220,20 +174,37 @@ public class CtrlDVRFragment extends Fragment {
             mFileList.addAll(list);
             notifyDataSetChanged();
         }
-    }
 
-    private void dealDVRKey(byte key) {
-        Log.e(TAG, "dealDVRKey");
-        Intent intent = new Intent(Constants.DVR_KEY_ACTION);
-        intent.putExtra(Constants.EXTEND_DVR_KEY, key);
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+        public void setSelected(String fileName) {
+            int index = mFileList.indexOf(fileName);
+            if (index >= 0 && mSelectedPosition != index) {
+                mSelectedPosition = index;
+                notifyDataSetChanged();
+                listView.setSelection(mSelectedPosition);
+            }
+        }
     }
 
     private void dealScreenVideo() {
         Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
-        byte id =  4;//Constants.SCREEN_APP_DVR;
+        byte id =  Constants.SCREEN_APP_DVR;
         intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+    }
+
+
+    private void dealRecord() {
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            DVRRecord msg = new DVRRecord();
+            msg.setSeq(UdpHelper.getSeq());
+            if (msg.encode()) {
+                byte[] buffer = new byte[msg.getData().length];
+                System.arraycopy(msg.getData(), 0, buffer, 0, buffer.length);
+                Intent intent = new Intent(Constants.UDP_SEND_ACTION);
+                intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buffer);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            }
+        }
     }
 
     private void dealGetFileList(int fileType) {
@@ -253,16 +224,9 @@ public class CtrlDVRFragment extends Fragment {
         }
     }
 
-    public void SetListView(ArrayList<String> list) {
-        Log.d(TAG, "SETListView");
-        mAdapter.clear();
-        mAdapter.addAll(list);
-        Toast toast = Toast.makeText(getActivity(), "成功获取文件列表", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
-
-    private void dealPlayFile() {
+    // 1 play
+    // 2 pause
+    private void dealPlayFile(byte ctrl) {
         String fileName = mAdapter.getSelectedFile();
         if (fileName == null) {
             return;
@@ -272,11 +236,35 @@ public class CtrlDVRFragment extends Fragment {
 
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             DvrPlayFileReq msg = new DvrPlayFileReq();
-            DvrPlay play = new DvrPlay((byte) mFileType, (byte) 1, fileName);
+
+            DvrPlay play = new DvrPlay((byte) mFileType, ctrl, fileName);
             msg.getBody().get(TLVType.TP_DVR_PLAY_FILE_ID).setValue(play);
+            msg.setSeq(UdpHelper.getSeq());
             if (msg.encode()) {
-                TcpIntentService.startActionFileService(getActivity(), msg.getData(),
-                        Constants.DESC_DVR_PLAY_FILE);
+                byte[] buffer = new byte[msg.getData().length];
+                System.arraycopy(msg.getData(), 0, buffer, 0, buffer.length);
+                Intent intent = new Intent(Constants.UDP_SEND_ACTION);
+                intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buffer);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            }
+        }
+    }
+
+    public void SetListView(ArrayList<String> list) {
+        Log.d(TAG, "SetListView");
+        mAdapter.clear();
+        mAdapter.addAll(list);
+    }
+
+    public void setPlayFile(byte fileType, byte playCtrl, String fileName) {
+        mAdapter.setSelected(fileName);
+
+        if (playCtrl != curCtrl && fileType == 1) {
+            curCtrl = playCtrl;
+            if (playCtrl == 1) {
+                btnPlay.setText("暂停");
+            } else {
+                btnPlay.setText("播放");
             }
         }
     }

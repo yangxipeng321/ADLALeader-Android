@@ -12,12 +12,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/dvr2" />
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:gravity="center"-->
-            <!--android:text="@string/screen_dvr"-->
-            <!--android:textSize="50sp"/>-->
     </FrameLayout>
 
     <RelativeLayout
@@ -26,131 +20,57 @@
         android:layout_height="0dp"
         android:layout_weight="2">
 
-        <Button
-            android:id="@+id/btnDVRHome"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:layout_centerVertical="true"
-            android:text="@string/dvr_home"
-            android:contentDescription="@string/dvr_home" />
-        <Button
-            android:id="@+id/btnDVRConfirm"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:layout_alignTop="@id/btnDVRHome"
-            android:layout_toRightOf="@id/btnDVRHome"
-            android:layout_toEndOf="@id/btnDVRHome"
-            android:text="@string/confirm"
-            android:contentDescription="@string/confirm"/>
-        <Button
-            android:id="@+id/btnDVRCancel"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:text="@string/dvr_cancel"
-            android:contentDescription="@string/dvr_cancel"
-            android:layout_below="@+id/btnDVRConfirm"
-            android:layout_toRightOf="@+id/btnDVRHome"
-            android:layout_toEndOf="@+id/btnDVRHome" />
-        <Button
-            android:id="@+id/btnDVRUp"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:layout_above="@id/btnDVRHome"
-            android:layout_alignLeft="@id/btnDVRHome"
-            android:layout_alignStart="@id/btnDVRHome"
-            android:text="@string/dvr_up"
-            android:contentDescription="@string/dvr_up"/>
-        <Button
-            android:id="@+id/btnDVRDown"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:layout_below="@id/btnDVRHome"
-            android:layout_alignLeft="@id/btnDVRHome"
-            android:layout_alignStart="@id/btnDVRHome"
-            android:text="@string/dvr_down"
-            android:contentDescription="@string/dvr_down"/>
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/btnRecord"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
         <Button
             android:id="@+id/btnScrVideo"
             android:layout_width="@dimen/dvr_button_size"
             android:layout_height="@dimen/dvr_button_size"
             android:text="@string/screen_video"
-            android:contentDescription="@string/screen_video"
-            android:layout_below="@+id/btnRecord"
-            android:layout_toLeftOf="@+id/btnDVRFileList"
-            android:layout_toStartOf="@+id/btnDVRFileList" />
-        <Button
-            android:id="@+id/btnDVRFileList"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:text="@string/dvr_video_list"
-            android:contentDescription="@string/dvr_video_list"
-            android:visibility="visible"
-            android:layout_alignTop="@+id/btnDVRPicList"
-            android:layout_toLeftOf="@+id/btnDVRPicList"
-            android:layout_toStartOf="@+id/btnDVRPicList" />
-        <Button
-            android:id="@+id/btnDVRPicList"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:text="@string/dvr_pic_list"
-            android:contentDescription="@string/dvr_pic_list"
-            android:visibility="visible"
-            android:layout_below="@+id/btnRecord"
-            android:layout_toLeftOf="@+id/btnDVRPlayFile"
-            android:layout_toStartOf="@+id/btnDVRPlayFile" />
-        <Button
-            android:id="@+id/btnDVRPlayFile"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:text="@string/dvr_play_file"
-            android:contentDescription="@string/dvr_play_file"
-            android:visibility="visible"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"/>
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/listView"
-            android:layout_toRightOf="@+id/btnDVRConfirm"
-            android:layout_alignParentTop="true"
-             android:layout_above="@+id/btnKey10"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-
-        <Button
-            android:id="@+id/btnKey10"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:text="K10"
-            android:layout_alignTop="@+id/btnKey11"
-            android:layout_toLeftOf="@+id/btnKey11"
-            android:layout_toStartOf="@+id/btnKey11" />
-        <Button
-            android:id="@+id/btnKey11"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:text="K11"
-            android:layout_above="@+id/btnScrVideo"
-            android:layout_toLeftOf="@+id/btnKey12"
-            android:layout_toStartOf="@+id/btnKey12" />
-        <Button
-            android:id="@+id/btnKey12"
-            android:layout_width="@dimen/dvr_button_size"
-            android:layout_height="@dimen/dvr_button_size"
-            android:text="K12"
-            android:layout_alignTop="@+id/btnRecord"
-            android:layout_toLeftOf="@+id/btnRecord"
-            android:layout_toStartOf="@+id/btnRecord" />
         <Button
             android:id="@+id/btnRecord"
             android:layout_width="@dimen/dvr_button_size"
             android:layout_height="@dimen/dvr_button_size"
             android:text="录像"
-            android:layout_above="@+id/btnDVRPlayFile"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_toRightOf="@id/btnScrVideo"
+            android:layout_toEndOf="@id/btnScrVideo"
+            android:layout_alignParentBottom="true"/>
 
+
+        <Button
+            android:id="@+id/btnDVRFileList"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="@string/dvr_video_list"
+            android:layout_alignTop="@+id/btnRecord"
+            android:layout_toRightOf="@+id/btnRecord"
+            android:layout_toEndOf="@+id/btnRecord" />
+        <Button
+            android:id="@+id/btnDVRPicList"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="@string/dvr_pic_list"
+            android:layout_alignTop="@id/btnRecord"
+            android:layout_toRightOf="@+id/btnDVRFileList"
+            android:layout_toEndOf="@+id/btnDVRFileList" />
+        <Button
+            android:id="@+id/btnDVRPlayFile"
+            android:layout_width="@dimen/dvr_button_size"
+            android:layout_height="@dimen/dvr_button_size"
+            android:text="@string/dvr_play_file"
+            android:layout_alignTop="@id/btnRecord"
+            android:layout_toEndOf="@id/btnDVRPicList"
+            android:layout_toRightOf="@id/btnDVRPicList"/>
     </RelativeLayout>
 </LinearLayout>
