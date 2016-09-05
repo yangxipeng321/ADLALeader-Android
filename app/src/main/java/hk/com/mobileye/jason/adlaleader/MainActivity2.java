@@ -66,6 +66,7 @@ public class MainActivity2 extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         if (getActionBar()!=null)
             getActionBar().hide();
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
 //        setContentView(R.layout.activity_main_activity2);
@@ -247,6 +248,7 @@ public class MainActivity2 extends TabActivity {
             mApp.isOnline = netManager.isOnline();
             mApp.mMHConfigFile = null;
 
+
             if (mApp.isOnCAN) {
                 mApp.mDevVersion.clear();
                 mApp.mMHVersion.clear();
@@ -317,7 +319,6 @@ public class MainActivity2 extends TabActivity {
             if (null != intent) {
                 String action = intent.getAction();
                 String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
-                Log.d(TAG, String.format("Receive broadcast : %s. Sender : %s", action, sender));
 
                 // Both this activity and SettingActivity can start a TcpIntentService.
                 // But only this receives and processes the status which the service broadcast.
@@ -564,13 +565,17 @@ public class MainActivity2 extends TabActivity {
             Log.e(TAG, String.format(Locale.getDefault(), "file length : %d", fileLen));
         }
 
-        if (fileName != null && fileName.toLowerCase().endsWith(Constants.FIRMWARE_EXTENSION)) {
+        if (fileName == null) return;
+
+        if (fileName.toUpperCase().endsWith(Constants.FIRMWARE_EXTENSION)
+                || fileName.toUpperCase().startsWith(Constants.WARNING_CONFIG_PREFIX)
+                || fileName.toUpperCase().startsWith(Constants.CAR_PARA_CONFIG_PREFIX)
+                || fileName.toUpperCase().startsWith(Constants.CAR_DISPLAY_CONFIG_PREFIX)) {
             broadcastUploadFirmwareReslut(fileName, fileLen);
         }
         if (fileName != null && fileName.equals(Constants.MH_CONFIG_FILE)) {
             broadcastWriteMHConfigResult(fileLen);
         }
-
     }
 
     private void processFileReadResp(MsgBase msg) {

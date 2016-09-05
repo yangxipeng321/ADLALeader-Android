@@ -1,6 +1,7 @@
 package hk.com.mobileye.jason.adlaleader.control;
 
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,7 +32,11 @@ import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
 import hk.com.mobileye.jason.adlaleader.net.UdpHelper;
 
 /**
- * A simple {@link Fragment} subclass.
+  DVR Control Fragment.
+  1. Show DVR screen
+  2. List and play video files
+  3. List and play emergency video files
+  4. List and play picture files.
  */
 public class CtrlDVRFragment extends Fragment {
 
@@ -42,6 +47,10 @@ public class CtrlDVRFragment extends Fragment {
     private ListView listView;
     private FileAdapter mAdapter;
     private Button btnPlay;
+    private View videoContainer;
+    private View controlContainer;
+    private float videoY = 0;
+    private float controlY = 0;
     private byte curCtrl = 0;
 
     public CtrlDVRFragment() {
@@ -53,17 +62,19 @@ public class CtrlDVRFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ctrl_dvr, container, false);
 
-        Log.d(TAG, "onCreateView");
-
         mApp = (MyApplication) getActivity().getApplication();
 
         BtnClickListener listener = new BtnClickListener();
         view.findViewById(R.id.btnScrVideo).setOnClickListener(listener);
         view.findViewById(R.id.btnRecord).setOnClickListener(listener);
         view.findViewById(R.id.btnDVRFileList).setOnClickListener(listener);
+        view.findViewById(R.id.btnDVRFCWFileList).setOnClickListener(listener);
         view.findViewById(R.id.btnDVRPicList).setOnClickListener(listener);
         btnPlay = (Button) view.findViewById(R.id.btnDVRPlayFile);
         btnPlay.setOnClickListener(listener);
+        videoContainer = view.findViewById(R.id.videoContainer);
+        controlContainer = view.findViewById(R.id.controlContainer);
+
 
         mAdapter = new FileAdapter(new ArrayList<String>());
         listView = (ListView) view.findViewById(R.id.listView);
@@ -82,7 +93,6 @@ public class CtrlDVRFragment extends Fragment {
     private class BtnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            byte key;
             switch (v.getId()) {
                 case R.id.btnScrVideo:
                     dealScreenVideo();
@@ -92,6 +102,9 @@ public class CtrlDVRFragment extends Fragment {
                     break;
                 case R.id.btnDVRFileList:
                     dealGetFileList(Constants.DVR_FILE_TYPE_VIDEO);
+                    break;
+                case R.id.btnDVRFCWFileList:
+                    dealGetFileList(Constants.DVR_FILE_TYPE_FCW);
                     break;
                 case R.id.btnDVRPicList:
                     dealGetFileList(Constants.DVR_FILE_TYPE_PIC);
@@ -194,6 +207,15 @@ public class CtrlDVRFragment extends Fragment {
 
 
     private void dealRecord() {
+        //videoContainer.animate().y(200f);
+        if (controlY == 0) {
+            controlY = controlContainer.getY();
+        }
+        //controlContainer.animate().y(controlY);
+        ValueAnimator animator = new ValueAnimator();
+        animator.setTarget(controlContainer);
+        animator.start();
+
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             DVRRecord msg = new DVRRecord();
             msg.setSeq(UdpHelper.getSeq());
@@ -208,9 +230,11 @@ public class CtrlDVRFragment extends Fragment {
     }
 
     private void dealGetFileList(int fileType) {
+        //videoContainer.animate().y(-200f);
+        //controlContainer.animate().y(videoY);
+
         mFileType = fileType;
         mAdapter.clear();
-
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             DvrFileListReq msg= new DvrFileListReq();
             msg.getBody().get(TLVType.TP_DVR_FILE_TYPE_ID).setValue((short)fileType);
@@ -294,6 +318,23 @@ public class CtrlDVRFragment extends Fragment {
     }
 
 
-
+//    private void moveUI(View view) {
+//        ValueAnimator animator = new ValueAnimator();
+//        animator.setDuration(1000);
+//
+//        animator.setEvaluator();
+//
+//        animator.start();
+//
+//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                float[] xyPos = (float[]) animation.getAnimatedValue();
+//                view.getLayoutParams().height = (int) xyPos[0];
+//            }
+//        });
+//
+//
+//    }
 
 }

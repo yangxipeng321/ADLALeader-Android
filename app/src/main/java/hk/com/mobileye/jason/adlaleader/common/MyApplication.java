@@ -12,6 +12,7 @@ import hk.com.mobileye.jason.adlaleader.upgrade.FirmwareInfo;
 
 /**
  * Created by Jason on 2015/1/30.
+ *
  */
 public class MyApplication extends Application {
     public StatisticsData mDayStats = null;
@@ -70,6 +71,7 @@ public class MyApplication extends Application {
             PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
             code = info.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
         return code;
     }
@@ -106,7 +108,7 @@ public class MyApplication extends Application {
         }
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putString(Constants.PREFS_ITEM_APP_URL, mAppUpgradeUrl);
-        editor.commit();
+        editor.apply();
     }
 
     public String getFirmwareUpgradeUrl() {
@@ -123,7 +125,7 @@ public class MyApplication extends Application {
         }
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putString(Constants.PREFS_ITEM_FIRMWARE_URL, mFirmwareUpgradeUrl);
-        editor.commit();
+        editor.apply();
     }
 
     public String getFirmwareFilePath() {
@@ -138,7 +140,7 @@ public class MyApplication extends Application {
         mFirmwareFilePath = value;
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putString(Constants.PREFS_ITEM_FIRMWARE_FILE_PATH, mFirmwareFilePath);
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -151,7 +153,7 @@ public class MyApplication extends Application {
                 mDevInfoForFirmware.getDevSwVer());
         editor.putInt(Constants.PREFS_ITEM_DEV_HW_VER_FOR_FIRMWARE,
                 mDevInfoForFirmware.getDevHwVer());
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -160,7 +162,7 @@ public class MyApplication extends Application {
         editor.putInt(Constants.PREFS_ITEM_DEV_SN, mDevVersion.getDevSn());
         editor.putInt(Constants.PREFS_ITEM_DEV_SW_VER, mDevVersion.getDevSwVer());
         editor.putInt(Constants.PREFS_ITEM_DEV_HW_VER, mDevVersion.getDevHwVer());
-        editor.commit();
+        editor.apply();
     }
 
     public void saveMHVersion() {
@@ -168,13 +170,13 @@ public class MyApplication extends Application {
         editor.putString(Constants.PREFS_ITEM_MH_SN, mMHVersion.getMHSn());
         editor.putString(Constants.PREFS_ITEM_MH_SW_VER, mMHVersion.getMHSwVer());
         editor.putString(Constants.PREFS_ITEM_MH_VF_VER, mMHVersion.getMHVfVer());
-        editor.commit();
+        editor.apply();
     }
 
     public void saveGateVersion(){
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putInt(Constants.PREFS_ITEM_GATE_VER, mGateVer);
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -193,8 +195,5 @@ public class MyApplication extends Application {
     public byte[] getSendBuf() {
         return sendbuf;
     }
-
-
-
 
 }

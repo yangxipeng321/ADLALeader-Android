@@ -42,7 +42,7 @@ public class DvrFileListResp extends MsgBase {
                         fileType = MsgUtils.bytes2Short(getData(), index + 4);
                         break;
                     case TLVType.TP_DVR_FILE_LIST_ID:
-                        if (fileType > 0 && fileType < 3) {
+                        if (fileType > 0) {
                             DvrFileList list = new DvrFileList(getData(), index + 4, tlvLen - 4, fileType);
                             getBody().add(tlvType, list.getClass()).setValue(list);
                         } else {

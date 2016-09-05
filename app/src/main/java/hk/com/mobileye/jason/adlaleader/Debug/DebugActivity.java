@@ -4,14 +4,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import hk.com.mobileye.jason.adlaleader.R;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
@@ -21,8 +26,6 @@ import hk.com.mobileye.jason.adlaleader.view.SlidingTabLayout;
 public class DebugActivity extends FragmentActivity {
     private static final String TAG = "DebugActivity";
 
-    private ViewPager mViewPager;
-    private DebugPagerAdapter mPagerAdapter;
     private DebugFirmwareFragment mFirmwareFragment;
     private DebugLogFragment mLogFragment;
 
@@ -32,8 +35,8 @@ public class DebugActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
 
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mPagerAdapter = new DebugPagerAdapter(getSupportFragmentManager());
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        DebugPagerAdapter mPagerAdapter = new DebugPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
 
         SlidingTabLayout mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
@@ -42,6 +45,8 @@ public class DebugActivity extends FragmentActivity {
 
         initLocalReceiver();
     }
+
+
 
     private void initLocalReceiver() {
         //Register BroadcastReceiver to track local work status
@@ -110,9 +115,8 @@ public class DebugActivity extends FragmentActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
+            //final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
 
-            Log.d(TAG, String.format("Receive broadcast : %s. Sender : %s", action, sender));
 
             switch (action) {
                 case Constants.FIRMWARE_UPLOAD_RESULT_ACTION:
@@ -122,7 +126,6 @@ public class DebugActivity extends FragmentActivity {
                     dealLogContent(intent);
                     break;
             }
-
         }
 
         private void dealFirmwareUploadResult(Intent intent) {
@@ -137,5 +140,32 @@ public class DebugActivity extends FragmentActivity {
         }
     }
 
+    private void requestPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                //show an expanation
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
 
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, permissions[0] + " grant", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, permissions[0] + " deny", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
 }

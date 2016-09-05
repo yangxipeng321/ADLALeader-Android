@@ -135,7 +135,6 @@ public class ChartActivity extends Activity {
             if (null != intent) {
                 final String action = intent.getAction();
                 final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
-                Log.d(TAG, String.format("Receive broadcast : %s. Sender : %s", action, sender));
 
                 if (action.equals(Constants.DAY_STAT_UPDATE_ACTION)) {
                     dealDayStatUpdateResult(intent);
@@ -300,6 +299,7 @@ public class ChartActivity extends Activity {
 //        l.setTextSize(11f);
 //        l.setXEntrySpace(4f);
 
+        mChart.setNoDataText("正在加载数据");
 
     }
 

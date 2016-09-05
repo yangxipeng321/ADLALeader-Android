@@ -49,7 +49,6 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
 
     private RecyclerView mRecycleView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private String mUpdatingFileName;
     private UpdateState mState = UpdateState.Wait;
 
@@ -69,7 +68,7 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.fragment_debug_firmware, container, false);
         mRecycleView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-        mLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecycleView.setLayoutManager(mLayoutManager);
 
         if (getFiles() > 0) {
@@ -93,6 +92,7 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         int position = (int) v.getTag();
         UpdateState curState = UpdateState.Wait;
+
 
         switch (mState) {
             case Wait:
@@ -159,7 +159,7 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
 
     /**
      * Search the firmware file in the ADASLeader dir.
-     * @return
+     * @return files number
      */
     private int getFiles() {
         int result = 0;
@@ -295,28 +295,32 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
             if (! new File(dir, filename).isFile())
                 return false;
 
-            if (filename.toUpperCase().startsWith("MCU_"))
+            String upcaseName = filename.toUpperCase();
+
+            if ((upcaseName.startsWith(Constants.MCU_FILE_PREFIX)
+                    || upcaseName.startsWith(Constants.PIC_FILE_PREFIX)
+                    || upcaseName.startsWith(Constants.FPGA_FILE_PREFIX))
+                    && upcaseName.endsWith(Constants.FIRMWARE_EXTENSION))
                 return true;
-            else if (filename.toUpperCase().startsWith("PIC_"))
+            else if ((upcaseName.startsWith(Constants.HI3_GATE_PREFIX)
+                    || upcaseName.startsWith(Constants.HI3_DAEMON_PREFIX)
+                    || upcaseName.startsWith(Constants.HI3_RTSP_PREFIX))
+                    && upcaseName.endsWith(Constants.FIRMWARE_EXTENSION))
                 return true;
-            else if (filename.toUpperCase().startsWith("ADASGATE_"))
-                return true;
-            else if (filename.toUpperCase().startsWith("ADASD_"))
-                return true;
-            else if (filename.toUpperCase().startsWith("RTSP_"))
+            else if ((upcaseName.startsWith(Constants.WARNING_CONFIG_PREFIX)
+                    || upcaseName.startsWith(Constants.CAR_PARA_CONFIG_PREFIX)
+                    || upcaseName.startsWith(Constants.CAR_DISPLAY_CONFIG_PREFIX))
+                    && upcaseName.endsWith(Constants.CONFIG_EXTENSION))
                 return true;
             else
                 return false;
         }
     }
 
-    class SortComparator implements Comparator {
+    class SortComparator implements Comparator<FirmwareEntry> {
         @Override
-        public int compare(Object lhs, Object rhs) {
-            FirmwareEntry l = (FirmwareEntry) lhs;
-            FirmwareEntry r = (FirmwareEntry) rhs;
-
-            return l.getName().compareToIgnoreCase(r.getName());
+        public int compare(FirmwareEntry lhs, FirmwareEntry rhs) {
+            return lhs.getName().compareToIgnoreCase(rhs.getName());
         }
     }
 
@@ -369,8 +373,7 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
         public FirmwareAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_firmware_file, parent, false);
-            ViewHolder viewHolder = new ViewHolder(view);
-            return viewHolder;
+            return new ViewHolder(view);
         }
 //
         @Override

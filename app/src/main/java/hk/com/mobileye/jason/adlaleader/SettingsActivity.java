@@ -1054,8 +1054,6 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
             if (null != intent) {
                 final String action = intent.getAction();
                 final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
-                Log.d(TAG, String.format("Receive broadcast : %s. Sender : %s", action, sender));
-
                 // Both this activity and Mainactivity2 can start a TcpIntentService. But Only
                 // Mainactivity2 receive and process the result which TcpIntentService
                 // broadcasts. So this just need to wait the settings update which Mainactivity2
@@ -1184,7 +1182,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
         private void saveFirmwareFilePath(String filePath) {
             Log.d(TAG, "saveFirmwareFilePath filePath : " + filePath);
-            if (filePath != null && filePath.endsWith(Constants.FIRMWARE_EXTENSION)) {
+            if (filePath != null && filePath.toUpperCase().endsWith(Constants.FIRMWARE_EXTENSION)) {
                 File file = new File(filePath);
                 if (file.exists()) {
                     mApp.setFirmwareFilePath(filePath);
@@ -1215,7 +1213,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
             //upgradeManager.closeUploadDialog();ps
             if (len > 0) {
                 //if it is adasgate file, don't reset device
-                if (fileName != null && fileName.equals(Constants.HI3_FIRMWARE)) {
+                if (fileName != null && fileName.toUpperCase().startsWith(Constants.HI3_GATE_PREFIX)) {
                     upgradeManager.closeUploadDialog();
                 }else {
                     upgradeManager.setUploadDialogContent(getString(

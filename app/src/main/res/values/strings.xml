@@ -77,6 +77,7 @@
     <string name="dvr_down">下</string>
     <string name="dvr_photo">拍照</string>
     <string name="dvr_video_list">视频列表</string>
+    <string name="dvr_fcw_video_list">紧急视频</string>
     <string name="dvr_pic_list">照片列表</string>
     <string name="dvr_play_file">播放</string>
 

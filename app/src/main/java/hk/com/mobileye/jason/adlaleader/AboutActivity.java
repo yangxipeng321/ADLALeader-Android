@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
 
 public class AboutActivity extends Activity {
@@ -86,7 +88,7 @@ public class AboutActivity extends Activity {
         if (myApp == null)
             return;
 
-        txtVersion.setText(String.format("%s(%d)", myApp.getAppVersionName(),
+        txtVersion.setText(String.format(Locale.getDefault(), "%s(%d)", myApp.getAppVersionName(),
                 myApp.getAppVersionCode()));
 
         if (myApp.mGateVer == 0)

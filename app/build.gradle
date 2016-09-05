@@ -1,20 +1,4 @@
-//add for supprot lambda test
-//buildscript {
-//    repositories {
-//        jcenter()
-//    }
-//
-//    dependencies {
-//        classpath 'com.android.tools.build:gradle:1.0.0'
-//    }
-//}
-
 apply plugin: 'com.android.application'
-
-//add for supprot lambda test
-//repositories {
-//    jcenter()
-//}
 
 android {
     signingConfigs {
@@ -30,9 +14,9 @@ android {
     defaultConfig {
         applicationId "hk.com.mobileye.jason.adlaleader"
         minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 215111701
-        versionName "1.2.9"
+        targetSdkVersion 24
+        versionCode 216071901
+        versionName "1.3.1."
     }
 /*
     compileOptions {
@@ -73,10 +57,10 @@ repositories {
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
-    compile 'com.android.support:cardview-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:cardview-v7:24.2.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.2'
+    compile 'com.android.support:support-v4:24.2.0'
 }
 

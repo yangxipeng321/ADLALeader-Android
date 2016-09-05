@@ -10,6 +10,7 @@ import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 
 /**
  * Created by Jason on 2015/1/26.
+ * File Write response
  */
 public class FileWriteResp extends MsgBase{
     private int mFileCRC = 0xBBBBBBBB;

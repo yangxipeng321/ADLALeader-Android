@@ -3,6 +3,7 @@ package hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgUtils;
 import hk.com.mobileye.jason.adlaleader.net.Message.TLVValue;
 
@@ -31,10 +32,11 @@ public class DvrFileList implements TLVValue {
         clear();
         String fileExt;
         switch (mFileType) {
-            case 1:
+            case Constants.DVR_FILE_TYPE_VIDEO:
+            case Constants.DVR_FILE_TYPE_FCW:
                 fileExt = ".MP4";
                 break;
-            case 2:
+            case Constants.DVR_FILE_TYPE_PIC:
                 fileExt = ".JPG";
                 break;
             default:

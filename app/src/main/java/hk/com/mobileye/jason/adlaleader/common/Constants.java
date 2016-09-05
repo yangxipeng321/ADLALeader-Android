@@ -16,8 +16,6 @@ public final class Constants {
 
     public static final int HEAERBEAT_INTERVAL = 5000;  //ms
     public static final long REFRESH_WARNING_INTERVAL = 800; //ms
-    public static final int READ_CONFIG_INTERVAL = 10000;
-    public static final int WRITE_CONFIG_DELAY = 2000;
 
     public static final int SOCKET_READ_TIMEOUT = 20000;  //10s
     public static final int SOCKET_CONNECT_TIMEOUT = 1000; //1s
@@ -54,22 +52,31 @@ public final class Constants {
     //DVR File Tpye ID
     public static final byte DVR_FILE_TYPE_VIDEO    = 1;
     public static final byte DVR_FILE_TYPE_PIC      = 2;
+    public static final byte DVR_FILE_TYPE_FCW      = 3;
 
 
     public static final String MH_CONFIG_FILE = "AM_AWS_SETUP.CONF";
-    public static final String MCU_FIRMWARE = "MCU_.bin";
-    public static final String HI3_FIRMWARE = "ADASGATE_.bin";
-    public static final String PIC_FILE = "PIC_.bin";
+    //public static final String HI3_FIRMWARE = "ADASGATE_.bin";
     //public static final String MH_CONFIG_FILE = "etc/AWS2Buzzer.conf";
     //public static final String MH_BUZZER_FILE = "AWS2Buzzer.conf";
+    public static final String HI3_GATE_PREFIX =        "ADASGATE_";
+    public static final String HI3_DAEMON_PREFIX =      "ADASD_";
+    public static final String HI3_RTSP_PREFIX =        "RTSP_";
+    public static final String MCU_FILE_PREFIX =        "MCU_";
+    public static final String PIC_FILE_PREFIX =        "PIC_";
+    public static final String FPGA_FILE_PREFIX =       "FPGA_";
+    public static final String FIRMWARE_EXTENSION = ".BIN";
+    public static final String WARNING_CONFIG_PREFIX =  "WARNING";
+    public static final String CAR_PARA_CONFIG_PREFIX = "CARPARA";
+    public static final String CAR_DISPLAY_CONFIG_PREFIX = "CAR_DISPLAY";
+    public static final String CONFIG_EXTENSION =       ".CONF";
 
     public static final String queryAppUpgradeUrlStr = "http://adasleader.com.cn:10010/upgrade/tt1";
     public static final String queryFirmwareUpgradeUrlStr = "http://adasleader.com.cn:10010/upgrade/tt2";
     public static final String NO_UPGRADE = "NO_UPGRADE";
-    public static final String FIRMWARE_NAME = "fw_upgrade.bin";
-    public static final String FIRMWARE_EXTENSION = ".bin";
-    public static final String APP_NAME = "ADASLeader.apk";
+
     public static final String APP_DIR = "ADASLeader";
+
 
     //SharedPreference file that saves settings
     public static final String PREFS_FILE = "MyPrefsFile";

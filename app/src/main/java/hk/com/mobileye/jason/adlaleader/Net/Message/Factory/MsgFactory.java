@@ -35,6 +35,7 @@ import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
 
 /**
  * Created by Jason on 2015/1/4.
+ *
  */
 public class MsgFactory {
     //Use the singleton pattern
@@ -53,13 +54,12 @@ public class MsgFactory {
     public MsgBase create(byte[] buffer) {
         if (buffer.length < MsgConst.MSG_LEN_HEADER) {return  null;}
 
-        MsgBase obj = null;
         int serviceType = buffer[10] & 0xff;
         int msgType = buffer[11] & 0xff;
         int responseType = buffer[7] & 0xff;
         int length = (buffer[4] & 0xff) + ((buffer[5] & 0xff) << 8);
         if (length<MsgConst.MSG_LEN_HEADER) {return null;}
-        obj = MsgFactory.getInstance().create(serviceType, msgType, responseType);
+        MsgBase obj = MsgFactory.getInstance().create(serviceType, msgType, responseType);
         if (obj != null) {
             //Must call setVar before arraycopy!!! The bytes array is created in the setVar method
             // which will be used in the arraycopy.
@@ -70,7 +70,7 @@ public class MsgFactory {
     }
 
     public MsgBase create(int aServiceType, int aMsgType, int aResponseType) {
-        MsgBase obj = null;
+        MsgBase obj;
         switch (aServiceType) {
             case ServiceType.SERVICE_FILE:
                 obj = createFile(aMsgType, aResponseType);
