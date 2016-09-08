@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -21,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +28,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
 
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
@@ -52,7 +49,6 @@ import hk.com.mobileye.jason.adlaleader.preference.WarningConfig;
 import hk.com.mobileye.jason.adlaleader.preference.WarningPrefsFragment;
 import hk.com.mobileye.jason.adlaleader.upgrade.UpgradeManager;
 import hk.com.mobileye.jason.adlaleader.upgrade.UploadDialogFragment;
-
 
 public class SettingsActivity extends Activity implements UpgradeManager.TaskUpgradeMethods,
         UploadDialogFragment.NoticeDialogListener, WarningPrefsFragment.InteractionListener {
@@ -76,7 +72,8 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
 
     //private LinearLayout layVirtualBumper;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //remove SwipeRefreshLayout
+//    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RelativeLayout appLayout;
     private RelativeLayout firmwareLayout;
     private Button btnCheckUpgrade;
@@ -140,8 +137,8 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         Log.w(TAG, "onResume");
 
         refreshMHConfig(mApp.mMHConfigFile);
-        refreshControls();
-        refreshUpgradeNotify();
+        //refreshControls();
+        //refreshUpgradeNotify();
     }
 
     @Override
@@ -247,8 +244,6 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     public void onBtnExitOnClicked(View view) {
         ExitManager.getInstance().exit();
     }
-
-
 
     /**
      * When user changed the settings, show applying settings info.
@@ -547,16 +542,17 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     }
 
     private void initControls() {
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.warning_green));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Log.d(TAG, "onRefresh called from SwipeRefreshLayout");
-                Log.d(TAG, "isRefreshing = " + mSwipeRefreshLayout.isRefreshing());
-                initiateRefresh();
-            }
-        });
+        //remove SwipeRefreshLayout
+//        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
+//        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.warning_green));
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                Log.d(TAG, "onRefresh called from SwipeRefreshLayout");
+//                Log.d(TAG, "isRefreshing = " + mSwipeRefreshLayout.isRefreshing());
+//                initiateRefresh();
+//            }
+//        });
 
         appLayout = (RelativeLayout) findViewById(R.id.appUpgrade);
         firmwareLayout = (RelativeLayout) findViewById(R.id.firmwareUpgrade);
@@ -577,15 +573,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         btnSettingsCancel = (Button) findViewById(R.id.btnSettingsCancel);
     }
 
-    private void hideSpinnerDropDown(Spinner spinner) {
-        try {
-            Method method = Spinner.class.getDeclaredMethod("onDetachedFromWindow");
-            method.setAccessible(true);
-            method.invoke(spinner);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     //The settings can be set when app is connecting to CAN device and the speed is zero.
     //onresume, network changed , speed changed, this method will be called
@@ -608,7 +596,8 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         btnAppUpgrade.setEnabled(!mApp.isOnCAN);
         btnFirmwareUpgrade.setEnabled(mApp.isOnline || mApp.isOnCAN);
 
-        mSwipeRefreshLayout.setEnabled(mApp.isOnCAN && (mApp.speed >= 0));
+        //remove SwipeRefreshLayout
+//        mSwipeRefreshLayout.setEnabled(mApp.isOnCAN && (mApp.speed >= 0));
 
         Log.d(TAG, "speed = " + mApp.speed);
 
@@ -649,7 +638,8 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     private void onRefreshComplete() {
         Log.d(TAG, "onRefreshComplete");
         //Stop the refreshing indicator.
-        mSwipeRefreshLayout.setRefreshing(false);
+        //remove SwipeRefreshLayout
+//        mSwipeRefreshLayout.setRefreshing(false);
     }
 
 
@@ -887,7 +877,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
             if (mApp.mMHConfigFile != null) {
                 updateSettingsApplyInfo(SettingsApplyStatus.NONE);
                 refreshMHConfig(mApp.mMHConfigFile);
-                refreshControls();
+                //refreshControls();
             }
         }
 
@@ -916,7 +906,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
         private void dealNetworkChange() {
             refreshMHConfig(mApp.mMHConfigFile);
-            refreshControls();
+            //refreshControls();
             refreshUpgradeNotify();
         }
 
@@ -1046,7 +1036,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
                 isWaitMobileyeRestart = false;
             }
 
-            refreshControls();
+            //refreshControls();
         }
     }
 
@@ -1194,17 +1184,6 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         upgradeManager.isCancel = true;
     }
 
-    public void onBtnGetConfigClicked(View view) {
-    }
-
-    public void onBtnSetConfigClicked(View view) {
-    }
-
-    public void onBtnReadFileClicked(View view) {
-    }
-
-    public void onBtnWriteFileClick(View view) {
-    }
 
     @Override
     public void warningPreferencesChanged(WarningPrefsFragment fragment, WarningConfig config) {

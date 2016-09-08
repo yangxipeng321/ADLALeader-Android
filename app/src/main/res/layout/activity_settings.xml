@@ -1,39 +1,51 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#ff000000"
     tools:context="hk.com.mobileye.jason.adlaleader.SettingsActivity"  >
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipeRefresh"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/SettingsWarning"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:background="#ddeee8aa">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMediumInverse"
-                    android:text="@string/settings_warning"
-                    android:id="@+id/txtWarning" />
-            </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:id="@+id/SettingsWarning"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="@dimen/settings_row_padding_left"-->
+                <!--android:paddingStart="@dimen/settings_row_padding_left"-->
+                <!--android:paddingRight="@dimen/settings_row_padding_right"-->
+                <!--android:paddingEnd="@dimen/settings_row_padding_right"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:background="#ddeee8aa">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textAppearance="?android:attr/textAppearanceMediumInverse"-->
+                    <!--android:text="@string/settings_warning"-->
+                    <!--android:id="@+id/txtWarning" />-->
+            <!--</LinearLayout>-->
+
+            <!--<android.support.v4.widget.SwipeRefreshLayout-->
+                <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+                <!--android:id="@+id/swipeRefresh"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<ListView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+                <!--</ListView>-->
+
+
+            <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+
             <FrameLayout
                 android:id="@+id/warningPrefs"
                 android:layout_width="match_parent"
@@ -95,6 +107,7 @@
                 android:paddingStart="@dimen/settings_row_padding_left"
                 android:paddingRight="@dimen/settings_row_padding_right"
                 android:paddingEnd="@dimen/settings_row_padding_right"
+                android:visibility="gone"
                 android:gravity="center_vertical"
                 android:background="@color/settings_item_background">
                 <Button
@@ -127,6 +140,7 @@
                 android:paddingStart="@dimen/settings_row_padding_left"
                 android:paddingRight="@dimen/settings_row_padding_right"
                 android:paddingEnd="@dimen/settings_row_padding_right"
+                android:visibility="gone"
                 android:gravity="center_vertical"
                 android:background="@color/settings_item_background">
                 <Button
@@ -157,6 +171,7 @@
                 android:paddingStart="@dimen/settings_row_padding_left"
                 android:paddingRight="@dimen/settings_row_padding_right"
                 android:paddingEnd="@dimen/settings_row_padding_right"
+                android:visibility="gone"
                 android:gravity="center_vertical"
                 android:background="@color/settings_item_background">
                 <Button
@@ -179,6 +194,7 @@
                     android:textColor="@color/settings_info_color"
                     android:text="@string/no_upgrade"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settings_row_height"
@@ -201,34 +217,6 @@
 
            <!--just for test-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="下载固件"
-                    android:onClick="onBtnGetConfigClicked"/>
-                <Button
-                    android:id="@+id/btnSet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="升级固件"
-                    android:onClick="onBtnSetConfigClicked"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Read"
-                    android:onClick="onBtnReadFileClicked"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="write"
-                    android:onClick="onBtnWriteFileClick"/>
-            </LinearLayout>
             <Button
                 android:id="@+id/Exit"
                 android:layout_width="match_parent"
@@ -238,17 +226,10 @@
                 android:paddingEnd="@dimen/settings_row_padding_right"
                 android:text="@string/action_exit"
                 android:onClick="onBtnExitOnClicked"/>
+
+
         </LinearLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <ImageView
-        android:id="@+id/imgLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/loading"
-        android:layout_centerInParent="true"
-        android:visibility="invisible"/>
-
-</RelativeLayout>
+    </ScrollView>
+</LinearLayout>
 

@@ -7,8 +7,13 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import android.view.Gravity;
-import android.widget.Toast;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+
+import hk.com.mobileye.jason.adlaleader.R;
 
 
 /**
@@ -23,15 +28,20 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
 
     private WarningConfig mConfig= null;
     private InteractionListener mListener;
-    private PreferenceScreen root;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        root = getPreferenceManager().createPreferenceScreen(getActivity());
+        PreferenceScreen root = getPreferenceManager().createPreferenceScreen(getActivity());
         setPreferenceScreen(root);
         initPreferences(root);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        updatePreferenceListHeight();
     }
 
     @Override
@@ -47,6 +57,8 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         super.onDetach();
         mListener = null;
     }
+
+
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -124,13 +136,34 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         WarningConfigItem item = mConfig.findItemByTitle(itemTitle);
         if (null != item) {
             item.setDesc((String)newValue);
-            Toast toast = Toast.makeText(getActivity(), String.format("%s: %s ---> %s",
-                    item.getTitle(), ((ListPreference) preference).getValue(), item.getDesc()),
-                    Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.TOP, 0, 20);
-            toast.show();
+//            Toast toast = Toast.makeText(getActivity(), String.format("%s: %s ---> %s",
+//                    item.getTitle(), ((ListPreference) preference).getValue(), item.getDesc()),
+//                    Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.TOP, 0, 20);
+//            toast.show();
             if (null != mListener) {
                 mListener.warningPreferencesChanged(this, mConfig);
+            }
+        }
+    }
+
+    private void updatePreferenceListHeight() {
+        if (null != getView()) {
+            ListView listView = (ListView) getView().findViewById(android.R.id.list);
+            Adapter adapter = listView.getAdapter();
+
+            if (null != adapter) {
+                int height = 0;
+
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    View item = adapter.getView(i, null, listView);
+                    item.measure(0, 0);
+                    height += item.getMeasuredHeight();
+                }
+                FrameLayout frame = (FrameLayout) getActivity().findViewById(R.id.warningPrefs);
+                ViewGroup.LayoutParams params = frame.getLayoutParams();
+                params.height = height;
+                frame.setLayoutParams(params);
             }
         }
     }
