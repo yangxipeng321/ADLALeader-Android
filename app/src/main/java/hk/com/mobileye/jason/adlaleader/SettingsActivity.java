@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -86,7 +85,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     private TextView txtUpgradeInfo;
     private TextView txtAppUpgradeInfo;
     private TextView txtFirmwareUpgradeInfo;
-    private LinearLayout warningLayout;
+    //private LinearLayout warningLayout;
     private RelativeLayout applyLayout;
     private TextView txtApplyWarning;
     private Button btnSettingsConfirm;
@@ -569,7 +568,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         txtFirmwareUpgradeInfo = (TextView) findViewById(R.id.txtFirmwareUpgradeInfo);
         txtUpgradeInfo = (TextView) findViewById(R.id.txtUpgradeInfo);
 
-        warningLayout = (LinearLayout) findViewById(R.id.SettingsWarning);
+        //warningLayout = (LinearLayout) findViewById(R.id.SettingsWarning);
 
         applyLayout = (RelativeLayout) findViewById(R.id.settingsApply);
         applyLayout.setVisibility(View.GONE);
@@ -613,7 +612,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
         Log.d(TAG, "speed = " + mApp.speed);
 
-        warningLayout.setVisibility((mApp.isOnCAN && mApp.speed != 0) ? View.VISIBLE : View.GONE);
+        //warningLayout.setVisibility((mApp.isOnCAN && mApp.speed != 0) ? View.VISIBLE : View.GONE);
     }
 
 
