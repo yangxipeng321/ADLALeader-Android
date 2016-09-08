@@ -51,6 +51,7 @@ public class DebugActivity extends FragmentActivity {
     protected void onDestroy() {
         releaseLocalReceiver();
         super.onDestroy();
+        Log.d(TAG, "onDestory");
     }
 
     private LocalBroadcastReceiver localReceiver;
