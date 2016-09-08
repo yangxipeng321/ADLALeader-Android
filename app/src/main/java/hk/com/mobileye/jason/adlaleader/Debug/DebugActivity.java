@@ -29,6 +29,7 @@ public class DebugActivity extends FragmentActivity {
     private DebugFirmwareFragment mFirmwareFragment;
     private DebugLogFragment mLogFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,17 +47,57 @@ public class DebugActivity extends FragmentActivity {
         initLocalReceiver();
     }
 
+    @Override
+    protected void onDestroy() {
+        releaseLocalReceiver();
+        super.onDestroy();
+    }
 
+    private LocalBroadcastReceiver localReceiver;
 
     private void initLocalReceiver() {
-        //Register BroadcastReceiver to track local work status
+        localReceiver = new LocalBroadcastReceiver();
         IntentFilter filter = new IntentFilter(Constants.FIRMWARE_UPLOAD_RESULT_ACTION);
+
         filter.addCategory(Intent.CATEGORY_DEFAULT);
-        LocalBroadcastReceiver localReceiver = new LocalBroadcastReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
         filter = new IntentFilter(Constants.LOG_CONTENT_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+    }
+
+    private void releaseLocalReceiver() {
+        if (null != localReceiver) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(localReceiver);
+            localReceiver = null;
+        }
+    }
+
+    private class LocalBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            //final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
+            switch (action) {
+                case Constants.FIRMWARE_UPLOAD_RESULT_ACTION:
+                    dealFirmwareUploadResult(intent);
+                    break;
+                case Constants.LOG_CONTENT_ACTION:
+                    dealLogContent(intent);
+                    break;
+            }
+        }
+
+        private void dealFirmwareUploadResult(Intent intent) {
+            if (mFirmwareFragment != null)
+                mFirmwareFragment.dealUpdateResult(intent);
+        }
+
+        private void dealLogContent(Intent intent) {
+            if (null != mLogFragment) {
+                mLogFragment.dealLogContent(intent);
+            }
+        }
     }
 
     class DebugPagerAdapter extends FragmentPagerAdapter {
@@ -108,35 +149,6 @@ public class DebugActivity extends FragmentActivity {
         @Override
         public int getCount() {
             return 3;
-        }
-    }
-
-    private class LocalBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            //final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
-
-
-            switch (action) {
-                case Constants.FIRMWARE_UPLOAD_RESULT_ACTION:
-                    dealFirmwareUploadResult(intent);
-                    break;
-                case Constants.LOG_CONTENT_ACTION:
-                    dealLogContent(intent);
-                    break;
-            }
-        }
-
-        private void dealFirmwareUploadResult(Intent intent) {
-            if (mFirmwareFragment != null)
-                mFirmwareFragment.dealUpdateResult(intent);
-        }
-
-        private void dealLogContent(Intent intent) {
-            if (null != mLogFragment) {
-                mLogFragment.dealLogContent(intent);
-            }
         }
     }
 

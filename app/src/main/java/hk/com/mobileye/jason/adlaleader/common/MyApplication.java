@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.DevVersion;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Settings.MHVersion;
+import hk.com.mobileye.jason.adlaleader.preference.WarningConfig;
 import hk.com.mobileye.jason.adlaleader.statistics.StatisticsData;
 import hk.com.mobileye.jason.adlaleader.upgrade.FirmwareInfo;
 
@@ -48,7 +49,7 @@ public class MyApplication extends Application {
 
     public String mIp =null;
     public int mPort = -1;
-    public AM_AWS_SETUP mMHConfigFile = null;
+    public WarningConfig mMHConfigFile = null;
     public DevVersion mDevVersion = null;
     public MHVersion mMHVersion = null;
     public int mGateVer = 0;

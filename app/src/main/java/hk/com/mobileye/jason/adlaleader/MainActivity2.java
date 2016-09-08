@@ -22,7 +22,6 @@ import android.widget.TextView;
 import java.io.FileOutputStream;
 import java.util.Locale;
 
-import hk.com.mobileye.jason.adlaleader.common.AM_AWS_SETUP;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
@@ -48,6 +47,7 @@ import hk.com.mobileye.jason.adlaleader.net.Message.TLVClass;
 import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 import hk.com.mobileye.jason.adlaleader.net.NetManager;
 import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
+import hk.com.mobileye.jason.adlaleader.preference.WarningConfig;
 import hk.com.mobileye.jason.adlaleader.upgrade.UpgradeManager;
 
 
@@ -287,15 +287,17 @@ public class MainActivity2 extends TabActivity {
 
     private void initLocalReceiver() {
         //Registers BroadcastReceiver to track TcpIntentService work status
-        IntentFilter intentFilter = new IntentFilter(Constants.TCP_WORK_STATUS_ACTION);
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         receiver = new LocalBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(Constants.TCP_WORK_STATUS_ACTION);
+
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 receiver, intentFilter);
 
         intentFilter = new IntentFilter(Constants.APP_UPGRADE_RESULT_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 receiver, intentFilter);
+
         intentFilter = new IntentFilter(Constants.FIRMWARE_UPGRADE_RESULT_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 receiver, intentFilter);
@@ -603,7 +605,8 @@ public class MainActivity2 extends TabActivity {
                 Log.d(TAG, String.format(Locale.getDefault(), "%d -- CRC calculated      %d -- " +
                         "CRC in message", crc, ((FileReadResp) msg).getFileCRC()));
 
-                mApp.mMHConfigFile = new AM_AWS_SETUP(buffer, 0, buffer.length);
+                //mApp.mMHConfigFile = new AM_AWS_SETUP(buffer, 0, buffer.length);
+                mApp.mMHConfigFile = new WarningConfig(buffer, 0, buffer.length);
                 //writeMHConfigToPhone(buffer);
             } else {
                 Log.e(TAG, "Receive file para is null !");

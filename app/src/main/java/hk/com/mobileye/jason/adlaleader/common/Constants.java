@@ -55,7 +55,8 @@ public final class Constants {
     public static final byte DVR_FILE_TYPE_FCW      = 3;
 
 
-    public static final String MH_CONFIG_FILE = "AM_AWS_SETUP.CONF";
+    //public static final String MH_CONFIG_FILE = "AM_AWS_SETUP.CONF";
+    public static final String MH_CONFIG_FILE = "WARNING.CONF";
     //public static final String HI3_FIRMWARE = "ADASGATE_.bin";
     //public static final String MH_CONFIG_FILE = "etc/AWS2Buzzer.conf";
     //public static final String MH_BUZZER_FILE = "AWS2Buzzer.conf";

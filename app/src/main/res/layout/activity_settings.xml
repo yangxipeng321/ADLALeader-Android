@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#ff000000"
     tools:context="hk.com.mobileye.jason.adlaleader.SettingsActivity"  >
 
@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/SettingsWarning"
                 android:layout_width="match_parent"
@@ -33,142 +34,10 @@
                     android:text="@string/settings_warning"
                     android:id="@+id/txtWarning" />
             </LinearLayout>
-
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/warningPrefs"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <TextView
-                    android:id="@+id/txtVolume"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="@dimen/editor_spinner_caption_min_width"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/settings_volume"/>
-                <Spinner android:id="@+id/volume_spinner"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <TextView
-                    android:id="@+id/txtHMTicks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="@dimen/editor_spinner_caption_min_width"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/settings_hw_ticks"/>
-                <Spinner android:id="@+id/hw_ticks_spinner"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layVirtualBumper"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <TextView
-                    android:id="@+id/txtVBTicks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="@dimen/editor_spinner_caption_min_width"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/settings_VB"/>
-                <Spinner
-                    android:id="@+id/VB_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <TextView
-                    android:id="@+id/txtLDW"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="@dimen/editor_spinner_caption_min_width"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/settings_LDW"/>
-                <Switch
-                    android:id="@+id/switchLDW"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0"
-                    android:checked="true"
-                    android:onClick="onSwitchLDWClicked"
-                    android:textOff="       "
-                    android:textOn="       "
-                    android:thumb="@drawable/apptheme_switch_inner_holo_dark"
-                    android:track="@drawable/apptheme_switch_track_holo_dark"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/LDWSpeed_layout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <TextView
-                    android:id="@+id/txtLDWSpeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="@dimen/editor_spinner_caption_min_width"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/settings_LDW_speed"/>
-                <Spinner
-                    android:id="@+id/LDWSpeed_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp">
-                </Spinner>
-            </LinearLayout>
+                android:layout_height="wrap_content"/>
             <RelativeLayout
                 android:id="@+id/settingsApply"
                 android:layout_width="match_parent"
@@ -206,10 +75,7 @@
                         android:text="@string/cancel"
                         android:onClick="onBtnSettingsCancelClicked"/>
                 </LinearLayout>
-
-
             </RelativeLayout>
-
 
             <!--Seperator-->
             <View
@@ -363,6 +229,15 @@
                     android:text="write"
                     android:onClick="onBtnWriteFileClick"/>
             </LinearLayout>
+            <Button
+                android:id="@+id/Exit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/settings_row_padding_left"
+                android:paddingRight="@dimen/settings_row_padding_right"
+                android:paddingEnd="@dimen/settings_row_padding_right"
+                android:text="@string/action_exit"
+                android:onClick="onBtnExitOnClicked"/>
         </LinearLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
@@ -374,15 +249,6 @@
         android:src="@drawable/loading"
         android:layout_centerInParent="true"
         android:visibility="invisible"/>
-    <Button
-        android:id="@+id/Exit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/settings_row_padding_left"
-        android:paddingRight="@dimen/settings_row_padding_right"
-        android:paddingEnd="@dimen/settings_row_padding_right"
-        android:layout_alignParentBottom="true"
-        android:text="@string/action_exit"
-        android:onClick="onBtnExitOnClicked"/>
+
 </RelativeLayout>
 

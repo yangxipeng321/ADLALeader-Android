@@ -9,6 +9,7 @@ import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
 
 /**
  * Created by Jason on 2015/5/15.
+ *
  */
 public class CmdResetMEResp extends MsgBase{
     private int mDelay = 0;

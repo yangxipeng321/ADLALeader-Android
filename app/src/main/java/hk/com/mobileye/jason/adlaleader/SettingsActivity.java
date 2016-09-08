@@ -13,18 +13,16 @@ import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
-import hk.com.mobileye.jason.adlaleader.common.AM_AWS_SETUP;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
@@ -54,12 +49,14 @@ import hk.com.mobileye.jason.adlaleader.net.Message.ResponseType;
 import hk.com.mobileye.jason.adlaleader.net.Message.ServiceType;
 import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
+import hk.com.mobileye.jason.adlaleader.preference.WarningConfig;
+import hk.com.mobileye.jason.adlaleader.preference.WarningPrefsFragment;
 import hk.com.mobileye.jason.adlaleader.upgrade.UpgradeManager;
 import hk.com.mobileye.jason.adlaleader.upgrade.UploadDialogFragment;
 
 
 public class SettingsActivity extends Activity implements UpgradeManager.TaskUpgradeMethods,
-        UploadDialogFragment.NoticeDialogListener {
+        UploadDialogFragment.NoticeDialogListener, WarningPrefsFragment.InteractionListener {
 
     public static final String TAG = "SettingsActivity";
     public static final int MSG_READ_CONFIG_FILE = 1;
@@ -74,17 +71,12 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 //    public static int mPort = -1;
 //    public static AM_AWS_SETUP mConfigFile = null;
 //    public static boolean isOnCAN =false;
-    public static final String mFileName = Constants.MH_CONFIG_FILE;
+    //public static final String mFileName = Constants.MH_CONFIG_FILE;
 
     private MyApplication mApp;
 
-    private TextView mHMTicksText;
-    private TextView mVolumeText;
-    private TextView mVBTicksText;
-    private Spinner mHMTicksSpinner;
-    private Spinner mVolumeSpinner;
-    private Spinner mVBSpinner;
-    private LinearLayout layVirtualBumper;
+
+    //private LinearLayout layVirtualBumper;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RelativeLayout appLayout;
     private RelativeLayout firmwareLayout;
@@ -100,11 +92,6 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     private Button btnSettingsConfirm;
     private Button btnSettingsCancel;
 
-    private LinearLayout layoutLDWSpeed;
-    private TextView txtLDW;
-    private Switch swiLDW;
-    private TextView txtLDWSpeed;
-    private Spinner spiLDWSpeed;
 
     private MyHandler mHandler;
     ViewGroup container = null;
@@ -113,6 +100,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
     private SettingsApplyStatus asStatus = SettingsApplyStatus.NONE;
     private Boolean isWaitMobileyeRestart = false;
+    private WarningPrefsFragment warningPrefsFragment;
 
 
     @Override
@@ -131,6 +119,9 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         LayoutTransition mTransition = new LayoutTransition();
         mTransition.setDuration(500);
         container.setLayoutTransition(mTransition);
+
+        warningPrefsFragment = new WarningPrefsFragment();
+        getFragmentManager().beginTransaction().replace(R.id.warningPrefs, warningPrefsFragment).commit();
     }
 
     @Override
@@ -149,9 +140,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         super.onResume();
         Log.w(TAG, "onResume");
 
-        if (null != mApp.mMHConfigFile) {
-            refreshMHConfig(mApp.mMHConfigFile);
-        }
+        refreshMHConfig(mApp.mMHConfigFile);
         refreshControls();
         refreshUpgradeNotify();
     }
@@ -258,51 +247,8 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
     public void onBtnExitOnClicked(View view) {
         ExitManager.getInstance().exit();
-        //writeBuzzer();
     }
 
-    private void writeBuzzer() {
-        String filePath = "/storage/sdcard0/Download/AWS2Buzzer2.conf";
-        File file = new File(filePath);
-        if (!file.exists()) {
-            Log.e(TAG, filePath + "is not exist. Write firmware failed");
-            Toast.makeText(this, getString(R.string.firmware_not_exist), Toast.LENGTH_LONG).show();
-            return;
-        }
-        String fileName = "etc/AWS2Buzzer.conf";
-
-        Log.d(TAG, String.format("Write file name : %s  ip : %s   port : %d", fileName,
-                mApp.mIp, mApp.mPort));
-
-        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
-            //new Thread(new WriteFileRunnable()).start();
-            FileWriteReq msg = (FileWriteReq) MsgFactory.getInstance().create(
-                    ServiceType.SERVICE_FILE,
-                    MessageType.FILE_WRITE_REQ,
-                    ResponseType.REQUEST);
-
-            //add file name tlv value
-            msg.getBody().get(TLVType.TP_FILE_NAME_ID).setValue(fileName);
-            //add file content
-            try {
-                InputStream inputStream = new FileInputStream(filePath);
-                byte[] temp = new byte[64 * 1024];
-                int readlen = inputStream.read(temp);
-                byte[] buffer = new byte[readlen];
-                Log.d(TAG, "file size : " + readlen);
-                System.arraycopy(temp, 0, buffer, 0, readlen);
-                msg.getBody().get(TLVType.TP_FILE_PARA_ID).setValue(buffer);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-            if (msg.encode()) {
-                TcpIntentService.startActionFileService(this, msg.getData(),
-                        Constants.DESC_WRITE_FIRMWARE);
-                upgradeManager.showUploadDialog();
-            }
-        }
-    }
 
 
     /**
@@ -310,14 +256,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
      * If user clicks "confirm" button, the app reset device.
      * If user clicks "cancel" button, the app refresh the settings value
      */
-//    private void showApplyInfo(boolean isShow) {
-//        if (isShow) {
-//            txtApplyWarning.setText(R.string.settings_apply);
-//            btnSettingsConfirm.setEnabled(true);
-//            btnSettingsCancel.setEnabled(true);
-//        }
-//        applyLayout.setVisibility(isShow ? View.VISIBLE : View.GONE);
-//    }
+
     private void updateSettingsApplyInfo(SettingsApplyStatus status) {
         asStatus = status;
 
@@ -366,105 +305,105 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         writeMHConfig();
     }
 
-    private class HMTicksSpinnerListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String str = (String) parent.getItemAtPosition(position);
-            Log.i(TAG, String.format("HMTicksSpinner Item select %s", str));
-            if (null != mApp.mMHConfigFile && !str.equals(mApp.mMHConfigFile.getHMWModeLevel())) {
-                mApp.mMHConfigFile.setHMWModeLevel(str);
-//                mHandler.removeMessages(MSG_WRITE_CONFIG_FILE);
-//                mHandler.sendEmptyMessageDelayed(MSG_WRITE_CONFIG_FILE,
-//                        Constants.WRITE_CONFIG_DELAY);
-                //showApplyInfo(true);
-                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
-            }
-        }
+//    private class HMTicksSpinnerListener implements AdapterView.OnItemSelectedListener {
+//        @Override
+//        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//            String str = (String) parent.getItemAtPosition(position);
+//            Log.i(TAG, String.format("HMTicksSpinner Item select %s", str));
+//            if (null != mApp.mMHConfigFile && !str.equals(mApp.mMHConfigFile.getHMWModeLevel())) {
+//                mApp.mMHConfigFile.setHMWModeLevel(str);
+////                mHandler.removeMessages(MSG_WRITE_CONFIG_FILE);
+////                mHandler.sendEmptyMessageDelayed(MSG_WRITE_CONFIG_FILE,
+////                        Constants.WRITE_CONFIG_DELAY);
+//                //showApplyInfo(true);
+//                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
+//            }
+//        }
+//
+//        @Override
+//        public void onNothingSelected(AdapterView<?> parent) {
+//
+//        }
+//    }
+//
+//    private class VolumeSpinnerListener implements AdapterView.OnItemSelectedListener {
+//        @Override
+//        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//            String volume = (String) parent.getItemAtPosition(position);
+//            Log.i(TAG, String.format("VolumnSpinner Item select %s", volume));
+//            if (null != mApp.mMHConfigFile && !volume.equals(mApp.mMHConfigFile.getVolume())) {
+//                mApp.mMHConfigFile.setVolume(volume);
+////                mHandler.removeMessages(MSG_WRITE_CONFIG_FILE);
+////                mHandler.sendEmptyMessageDelayed(MSG_WRITE_CONFIG_FILE,
+////                        Constants.WRITE_CONFIG_DELAY);
+////                showApplyInfo(true);
+//                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
+//            }
+//        }
+//
+//        @Override
+//        public void onNothingSelected(AdapterView<?> parent) {
+//        }
+//    }
+//
+//    private class VBSpinnerListener implements AdapterView.OnItemSelectedListener {
+//        @Override
+//        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//            String str = (String) parent.getItemAtPosition(position);
+//            Log.i(TAG, String.format("VBSpinner Item select %s", str));
+//            if (null != mApp.mMHConfigFile && !str.equals(mApp.mMHConfigFile.getVBLevel())) {
+//                mApp.mMHConfigFile.setVBLevel(str);
+////                showApplyInfo(true);
+//                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
+//            }
+//        }
+//
+//        @Override
+//        public void onNothingSelected(AdapterView<?> parent) {
+//
+//        }
+//    }
+//
+//    private class LDWSpeedSpinnerListener implements AdapterView.OnItemSelectedListener {
+//        @Override
+//        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//            String str = (String) parent.getItemAtPosition(position);
+//            Log.i(TAG, String.format("LDWSpeedSpinner Item select %s", str));
+//            if (null != mApp.mMHConfigFile && !str.equals(mApp.mMHConfigFile.getLDWSpeed())) {
+//                mApp.mMHConfigFile.setLDWSpeed(str);
+////                showApplyInfo(true);
+//                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
+//            }
+//        }
+//
+//        @Override
+//        public void onNothingSelected(AdapterView<?> parent) {
+//
+//        }
+//    }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
-
-    private class VolumeSpinnerListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String volume = (String) parent.getItemAtPosition(position);
-            Log.i(TAG, String.format("VolumnSpinner Item select %s", volume));
-            if (null != mApp.mMHConfigFile && !volume.equals(mApp.mMHConfigFile.getVolume())) {
-                mApp.mMHConfigFile.setVolume(volume);
-//                mHandler.removeMessages(MSG_WRITE_CONFIG_FILE);
-//                mHandler.sendEmptyMessageDelayed(MSG_WRITE_CONFIG_FILE,
-//                        Constants.WRITE_CONFIG_DELAY);
-//                showApplyInfo(true);
-                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    }
-
-    private class VBSpinnerListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String str = (String) parent.getItemAtPosition(position);
-            Log.i(TAG, String.format("VBSpinner Item select %s", str));
-            if (null != mApp.mMHConfigFile && !str.equals(mApp.mMHConfigFile.getVBLevel())) {
-                mApp.mMHConfigFile.setVBLevel(str);
-//                showApplyInfo(true);
-                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
-
-    private class LDWSpeedSpinnerListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String str = (String) parent.getItemAtPosition(position);
-            Log.i(TAG, String.format("LDWSpeedSpinner Item select %s", str));
-            if (null != mApp.mMHConfigFile && !str.equals(mApp.mMHConfigFile.getLDWSpeed())) {
-                mApp.mMHConfigFile.setLDWSpeed(str);
-//                showApplyInfo(true);
-                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
-
-    public void onSwitchLDWClicked(View view) {
-        if (view instanceof Switch) {
-            if (null == mApp.mMHConfigFile || -1 == mApp.mMHConfigFile.getLDWModeLevel()) {
-                return;
-            }
-
-            Switch ldw = (Switch) view;
-
-            boolean isEnable = mApp.mMHConfigFile.getLDWModeLevel() != 0;
-            if (ldw.isChecked() != isEnable) {
-                mApp.mMHConfigFile.setLDWModeLevel(ldw.isChecked() ? 2 : 0);
-                //showApplyInfo(true);
-                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
-            }
-
-            if (ldw.isChecked() && null != mApp.mMHConfigFile.getLDWSpeed()) {
-                layoutLDWSpeed.setVisibility(View.VISIBLE);
-            } else {
-                layoutLDWSpeed.setVisibility(View.GONE);
-            }
-        }
-    }
+//    public void onSwitchLDWClicked(View view) {
+//        if (view instanceof Switch) {
+//            if (null == mApp.mMHConfigFile || -1 == mApp.mMHConfigFile.getLDWModeLevel()) {
+//                return;
+//            }
+//
+//            Switch ldw = (Switch) view;
+//
+//            boolean isEnable = mApp.mMHConfigFile.getLDWModeLevel() != 0;
+//            if (ldw.isChecked() != isEnable) {
+//                mApp.mMHConfigFile.setLDWModeLevel(ldw.isChecked() ? 2 : 0);
+//                //showApplyInfo(true);
+//                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
+//            }
+//
+//            if (ldw.isChecked() && null != mApp.mMHConfigFile.getLDWSpeed()) {
+//                layoutLDWSpeed.setVisibility(View.VISIBLE);
+//            } else {
+//                layoutLDWSpeed.setVisibility(View.GONE);
+//            }
+//        }
+//    }
 
 
 //    class ReadFileRunnable implements Runnable {
@@ -586,7 +525,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 //    }
 
     private void writeMHConfig() {
-        Log.d(TAG, String.format("Write file name : %s  ip : %s   port : %d", mFileName, mApp.mIp, mApp.mPort));
+        Log.d(TAG, String.format("Write file name : %s  ip : %s   port : %d", Constants.MH_CONFIG_FILE, mApp.mIp, mApp.mPort));
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             //new Thread(new WriteFileRunnable()).start();
 
@@ -599,7 +538,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
                 msg.getBody().get(TLVType.TP_FILE_NAME_ID).setValue(
                         mApp.mMHConfigFile.getFileName());
                 //add file content tlv value  length + crc + content
-                byte[] buffer = mApp.mMHConfigFile.getArray();
+                byte[] buffer = mApp.mMHConfigFile.getData();
                 msg.getBody().get(TLVType.TP_FILE_PARA_ID).setValue(buffer);
                 if (msg.encode()) {
                     TcpIntentService.startActionFileService(this, msg.getData(), Constants.DESC_WRITE_MH_CONFIG);
@@ -609,27 +548,6 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     }
 
     private void initControls() {
-        mHMTicksText = (TextView) findViewById(R.id.txtHMTicks);
-        mHMTicksSpinner = (Spinner) findViewById(R.id.hw_ticks_spinner);
-        mHMTicksSpinner.setOnItemSelectedListener(new HMTicksSpinnerListener());
-
-        mVolumeText = (TextView) findViewById(R.id.txtVolume);
-        mVolumeSpinner = (Spinner) findViewById(R.id.volume_spinner);
-        mVolumeSpinner.setOnItemSelectedListener(new VolumeSpinnerListener());
-
-        mVBTicksText = (TextView) findViewById(R.id.txtVBTicks);
-        mVBSpinner = (Spinner) findViewById(R.id.VB_spinner);
-        mVBSpinner.setOnItemSelectedListener(new VBSpinnerListener());
-        layVirtualBumper = (LinearLayout) findViewById(R.id.layVirtualBumper);
-
-        txtLDW = (TextView) findViewById(R.id.txtLDW);
-        swiLDW = (Switch) findViewById(R.id.switchLDW);
-        layoutLDWSpeed = (LinearLayout) findViewById(R.id.LDWSpeed_layout);
-        layoutLDWSpeed.setVisibility(View.GONE);
-        txtLDWSpeed = (TextView) findViewById(R.id.txtLDWSpeed);
-        spiLDWSpeed = (Spinner) findViewById(R.id.LDWSpeed_spinner);
-        spiLDWSpeed.setOnItemSelectedListener(new LDWSpeedSpinnerListener());
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.warning_green));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -675,25 +593,6 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     private void refreshControls() {
         Log.d(TAG, "refreshControls");
         boolean enabled = mApp.isOnCAN && (mApp.speed == 0);
-        mHMTicksSpinner.setEnabled(enabled);
-        hideSpinnerDropDown(mHMTicksSpinner);
-        mHMTicksText.setEnabled(enabled);
-
-        hideSpinnerDropDown(mVolumeSpinner);
-        mVolumeSpinner.setEnabled(enabled);
-        mVolumeText.setEnabled(enabled);
-
-        mVBSpinner.setEnabled(enabled);
-        hideSpinnerDropDown(mVBSpinner);
-        mVBTicksText.setEnabled(enabled);
-
-        txtLDW.setEnabled(enabled);
-        swiLDW.setEnabled(enabled);
-        txtLDWSpeed.setEnabled(enabled);
-        if (layoutLDWSpeed.getVisibility() == View.VISIBLE) {
-            spiLDWSpeed.setEnabled(enabled);
-            hideSpinnerDropDown(spiLDWSpeed);
-        }
 
         if (enabled) {
             updateSettingsApplyInfo(asStatus);
@@ -755,148 +654,16 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     }
 
 
-    private void refreshMHConfig(AM_AWS_SETUP aMHConfig) {
+    private void refreshMHConfig(WarningConfig aMHConfig) {
         Log.d(TAG, "refreshMHConfig");
-        if (null == aMHConfig) {
-            return;
+        if (null != warningPrefsFragment) {
+            warningPrefsFragment.refresh(aMHConfig);
         }
-        refreshMHConfigHMW(aMHConfig);
-        refreshMHConfigVolume(aMHConfig);
-        refreshMHConfigVB(aMHConfig);
-        refreshMHConfigLDW(aMHConfig);
     }
 
     private boolean isUserInteractionEnabled() {
         return mApp.isOnCAN && mApp.speed == 0 &&
                 (asStatus == SettingsApplyStatus.NONE || asStatus == SettingsApplyStatus.MODIFIED);
-    }
-
-    private void refreshMHConfigHMW(AM_AWS_SETUP aMHConfig) {
-        String ticksAllowed = aMHConfig.getHw_TicksAllowed();
-        String hmwLevel = aMHConfig.getHMWModeLevel();
-        Log.d(TAG, String.format("HMW[%s] : %s", ticksAllowed, hmwLevel));
-        if (null != ticksAllowed && null != hmwLevel) {
-            String[] ticks = ticksAllowed.split(" ");
-            List<String> ticksList = Arrays.asList(ticks);
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                    R.layout.settings_spinner_item, ticksList);
-
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-            mHMTicksSpinner.setAdapter(adapter);
-            //if hmwlevel can't find in the tickList, use the max value in the tickList
-            int index = ticksList.indexOf(hmwLevel);
-            if (index >= 0) {
-                mHMTicksSpinner.setSelection(index);
-            } else {
-                mHMTicksSpinner.setSelection(ticksList.size() - 1);
-            }
-
-            mHMTicksText.setEnabled(isUserInteractionEnabled());
-            mHMTicksSpinner.setEnabled(isUserInteractionEnabled());
-        } else {
-            mHMTicksSpinner.setAdapter(null);
-            mHMTicksSpinner.setEnabled(false);
-            mHMTicksText.setEnabled(false);
-        }
-    }
-
-    private void refreshMHConfigVolume(AM_AWS_SETUP aMHConfig) {
-        String volumeTicksAllowed = aMHConfig.getVolumeTicksAllowed();
-        String volume = aMHConfig.getVolume();
-        Log.d(TAG, String.format("volume[%s] : %s", volumeTicksAllowed, volume));
-
-        if (null != volumeTicksAllowed && null != volume) {
-            String[] ticks = volumeTicksAllowed.split(" ");
-            List<String> volumeList = Arrays.asList(ticks);
-            ArrayAdapter<String> volumeAdapter = new ArrayAdapter<>(this,
-                    R.layout.settings_spinner_item, volumeList);
-//        volumeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            volumeAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-            mVolumeSpinner.setAdapter(volumeAdapter);
-            int index = volumeList.indexOf(volume);
-            if (index >= 0) {
-                mVolumeSpinner.setSelection(index);
-            } else {
-                mVolumeSpinner.setSelection(volumeList.size() - 1);
-            }
-            mVolumeSpinner.setSelection(volumeList.indexOf(volume));
-
-            mVolumeText.setEnabled(isUserInteractionEnabled());
-            mVolumeSpinner.setEnabled(isUserInteractionEnabled());
-        } else {
-            mVolumeSpinner.setAdapter(null);
-            mVolumeSpinner.setEnabled(false);
-            mVolumeText.setEnabled(false);
-        }
-    }
-
-    private void refreshMHConfigVB(AM_AWS_SETUP aMHConfig) {
-        String VBTicksAllowed = aMHConfig.getVB_TicksAllowed();
-        String VBLevel = aMHConfig.getVBLevel();
-        Log.d(TAG, String.format("VB[%s] : %s", VBTicksAllowed, VBLevel));
-        if (null != VBTicksAllowed && null != VBLevel) {
-            String[] ticks = VBTicksAllowed.split(" ");
-            List<String> ticksList = Arrays.asList(ticks);
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                    R.layout.settings_spinner_item, ticksList);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-            mVBSpinner.setAdapter(adapter);
-            int index = ticksList.indexOf(VBLevel);
-            if (index >= 0) {
-                mVBSpinner.setSelection(index);
-            } else {
-                mVBSpinner.setSelection(ticksList.size() - 1);
-            }
-
-            mVBTicksText.setEnabled(isUserInteractionEnabled());
-            mVBSpinner.setEnabled(isUserInteractionEnabled());
-        } else {
-            mVBSpinner.setAdapter(null);
-            mVBSpinner.setEnabled(false);
-            mVBTicksText.setEnabled(false);
-        }
-    }
-
-    private void refreshMHConfigLDW(AM_AWS_SETUP aMHConfig) {
-        int level = aMHConfig.getLDWModeLevel();
-        Log.d(TAG, String.format("LDW : %d", level));
-        if (-1 != level) {
-            txtLDW.setEnabled(isUserInteractionEnabled());
-            swiLDW.setEnabled(isUserInteractionEnabled());
-            swiLDW.setChecked(level != 0);
-
-            String LDWSpeed = aMHConfig.getLDWSpeed();
-            String LDWSpeedTicks = aMHConfig.getLDWSpeedTicks();
-            if (null != LDWSpeed && null != LDWSpeedTicks) {
-                String[] ticks = LDWSpeedTicks.split(" ");
-                List<String> ticksList = Arrays.asList(ticks);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                        R.layout.settings_spinner_item, ticksList);
-                adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-                spiLDWSpeed.setAdapter(adapter);
-                int index = ticksList.indexOf(LDWSpeed);
-                if (index >= 0) {
-                    spiLDWSpeed.setSelection(index);
-                } else {
-                    spiLDWSpeed.setSelection(ticksList.size() - 1);
-                }
-
-                spiLDWSpeed.setEnabled(isUserInteractionEnabled());
-                txtLDWSpeed.setEnabled(isUserInteractionEnabled());
-                layoutLDWSpeed.setVisibility(swiLDW.isChecked() ? View.VISIBLE : View.GONE);
-            } else {
-                layoutLDWSpeed.setVisibility(View.GONE);
-                spiLDWSpeed.setAdapter(null);
-                spiLDWSpeed.setEnabled(false);
-                txtLDWSpeed.setEnabled(false);
-            }
-        } else {
-            txtLDW.setEnabled(false);
-            swiLDW.setEnabled(false);
-            layoutLDWSpeed.setVisibility(View.GONE);
-        }
     }
 
     private void writeFirmware() {
@@ -992,9 +759,10 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
     private void initLocalReceiver() {
         //Register BroadcastReceiver to track local work status
-        IntentFilter filter = new IntentFilter(Constants.READ_MH_CONFIG_RESULT_ACTION);
-        filter.addCategory(Intent.CATEGORY_DEFAULT);
         localReceiver = new LocalBroadcastReceiver();
+        IntentFilter filter = new IntentFilter(Constants.READ_MH_CONFIG_RESULT_ACTION);
+
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
         filter = new IntentFilter(Constants.WRITE_MH_CONFIG_RESULT_ACTION);
@@ -1127,23 +895,28 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         private void dealWriteMHConfigResult(Intent intent) {
             int length = intent.getIntExtra(Constants.EXTEND_FILE_LENGTH, -1);
             Log.d(TAG, "Deal write MH config reslut. file lenght = " + length);
-            if (length > 0) {
-//                Toast toast = Toast.makeText(SettingsActivity.this, getString(R.string.settings_next_acc_on),
-//                        Toast.LENGTH_LONG);
-//                toast.setGravity(Gravity.CENTER, 0, 0);
-//                toast.show();
-                //txtApplyWarning.setText(R.string.settings_prepare_reset);
-                updateSettingsApplyInfo(SettingsApplyStatus.RESETTING);
-                //resetMobileye();
-                mHandler.removeMessages(MSG_RESET_MOBILEYE);
-                mHandler.sendEmptyMessageDelayed(MSG_RESET_MOBILEYE, 1000);
-            } else {
-//                showApplyInfo(true);
-                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
-            }
+            Toast toast = Toast.makeText(SettingsActivity.this, "Write MH config. file lenght = " + length, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP, 0, 20);
+            toast.show();
+
+//            if (length > 0) {
+////                Toast toast = Toast.makeText(SettingsActivity.this, getString(R.string.settings_next_acc_on),
+////                        Toast.LENGTH_LONG);
+////                toast.setGravity(Gravity.CENTER, 0, 0);
+////                toast.show();
+//                //txtApplyWarning.setText(R.string.settings_prepare_reset);
+//                updateSettingsApplyInfo(SettingsApplyStatus.RESETTING);
+//                //resetMobileye();
+//                mHandler.removeMessages(MSG_RESET_MOBILEYE);
+//                mHandler.sendEmptyMessageDelayed(MSG_RESET_MOBILEYE, 1000);
+//            } else {
+////                showApplyInfo(true);
+//                updateSettingsApplyInfo(SettingsApplyStatus.MODIFIED);
+//            }
         }
 
         private void dealNetworkChange() {
+            refreshMHConfig(mApp.mMHConfigFile);
             refreshControls();
             refreshUpgradeNotify();
         }
@@ -1434,4 +1207,8 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
     public void onBtnWriteFileClick(View view) {
     }
 
+    @Override
+    public void warningPreferencesChanged(WarningPrefsFragment fragment, WarningConfig config) {
+        writeMHConfig();
+    }
 }
