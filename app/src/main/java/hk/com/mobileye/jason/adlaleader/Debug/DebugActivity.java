@@ -28,6 +28,7 @@ public class DebugActivity extends FragmentActivity {
 
     private DebugFirmwareFragment mFirmwareFragment;
     private DebugLogFragment mLogFragment;
+    private LocalBroadcastReceiver localReceiver;
 
 
     @Override
@@ -45,6 +46,7 @@ public class DebugActivity extends FragmentActivity {
         mSlidingTabLayout.setSelectedIndicatorColors(Color.WHITE);
 
         initLocalReceiver();
+        Log.d(TAG, "onCreate");
     }
 
     @Override
@@ -54,7 +56,7 @@ public class DebugActivity extends FragmentActivity {
         Log.d(TAG, "onDestory");
     }
 
-    private LocalBroadcastReceiver localReceiver;
+
 
     private void initLocalReceiver() {
         localReceiver = new LocalBroadcastReceiver();
