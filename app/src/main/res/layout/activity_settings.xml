@@ -1,235 +1,63 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff000000"
     tools:context="hk.com.mobileye.jason.adlaleader.SettingsActivity"  >
 
-    <ScrollView
+    <LinearLayout android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout android:id="@+id/container"
+        <FrameLayout
+            android:id="@+id/warningPrefs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!--Seperator-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/settings_row_padding_left"
+            android:layout_marginStart="@dimen/settings_row_padding_left"
+            android:layout_marginRight="@dimen/settings_row_padding_right"
+            android:layout_marginEnd="@dimen/settings_row_padding_right"
+            android:background="@color/settings_item_seperater"/>
+
+        <!--About activity-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:paddingLeft="@dimen/settings_row_padding_left"
+            android:paddingStart="@dimen/settings_row_padding_left"
+            android:paddingRight="@dimen/settings_row_padding_right"
+            android:paddingEnd="@dimen/settings_row_padding_right"
+            android:gravity="center_vertical"
+            android:background="@color/settings_item_background">
+            <Button
+                android:id="@+id/btnAbout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@color/settings_item_background"
+                android:textSize="@dimen/settings_text_size"
+                android:text="@string/action_about"
+                android:onClick="onBtnAboutClicked"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/Exit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingLeft="@dimen/settings_row_padding_left"
+            android:paddingStart="@dimen/settings_row_padding_left"
+            android:paddingRight="@dimen/settings_row_padding_right"
+            android:paddingEnd="@dimen/settings_row_padding_right"
+            android:text="@string/action_exit"
+            android:onClick="onBtnExitOnClicked"/>
+    </LinearLayout>
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/SettingsWarning"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:paddingLeft="@dimen/settings_row_padding_left"-->
-                <!--android:paddingStart="@dimen/settings_row_padding_left"-->
-                <!--android:paddingRight="@dimen/settings_row_padding_right"-->
-                <!--android:paddingEnd="@dimen/settings_row_padding_right"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:background="#ddeee8aa">-->
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:textAppearance="?android:attr/textAppearanceMediumInverse"-->
-                    <!--android:text="@string/settings_warning"-->
-                    <!--android:id="@+id/txtWarning" />-->
-            <!--</LinearLayout>-->
+</ScrollView>
 
-            <!--<android.support.v4.widget.SwipeRefreshLayout-->
-                <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-                <!--android:id="@+id/swipeRefresh"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-                <!--<ListView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content">-->
-                <!--</ListView>-->
-
-
-            <!--</android.support.v4.widget.SwipeRefreshLayout>-->
-
-            <FrameLayout
-                android:id="@+id/warningPrefs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <RelativeLayout
-                android:id="@+id/settingsApply"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
-                <TextView
-                    android:id="@+id/settingsApplyWarning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/settings_text_size"
-                    android:textColor="@color/waring_white"
-                    android:text="@string/settings_apply"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/settingsApplyWarning"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/btnSettingsConfirm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/confirm"
-                        android:onClick="onBtnSettingsConfirmClicked"/>
-                    <Button
-                        android:id="@+id/btnSettingsCancel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/cancel"
-                        android:onClick="onBtnSettingsCancelClicked"/>
-                </LinearLayout>
-            </RelativeLayout>
-
-            <!--Seperator-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/settings_row_padding_left"
-                android:layout_marginStart="@dimen/settings_row_padding_left"
-                android:layout_marginRight="@dimen/settings_row_padding_right"
-                android:layout_marginEnd="@dimen/settings_row_padding_right"
-                android:background="@color/settings_item_seperater"/>
-            <!--About activity-->
-            <RelativeLayout
-                android:id="@+id/appUpgrade"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:visibility="gone"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <Button
-                    android:id="@+id/btnAppUpgrade"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:background="@color/settings_item_background"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/settings_new_app_upgrade"
-                    android:onClick="onDownloadAppClick"/>
-                <TextView
-                    android:id="@+id/txtAppUpgradeInfo"
-                    android:layout_width="@dimen/settings_info_width"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center_vertical|end"
-                    android:textSize="@dimen/settings_info_text_size"
-                    android:textColor="@color/settings_info_color"
-                    android:text="@string/click_to_download"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/firmwareUpgrade"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:visibility="gone"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <Button
-                    android:id="@+id/btnFirmareUpgrade"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:background="@color/settings_item_background"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/settings_new_firmware_upgrade"
-                    android:onClick="onDownloadFirmwareClick"/>
-                <TextView
-                    android:id="@+id/txtFirmwareUpgradeInfo"
-                    android:layout_width="@dimen/settings_info_width"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center_vertical|end"
-                    android:textSize="@dimen/settings_info_text_size"
-                    android:textColor="@color/settings_info_color"
-                    android:text="@string/connect_can_to_upgrade"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:visibility="gone"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <Button
-                    android:id="@+id/btnCheckUpgrade"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:background="@color/settings_item_background"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/settings_check_upgrade"
-                    android:onClick="onCheckUpgradeClick"/>
-                <TextView
-                    android:id="@+id/txtUpgradeInfo"
-                    android:layout_width="@dimen/settings_info_width"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center_vertical|end"
-                    android:textSize="@dimen/settings_info_text_size"
-                    android:textColor="@color/settings_info_color"
-                    android:text="@string/no_upgrade"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingStart="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:gravity="center_vertical"
-                android:background="@color/settings_item_background">
-                <Button
-                    android:id="@+id/btnAbout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:background="@color/settings_item_background"
-                    android:textSize="@dimen/settings_text_size"
-                    android:text="@string/action_about"
-                    android:onClick="onBtnAboutClicked"/>
-            </RelativeLayout>
-
-           <!--just for test-->
-
-            <Button
-                android:id="@+id/Exit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/settings_row_padding_left"
-                android:paddingRight="@dimen/settings_row_padding_right"
-                android:paddingEnd="@dimen/settings_row_padding_right"
-                android:text="@string/action_exit"
-                android:onClick="onBtnExitOnClicked"/>
-
-
-        </LinearLayout>
-
-    </ScrollView>
-</LinearLayout>
 
