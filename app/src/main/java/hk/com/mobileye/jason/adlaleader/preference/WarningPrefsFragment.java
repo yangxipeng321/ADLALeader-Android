@@ -153,16 +153,21 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             Adapter adapter = listView.getAdapter();
 
             if (null != adapter) {
+//                int height = listView.getPaddingTop() + listView.getPaddingBottom();
                 int height = 0;
 
                 for (int i = 0; i < adapter.getCount(); i++) {
                     View item = adapter.getView(i, null, listView);
+//                    if (item instanceof ViewGroup) {
+//                        item.setLayoutParams(new ViewGroup.LayoutParams(
+//                                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//                    }
                     item.measure(0, 0);
                     height += item.getMeasuredHeight();
                 }
                 FrameLayout frame = (FrameLayout) getActivity().findViewById(R.id.warningPrefs);
                 ViewGroup.LayoutParams params = frame.getLayoutParams();
-                params.height = height;
+                params.height = height + (listView.getDividerHeight() * adapter.getCount());
                 frame.setLayoutParams(params);
             }
         }

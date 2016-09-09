@@ -1,6 +1,5 @@
 package hk.com.mobileye.jason.adlaleader;
 
-import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
@@ -17,7 +16,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -73,7 +71,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
     //private LinearLayout layVirtualBumper;
     //remove SwipeRefreshLayout
-//    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //private SwipeRefreshLayout mSwipeRefreshLayout;
     private RelativeLayout appLayout;
     private RelativeLayout firmwareLayout;
     private Button btnCheckUpgrade;
@@ -90,7 +88,7 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
 
 
     private MyHandler mHandler;
-    ViewGroup container = null;
+    //ViewGroup container = null;
 
     enum SettingsApplyStatus {NONE, MODIFIED, WRITING_CONFIG, RESETTING, WAIT_RESTART}
 
@@ -111,10 +109,10 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         initControls();
         initLocalReceiver();
 
-        container = (ViewGroup) findViewById(R.id.container);
-        LayoutTransition mTransition = new LayoutTransition();
-        mTransition.setDuration(500);
-        container.setLayoutTransition(mTransition);
+//        container = (ViewGroup) findViewById(R.id.container);
+//        LayoutTransition mTransition = new LayoutTransition();
+//        mTransition.setDuration(500);
+//        container.setLayoutTransition(mTransition);
 
         warningPrefsFragment = new WarningPrefsFragment();
         getFragmentManager().beginTransaction().replace(R.id.warningPrefs, warningPrefsFragment).commit();
@@ -139,12 +137,6 @@ public class SettingsActivity extends Activity implements UpgradeManager.TaskUpg
         refreshMHConfig(mApp.mMHConfigFile);
         //refreshControls();
         //refreshUpgradeNotify();
-    }
-
-    @Override
-    protected void onPause() {
-        //writeConfig();
-        super.onPause();
     }
 
     private long mExitTime = 0;
