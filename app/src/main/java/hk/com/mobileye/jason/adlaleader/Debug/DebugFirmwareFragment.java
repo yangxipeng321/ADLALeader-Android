@@ -166,7 +166,6 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
         mFilesList.clear();
 
         File appDir = Environment.getExternalStoragePublicDirectory(Constants.APP_DIR);
-        Log.d(TAG, appDir.getAbsolutePath());
 
         if (appDir.exists()) {
             File[] files = appDir.listFiles(new FirmwareFilter());
@@ -390,9 +389,6 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
             Button btn = (Button) holder.mCardView.findViewById(R.id.btnUpdate);
             btn.setOnClickListener(DebugFirmwareFragment.this);
             btn.setTag(position);
-
-            Log.w(TAG, String.format(Locale.getDefault(), "onBindViewHolder position: %d " +
-                    "fileName: %s  mUpdatingFileName: %s", position, fileName, mUpdatingFileName));
 
             switch (mState) {
                 case Wait:

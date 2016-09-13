@@ -68,7 +68,7 @@ public class MainActivity2 extends TabActivity {
             getActionBar().hide();
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
+        //Log.d(TAG, "onCreate");
 //        setContentView(R.layout.activity_main_activity2);
         setContentView(R.layout.tabhost);
         ExitManager.getInstance().addActivity(this);
@@ -76,26 +76,32 @@ public class MainActivity2 extends TabActivity {
         tabHost = this.getTabHost();
         TabSpec alarmSpec = tabHost.newTabSpec("Alarm").setIndicator("Alarm").setContent(
                 new Intent(this, AlarmActivity.class));
+        tabHost.addTab(alarmSpec);
         TabSpec chartSpec = tabHost.newTabSpec("Chart").setIndicator("Chart").setContent(
                 new Intent(this, ChartActivity.class));
+        tabHost.addTab(chartSpec);
         TabSpec dvrSpec = tabHost.newTabSpec("DVR").setIndicator("DVR").setContent(
                 new Intent(this, DVRActivity.class));
-        TabSpec nightViewSpce = tabHost.newTabSpec("Debug").setIndicator("Debug").setContent(
-                new Intent(this, DebugActivity.class));
+        tabHost.addTab(dvrSpec);
+
+        if (Constants.SHOW_DEBUG) {
+            TabSpec debugSpce = tabHost.newTabSpec("Debug").setIndicator("Debug").setContent(
+                    new Intent(this, DebugActivity.class));
+            tabHost.addTab(debugSpce);
+        } else {
+            findViewById(R.id.rbtnDebugView).setVisibility(View.GONE);
+        }
+
         TabSpec settingSpec = tabHost.newTabSpec("Settings").setIndicator("Settings").setContent(
                 new Intent(this, SettingsActivity.class));
-        tabHost.addTab(alarmSpec);
-        tabHost.addTab(chartSpec);
-        tabHost.addTab(dvrSpec);
-        tabHost.addTab(nightViewSpce);
         tabHost.addTab(settingSpec);
 
-        RadioButton debugViewBtn = (RadioButton) findViewById(R.id.rbtnDebugView);
-        if (true) {
-            debugViewBtn.setVisibility(View.VISIBLE);
-        } else {
-            debugViewBtn.setVisibility(View.GONE);
-        }
+//        RadioButton debugViewBtn = (RadioButton) findViewById(R.id.rbtnDebugView);
+//        if (true) {
+//            debugViewBtn.setVisibility(View.VISIBLE);
+//        } else {
+//            debugViewBtn.setVisibility(View.GONE);
+//        }
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChanged());
@@ -112,8 +118,7 @@ public class MainActivity2 extends TabActivity {
     protected void onDestroy() {
         Log.d(TAG, "onDestory");
         releaseNetworkReceiver();
-        releaseLocalReceiver();
-        mApp = null;
+        releaseLocalReceiver();        mApp = null;
         //Must always call the super method at the end.
         super.onDestroy();
     }
@@ -280,7 +285,6 @@ public class MainActivity2 extends TabActivity {
     private void broadcastNetworkChange() {
         Log.d(TAG, "Broadcast network change");
         Intent intent = new Intent(Constants.NETWORK_CHANGE_ACTION);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
@@ -290,17 +294,13 @@ public class MainActivity2 extends TabActivity {
         receiver = new LocalBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(Constants.TCP_WORK_STATUS_ACTION);
 
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                receiver, intentFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
 
         intentFilter = new IntentFilter(Constants.APP_UPGRADE_RESULT_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                receiver, intentFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
 
         intentFilter = new IntentFilter(Constants.FIRMWARE_UPGRADE_RESULT_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                receiver, intentFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
     }
 
     private void releaseLocalReceiver() {

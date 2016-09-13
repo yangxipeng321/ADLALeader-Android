@@ -183,31 +183,27 @@ public class SettingsActivity extends Activity implements  WarningPrefsFragment.
     private void initLocalReceiver() {
         //Register BroadcastReceiver to track local work status
         localReceiver = new LocalBroadcastReceiver();
-        IntentFilter filter = new IntentFilter(Constants.READ_MH_CONFIG_RESULT_ACTION);
 
-        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        IntentFilter filter = new IntentFilter(Constants.NETWORK_CHANGE_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+
+        filter = new IntentFilter(Constants.READ_MH_CONFIG_RESULT_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
         filter = new IntentFilter(Constants.WRITE_MH_CONFIG_RESULT_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
-
-        filter = new IntentFilter(Constants.DOWNLOAD_WORK_STATUS_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
-
-        filter = new IntentFilter(Constants.APP_UPGRADE_RESULT_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
-
-
-        filter = new IntentFilter(Constants.NETWORK_CHANGE_ACTION);
-        filter.addCategory(Intent.CATEGORY_DEFAULT);
-        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
-
-        filter = new IntentFilter(Constants.VERSION_INFO_UPDATE_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
-
-        filter = new IntentFilter(Constants.CMD_WRITE_FIRMWARE_REQ_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+//        filter = new IntentFilter(Constants.VERSION_INFO_UPDATE_ACTION);
+//        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+//
+//        filter = new IntentFilter(Constants.DOWNLOAD_WORK_STATUS_ACTION);
+//        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+//
+//        filter = new IntentFilter(Constants.APP_UPGRADE_RESULT_ACTION);
+//        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+//
+//        filter = new IntentFilter(Constants.CMD_WRITE_FIRMWARE_REQ_ACTION);
+//        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
     }
 
     private void releaseLocalReceiver() {
@@ -227,11 +223,16 @@ public class SettingsActivity extends Activity implements  WarningPrefsFragment.
         public void onReceive(Context context, Intent intent) {
             if (null != intent) {
                 final String action = intent.getAction();
-                final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
+                Log.e(TAG, action);
                 // Both this activity and Mainactivity2 can start a TcpIntentService. But Only
                 // Mainactivity2 receive and process the result which TcpIntentService
                 // broadcasts. So this just need to wait the settings update which Mainactivity2
                 // broadcasts.
+                if (action.equals(Constants.NETWORK_CHANGE_ACTION)) {
+                    dealNetworkChange();
+                    return;
+                }
+
                 if (action.equals(Constants.READ_MH_CONFIG_RESULT_ACTION)) {
                     dealReadMHConfigResult();
                     return;
@@ -240,24 +241,6 @@ public class SettingsActivity extends Activity implements  WarningPrefsFragment.
                 if (action.equals(Constants.WRITE_MH_CONFIG_RESULT_ACTION)) {
                     dealWriteMHConfigResult(intent);
                     return;
-                }
-
-                if (action.equals(Constants.NETWORK_CHANGE_ACTION)) {
-                    dealNetworkChange();
-                    return;
-                }
-
-
-                //Only process the broadcast which is started by self
-                if (sender.equals(getLocalClassName())) {
-                    switch (action) {
-                        case Constants.DOWNLOAD_WORK_STATUS_ACTION:
-//                            dealDownloadWork(intent);
-                            break;
-                        case Constants.APP_UPGRADE_RESULT_ACTION:
-//                            dealAppUpgradeResult(intent);
-                            break;
-                    }
                 }
             }
         }

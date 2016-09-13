@@ -16,7 +16,6 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -37,6 +36,7 @@ import java.util.Locale;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
 import hk.com.mobileye.jason.adlaleader.common.ExitManager;
 import hk.com.mobileye.jason.adlaleader.common.MyApplication;
+import hk.com.mobileye.jason.adlaleader.common.logger.Log;
 import hk.com.mobileye.jason.adlaleader.net.Message.Factory.MsgFactory;
 import hk.com.mobileye.jason.adlaleader.net.Message.MessageType;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgBase;
@@ -102,7 +102,6 @@ public class AlarmActivity extends Activity {
         if (getActionBar()!=null)
             getActionBar().hide();
 
-        Log.d(TAG, TAG + "onCreate");
         setContentView(R.layout.activity_alarm);
         ExitManager.getInstance().addActivity(this);
 

@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Date;
 import java.util.Locale;
 
 import hk.com.mobileye.jason.adlaleader.common.Constants;
@@ -164,8 +163,8 @@ public class UdpHelper implements Runnable {
 
     public void send(byte[] buffer, SocketAddress sockAddr) {
         if (buffer == null || buffer.length == 0) {  return;   }
-        Log.d(TAG, String.format(Locale.getDefault(), "UDP send : %tT %s\n%s\n",
-                new Date(), sockAddr.toString(), MsgUtils.bytes2HexString(buffer)));
+//        Log.d(TAG, String.format(Locale.getDefault(), "UDP send : %tT %s\n%s\n",
+//                new Date(), sockAddr.toString(), MsgUtils.bytes2HexString(buffer)));
         try {
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, sockAddr);
             if (socket != null) {

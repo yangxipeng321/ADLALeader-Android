@@ -55,11 +55,15 @@ public class MessageType {
     public static final int DVR_PLAY_FILE_REQ = 0x03;
     public static final int DVR_PLAY_FILE_RESP = 0x03;
     public static final int DVR_RECORD = 0x04;
+    public static final int DVR_FORMAT = 0x05;
 
 
     public static final int LOG_ADASGATE_SWITCH = 0x01;
     public static final int LOG_ADASGATE_CONTENT = 0x02;
     public static final int LOG_MCU_SWITCH = 0x03;
     public static final int LOG_MCU_CONTENT = 0x04;
+    public static final int DEBUG_MCU_COMMAND = 0x05;
+    public static final int DEBUG_FPGA_COMMAND = 0x06;
+    public static final int DEBUG_DVR_COMMAND = 0x07;
 
 }

@@ -10,8 +10,12 @@ import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdSwitchScreen
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdTestReq;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdTestResp;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrFileListResp;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrFormat;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrKey;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrPlayFileResp;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.DebugDVRCmd;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.DebugFPGACmd;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.DebugMCUCmd;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.LogAdasgateContent;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.LogMCUContent;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileReadReq;
@@ -227,6 +231,7 @@ public class MsgFactory {
                         break;
                     case MessageType.CMD_SWITCH_SCREEN_REQ:
                         obj = new CmdSwitchScreen();
+                        break;
                 }
                 break;
             case ResponseType.RESPONSE:
@@ -242,6 +247,7 @@ public class MsgFactory {
                         break;
                     case MessageType.CMD_SWITCH_SCREEN_RESP:
                         obj = new CmdSwitchScreen();
+                        break;
                 }
                 break;
         }
@@ -255,6 +261,9 @@ public class MsgFactory {
                 switch (aMsgType) {
                     case MessageType.DVR_KEY_INFO:
                         obj = new DvrKey();
+                        break;
+                    case MessageType.DVR_FORMAT:
+                        obj = new DvrFormat();
                         break;
                 }
                 break;
@@ -282,6 +291,15 @@ public class MsgFactory {
                         break;
                     case MessageType.LOG_MCU_CONTENT:
                         obj = new LogMCUContent();
+                        break;
+                    case MessageType.DEBUG_MCU_COMMAND:
+                        obj = new DebugMCUCmd();
+                        break;
+                    case MessageType.DEBUG_FPGA_COMMAND:
+                        obj = new DebugFPGACmd();
+                        break;
+                    case MessageType.DEBUG_DVR_COMMAND:
+                        obj = new DebugDVRCmd();
                         break;
                 }
                 break;

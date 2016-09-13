@@ -22,50 +22,61 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0">
+        android:layout_weight="0"
+        android:gravity="center">
 
-        <CheckBox
+        <ToggleButton
             android:id="@+id/btnFCW"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:text="@string/FCW"
+            android:textOn="@string/FCW"
+            android:textOff="@string/FCW"
             android:textSize="12dp"
             android:contentDescription="@string/FCW"
             android:checked="true"
             android:onClick="onBtnStatClicked"/>
-        <CheckBox
+        <ToggleButton
             android:id="@+id/btnLDW"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:text= "@string/LDW"
+            android:textOn="@string/LDW"
+            android:textOff="@string/LDW"
             android:textSize="12dp"
             android:contentDescription="@string/LDW"
             android:checked="true"
             android:onClick="onBtnStatClicked"/>
-        <CheckBox
+        <ToggleButton
             android:id="@+id/btnPCW"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:text="@string/PCW"
+            android:textOn="@string/PCW"
+            android:textOff="@string/PCW"
             android:textSize="12dp"
             android:contentDescription="@string/PCW"
             android:checked="true"
             android:onClick="onBtnStatClicked"/>
-        <CheckBox
+        <ToggleButton
             android:id="@+id/btnSpeeding"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:text="@string/Speeding"
+            android:textOn="@string/Speeding"
+            android:textOff="@string/Speeding"
             android:textSize="12dp"
             android:contentDescription="@string/Speeding"
             android:checked="true"
             android:onClick="onBtnStatClicked"/>
 
-        <CheckBox
+        <ToggleButton
             android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:text="@string/Total"
+            android:textOn="@string/Total"
+            android:textOff="@string/Total"
             android:textSize="12dp"
             android:contentDescription="@string/Total"
             android:checked="true"

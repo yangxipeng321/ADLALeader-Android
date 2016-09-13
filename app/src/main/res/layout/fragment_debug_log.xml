@@ -12,64 +12,75 @@
             android:id="@+id/btnClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Clear"/>
+        <ToggleButton
+            android:id="@+id/cbAppLog"
+            android:layout_width="@dimen/toggle_button_width"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="Clear"/>
-        <CheckBox
-            android:id="@+id/cbAppLog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/btnClear"
-            android:layout_toRightOf="@id/btnClear"
-            android:layout_alignParentTop="true"
-            android:text="App"/>
-        <CheckBox
+            android:text="App"
+            android:textOn="App"
+            android:textOff="App"
+            android:checked="false" />
+        <ToggleButton
             android:id="@+id/cbMCU"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/cbAppLog"
             android:layout_toRightOf="@id/cbAppLog"
             android:layout_alignTop="@id/cbAppLog"
-            android:text="MCU"/>
+            android:text="MCU"
+            android:textOn="MCU"
+            android:textOff="MCU"/>
 
-        <CheckBox
+        <ToggleButton
             android:id="@+id/cbHI3Log"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/cbAppLog"
             android:layout_alignStart="@id/cbAppLog"
             android:layout_below="@id/cbAppLog"
-            android:text="HI3"/>
-        <CheckBox
+            android:text="HI3"
+            android:textOn="HI3"
+            android:textOff="HI3"/>
+        <ToggleButton
             android:id="@+id/cbHI3MCU"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/cbHI3Log"
             android:layout_toRightOf="@id/cbHI3Log"
             android:layout_alignTop="@id/cbHI3Log"
-            android:text="mcu"/>
-        <CheckBox
+            android:text="mcu"
+            android:textOn="mcu"
+            android:textOff="mcu"/>
+        <ToggleButton
             android:id="@+id/cbHI3DVR"
             android:text="DVR"
-            android:layout_width="wrap_content"
+            android:textOn="DVR"
+            android:textOff="DVR"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/cbHI3MCU"
             android:layout_toRightOf="@id/cbHI3MCU"
             android:layout_alignTop="@id/cbHI3Log"/>
-        <CheckBox
+        <ToggleButton
             android:id="@+id/cbHI3Stat"
             android:text="Stat"
-            android:layout_width="wrap_content"
+            android:textOn="Stat"
+            android:textOff="Stat"
+            android:layout_width="@dimen/toggle_button_width"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/cbHI3DVR"
             android:layout_toRightOf="@id/cbHI3DVR"
             android:layout_alignTop="@id/cbHI3Log"/>
     </RelativeLayout>
+
     <fragment
         android:id="@+id/debug_log_fragment"
         android:name="hk.com.mobileye.jason.adlaleader.common.logger.LogFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
 </LinearLayout>

@@ -252,7 +252,6 @@ public class TcpIntentService extends IntentService {
         }
         localIntent.putExtra(Constants.EXTENDED_OWNER, sender);
         localIntent.putExtra(Constants.EXTENTED_DESCRIPTION, description);
-        localIntent.addCategory(Intent.CATEGORY_DEFAULT);
 
         // Broadcasts the Intent
         mBroadcaster.sendBroadcast(localIntent);

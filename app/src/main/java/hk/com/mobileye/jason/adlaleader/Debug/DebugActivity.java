@@ -60,9 +60,8 @@ public class DebugActivity extends FragmentActivity {
 
     private void initLocalReceiver() {
         localReceiver = new LocalBroadcastReceiver();
-        IntentFilter filter = new IntentFilter(Constants.FIRMWARE_UPLOAD_RESULT_ACTION);
 
-        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        IntentFilter filter = new IntentFilter(Constants.FIRMWARE_UPLOAD_RESULT_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
         filter = new IntentFilter(Constants.LOG_CONTENT_ACTION);

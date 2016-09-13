@@ -8,7 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.ToggleButton;
 
 import hk.com.mobileye.jason.adlaleader.R;
 import hk.com.mobileye.jason.adlaleader.common.Constants;
@@ -42,10 +42,10 @@ public class DebugLogFragment extends Fragment implements View.OnClickListener{
         // Required empty public constructor
     }
 
-    CheckBox cbHI3Log;
-    CheckBox cbHI3MCU;
-    CheckBox cbHI3DVR;
-    CheckBox cbHI3Stat;
+    ToggleButton cbHI3Log;
+    ToggleButton cbHI3MCU;
+    ToggleButton cbHI3DVR;
+    ToggleButton cbHI3Stat;
 
 
     @Override
@@ -57,13 +57,13 @@ public class DebugLogFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.cbAppLog).setOnClickListener(this);
         view.findViewById(R.id.cbMCU).setOnClickListener(this);
 
-        cbHI3Log = (CheckBox) view.findViewById(R.id.cbHI3Log);
+        cbHI3Log = (ToggleButton) view.findViewById(R.id.cbHI3Log);
         cbHI3Log.setOnClickListener(this);
-        cbHI3MCU = (CheckBox) view.findViewById(R.id.cbHI3MCU);
+        cbHI3MCU = (ToggleButton) view.findViewById(R.id.cbHI3MCU);
         cbHI3MCU.setOnClickListener(this);
-        cbHI3DVR = (CheckBox) view.findViewById(R.id.cbHI3DVR);
+        cbHI3DVR = (ToggleButton) view.findViewById(R.id.cbHI3DVR);
         cbHI3DVR.setOnClickListener(this);
-        cbHI3Stat = (CheckBox) view.findViewById(R.id.cbHI3Stat);
+        cbHI3Stat = (ToggleButton) view.findViewById(R.id.cbHI3Stat);
         cbHI3Stat.setOnClickListener(this);
 
         initLogging();
@@ -107,7 +107,7 @@ public class DebugLogFragment extends Fragment implements View.OnClickListener{
     }
 
     private void onCBShowLogClicked(View view) {
-        CheckBox cb = (CheckBox) view;
+        ToggleButton cb = (ToggleButton) view;
         Log.d(TAG, "checkbox is " + cb.isChecked());
         if (cb.isChecked()) {
             msgFilter.setNext(mLogFragment.getLogView());
@@ -117,7 +117,7 @@ public class DebugLogFragment extends Fragment implements View.OnClickListener{
     }
 
     private void onCBHI3LogClicked(View view) {
-        CheckBox cb = (CheckBox) view;
+        ToggleButton cb = (ToggleButton) view;
 
         if (mApp.isOnCAN && mApp.mIp != null && mApp.mPort > 0) {
             int mask = 0;
@@ -139,7 +139,7 @@ public class DebugLogFragment extends Fragment implements View.OnClickListener{
     }
 
     private void onCBMcuLogClicked(View view) {
-        CheckBox cb = (CheckBox) view;
+        ToggleButton cb = (ToggleButton) view;
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             int mask = 0;
             if (cb.isChecked()) mask = 0xFFFFFFFF;

@@ -15,6 +15,9 @@ import hk.com.mobileye.jason.adlaleader.common.MyApplication;
 import hk.com.mobileye.jason.adlaleader.common.logger.Log;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Cmd.CmdSaveFrame;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.DVR.DvrKey;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.DebugDVRCmd;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.DebugFPGACmd;
+import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.Debug.DebugMCUCmd;
 import hk.com.mobileye.jason.adlaleader.net.Message.MsgClass.File.FileReadReq;
 import hk.com.mobileye.jason.adlaleader.net.Message.TLVType;
 import hk.com.mobileye.jason.adlaleader.net.TcpIntentService;
@@ -47,10 +50,18 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
         view.findViewById(R.id.btnDVRConfirm).setOnClickListener(this);
         view.findViewById(R.id.btnDVRCancel).setOnClickListener(this);
         view.findViewById(R.id.btnDVRHome).setOnClickListener(this);
-        view.findViewById(R.id.btnKey10).setOnClickListener(this);
-        view.findViewById(R.id.btnKey11).setOnClickListener(this);
-        view.findViewById(R.id.btnKey12).setOnClickListener(this);
-
+        view.findViewById(R.id.btnDebugMcu1).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugMcu2).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugMcu3).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugMcu4).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugFpga1).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugFpga2).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugFpga3).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugFpga4).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugDvr1).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugDvr2).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugDvr3).setOnClickListener(this);
+        view.findViewById(R.id.btnDebugDvr4).setOnClickListener(this);
         return view;
     }
 
@@ -84,19 +95,54 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
                 key = 5;
                 dealDVRKey(key);
                 break;
-            case R.id.btnKey10:
-                key = 10;
-                dealDVRKey(key);
+            case R.id.btnDebugMcu1:
+                key = 1;
+                dealDebugMcu(key);
                 break;
-            case R.id.btnKey11:
-                key = 11;
-                dealDVRKey(key);
+            case R.id.btnDebugMcu2:
+                key = 2;
+                dealDebugMcu(key);
                 break;
-            case R.id.btnKey12:
-                key = 12;
-                dealDVRKey(key);
+            case R.id.btnDebugMcu3:
+                key = 3;
+                dealDebugMcu(key);
                 break;
-
+            case R.id.btnDebugMcu4:
+                key = 4;
+                dealDebugMcu(key);
+                break;
+            case R.id.btnDebugFpga1:
+                key = 1;
+                dealDebugFpga(key);
+                break;
+            case R.id.btnDebugFpga2:
+                key = 2;
+                dealDebugFpga(key);
+                break;
+            case R.id.btnDebugFpga3:
+                key = 3;
+                dealDebugFpga(key);
+                break;
+            case R.id.btnDebugFpga4:
+                key = 4;
+                dealDebugFpga(key);
+                break;
+            case R.id.btnDebugDvr1:
+                key = 1;
+                dealDebugDvr(key);
+                break;
+            case R.id.btnDebugDvr2:
+                key = 2;
+                dealDebugDvr(key);
+                break;
+            case R.id.btnDebugDvr3:
+                key = 3;
+                dealDebugDvr(key);
+                break;
+            case R.id.btnDebugDvr4:
+                key = 4;
+                dealDebugDvr(key);
+                break;
         }
     }
 
@@ -140,6 +186,51 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
                 System.arraycopy(msg.getData(), 0, buffer, 0, buffer.length);
                 Intent intent = new Intent(Constants.UDP_SEND_ACTION);
                 intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buffer);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            }
+        }
+    }
+
+    private void dealDebugMcu(int key) {
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            DebugMCUCmd msg = new DebugMCUCmd();
+            msg.getBody().get(TLVType.TP_DEBUG_CMD_ID).setValue(key);
+            msg.setSeq(UdpHelper.getSeq());
+            if (msg.encode()) {
+                byte[] buffer = new byte[msg.getMsgLength()];
+                System.arraycopy(msg.getData(), 0, buffer, 0, buffer.length);
+                Intent intent = new Intent(Constants.UDP_SEND_ACTION);
+                intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buffer);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            }
+        }
+    }
+
+    private void dealDebugFpga(int key) {
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            DebugFPGACmd msg = new DebugFPGACmd();
+            msg.getBody().get(TLVType.TP_DEBUG_CMD_ID).setValue(key);
+            msg.setSeq(UdpHelper.getSeq());
+            if (msg.encode()) {
+                byte[] buf = new byte[msg.getMsgLength()];
+                System.arraycopy(msg.getData(), 0, buf, 0, buf.length);
+                Intent intent = new Intent(Constants.UDP_SEND_ACTION);
+                intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buf);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            }
+        }
+    }
+
+    private void dealDebugDvr(int key) {
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            DebugDVRCmd msg = new DebugDVRCmd();
+            msg.getBody().get(TLVType.TP_DEBUG_CMD_ID).setValue(key);
+            msg.setSeq(UdpHelper.getSeq());
+            if (msg.encode()) {
+                byte[] buf = new byte[msg.getMsgLength()];
+                System.arraycopy(msg.getData(), 0, buf, 0, buf.length);
+                Intent intent = new Intent(Constants.UDP_SEND_ACTION);
+                intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buf);
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
             }
         }

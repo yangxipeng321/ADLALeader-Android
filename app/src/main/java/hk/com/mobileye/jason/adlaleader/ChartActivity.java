@@ -11,9 +11,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -118,7 +118,6 @@ public class ChartActivity extends Activity {
     private void initLocalReceiver() {
         localReceiver = new LocalBroadcastReceiver();
         IntentFilter filter = new IntentFilter(Constants.DAY_STAT_UPDATE_ACTION);
-        //filter.addCategory(Intent.CATEGORY_DEFAULT);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
     }
 
@@ -186,8 +185,11 @@ public class ChartActivity extends Activity {
     }
 
     public void onBtnStatClicked(View view) {
-        CheckBox cb = (CheckBox)view;
+        ToggleButton cb = (ToggleButton)view;
         LineData lineData = mChart.getData();
+
+        if (null == lineData)
+            return;
 
         LineDataSet set = (LineDataSet) lineData.getDataSetByLabel(
                 view.getContentDescription().toString(), true);

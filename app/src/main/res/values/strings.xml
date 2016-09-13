@@ -76,10 +76,11 @@
     <string name="dvr_up">上</string>
     <string name="dvr_down">下</string>
     <string name="dvr_photo">拍照</string>
+    <string name="dvr_record">录像</string>
     <string name="dvr_video_list">视频列表</string>
     <string name="dvr_fcw_video_list">紧急视频</string>
     <string name="dvr_pic_list">照片列表</string>
-    <string name="dvr_play_file">播放</string>
+    <string name="dvr_format">格式化</string>
 
     <string name="screen_car">原车屏</string>
     <string name="screen_mobileye">天眼</string>
@@ -97,6 +98,9 @@
     <string name="Speeding">超速</string>
     <string name="HMW">HMW</string>
     <string name="Total">合计</string>
+
+    <string name="dvr_format_alert">即将格式化TF卡！卡上所有的内容都将删除！</string>
+    <string name="dvr_format_title">格式化TF卡</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -27,4 +27,5 @@ public class TLVType {
     public static final int TP_DVR_PLAY_FILE_ID =   0x16;
     public static final int TP_LOG_SWITCH_ID =      0x17;
     public static final int TP_LOG_CONTENT_ID =     0x18;
+    public static final int TP_DEBUG_CMD_ID =       0x19;
 }

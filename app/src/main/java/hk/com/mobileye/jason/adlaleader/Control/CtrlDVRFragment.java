@@ -1,7 +1,7 @@
 package hk.com.mobileye.jason.adlaleader.control;
 
-
-import android.animation.ValueAnimator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -46,12 +47,15 @@ public class CtrlDVRFragment extends Fragment {
 
     private ListView listView;
     private FileAdapter mAdapter;
-    private Button btnPlay;
-    private View videoContainer;
-    private View controlContainer;
-    private float videoY = 0;
-    private float controlY = 0;
+    private Button btnFormat;
     private byte curCtrl = 0;
+    private float curAlpha = 0f;
+    private int curButton = 0; //0 录像 1 视频 2 紧急视频 3 照片
+    private ArrayList<ToggleButton> btns = new ArrayList<>();
+
+    BtnClickListener listener;
+
+    private ArrayList<String> mlist;
 
     public CtrlDVRFragment() {
         // Required empty public constructor
@@ -60,23 +64,32 @@ public class CtrlDVRFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e(TAG, "oncreateview");
         View view = inflater.inflate(R.layout.fragment_ctrl_dvr, container, false);
 
         mApp = (MyApplication) getActivity().getApplication();
 
-        BtnClickListener listener = new BtnClickListener();
+        listener = new BtnClickListener();
+        btnFormat = (Button) view.findViewById(R.id.btnDVRFormat);
+        btnFormat.setOnClickListener(listener);
         view.findViewById(R.id.btnScrVideo).setOnClickListener(listener);
-        view.findViewById(R.id.btnRecord).setOnClickListener(listener);
-        view.findViewById(R.id.btnDVRFileList).setOnClickListener(listener);
-        view.findViewById(R.id.btnDVRFCWFileList).setOnClickListener(listener);
-        view.findViewById(R.id.btnDVRPicList).setOnClickListener(listener);
-        btnPlay = (Button) view.findViewById(R.id.btnDVRPlayFile);
-        btnPlay.setOnClickListener(listener);
-        videoContainer = view.findViewById(R.id.videoContainer);
-        controlContainer = view.findViewById(R.id.controlContainer);
 
+        btns.clear();
+        addToggleButtonToList(view.findViewById(R.id.btnRecord));
+        addToggleButtonToList(view.findViewById(R.id.btnDVRFileList));
+        addToggleButtonToList(view.findViewById(R.id.btnDVRFCWFileList));
+        addToggleButtonToList(view.findViewById(R.id.btnDVRPicList));
 
-        mAdapter = new FileAdapter(new ArrayList<String>());
+        checkToggleButton(curButton);
+
+        if (null == mlist) {
+            mlist = new ArrayList<>();
+        }
+
+        if (null == mAdapter) {
+            mAdapter = new FileAdapter(mlist);
+        }
+
         listView = (ListView) view.findViewById(R.id.listView);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new ListView.OnItemClickListener(){
@@ -87,8 +100,21 @@ public class CtrlDVRFragment extends Fragment {
                 dealPlayFile((byte)1);
             }
         });
+        listView.setAlpha(curAlpha);
+
         return view;
     }
+
+
+    //    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        if (null != videoContainer && null != controlContainer) {
+//            videoY = videoContainer.getTop();
+//            videoContainer.measure(0, 0);
+//            controlY = videoContainer.getMeasuredHeight();
+//        }
+//    }
 
     private class BtnClickListener implements View.OnClickListener {
         @Override
@@ -98,22 +124,23 @@ public class CtrlDVRFragment extends Fragment {
                     dealScreenVideo();
                     break;
                 case R.id.btnRecord:
+                    checkToggleButton(0);
                     dealRecord();
                     break;
                 case R.id.btnDVRFileList:
+                    checkToggleButton(1);
                     dealGetFileList(Constants.DVR_FILE_TYPE_VIDEO);
                     break;
                 case R.id.btnDVRFCWFileList:
+                    checkToggleButton(2);
                     dealGetFileList(Constants.DVR_FILE_TYPE_FCW);
                     break;
                 case R.id.btnDVRPicList:
+                    checkToggleButton(3);
                     dealGetFileList(Constants.DVR_FILE_TYPE_PIC);
                     break;
-                case R.id.btnDVRPlayFile:
-                    if (curCtrl == 1)
-                        dealPlayFile((byte) 2);
-                    else
-                        dealPlayFile((byte) 1);
+                case R.id.btnDVRFormat:
+                    dealFormat();
                     break;
             }
         }
@@ -162,7 +189,7 @@ public class CtrlDVRFragment extends Fragment {
                 view = (TextView) convertView;
             } else {
                 view = (TextView) getActivity().getLayoutInflater().inflate(R.layout.dvr_file_item,
-                        null, false);
+                        parent, false);
             }
 
             if (position == mSelectedPosition) {
@@ -205,16 +232,8 @@ public class CtrlDVRFragment extends Fragment {
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
-
     private void dealRecord() {
-        //videoContainer.animate().y(200f);
-        if (controlY == 0) {
-            controlY = controlContainer.getY();
-        }
-        //controlContainer.animate().y(controlY);
-        ValueAnimator animator = new ValueAnimator();
-        animator.setTarget(controlContainer);
-        animator.start();
+        moveUI(true);
 
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             DVRRecord msg = new DVRRecord();
@@ -230,9 +249,6 @@ public class CtrlDVRFragment extends Fragment {
     }
 
     private void dealGetFileList(int fileType) {
-        //videoContainer.animate().y(-200f);
-        //controlContainer.animate().y(videoY);
-
         mFileType = fileType;
         mAdapter.clear();
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
@@ -274,10 +290,17 @@ public class CtrlDVRFragment extends Fragment {
         }
     }
 
+    private void dealFormat() {
+        FormatDialogFragment dialog = new FormatDialogFragment();
+        dialog.show(getActivity().getFragmentManager(), "hello");
+    }
+
     public void SetListView(ArrayList<String> list) {
         Log.d(TAG, "SetListView");
-        mAdapter.clear();
-        mAdapter.addAll(list);
+        mlist.clear();
+        mlist.addAll(list);
+        mAdapter.notifyDataSetChanged();
+        moveUI(false);
     }
 
     public void setPlayFile(byte fileType, byte playCtrl, String fileName) {
@@ -286,55 +309,63 @@ public class CtrlDVRFragment extends Fragment {
         if (playCtrl != curCtrl && fileType == 1) {
             curCtrl = playCtrl;
             if (playCtrl == 1) {
-                btnPlay.setText("暂停");
+                btnFormat.setText("暂停");
             } else {
-                btnPlay.setText("播放");
+                btnFormat.setText("播放");
             }
         }
     }
 
     private void dealVideoControl(String desc) {
-        Button button = (Button) getView().findViewById(R.id.btnPlayVideo);
+        if (null != getView()) {
+            Button button = (Button) getView().findViewById(R.id.btnDVRFormat);
 
-        if (desc.equals(getString(R.string.play_video))) {
-            button.setText(getString(R.string.stop_video));
-            button.setContentDescription(getString(R.string.stop_video));
-            try {
-                //videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
-                //videoView.setVideoPath("rtsp://192.168.168.102:6880/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
+            if (desc.equals(getString(R.string.play_video))) {
+                button.setText(getString(R.string.stop_video));
+                button.setContentDescription(getString(R.string.stop_video));
+                try {
+                    //videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
+                    //videoView.setVideoPath("rtsp://192.168.168.102:6880/live/1/67A7572844E51A64/f68g2mj7wjua3la7.sdp");
 //                videoView.setVideoPath("rtsp://192.168.168.1:6880/test:network-caching=1000");
 //                MediaController mc = new MediaController(this);
 //                videoView.setMediaController(mc);
 //                videoView.start();
 //                videoView.requestFocus();
-            } catch (Exception e) {
-                android.util.Log.e(TAG, "error: " + e.getMessage());
-            }
-        } else if (desc.equals(getString(R.string.stop_video))) {
-            button.setText(getString(R.string.play_video));
-            button.setContentDescription(getString(R.string.play_video));
+                } catch (Exception e) {
+                    android.util.Log.e(TAG, "error: " + e.getMessage());
+                }
+            } else if (desc.equals(getString(R.string.stop_video))) {
+                button.setText(getString(R.string.play_video));
+                button.setContentDescription(getString(R.string.play_video));
 //            videoView.stopPlayback();
+            }
         }
     }
 
+    private void moveUI(boolean isRecord) {
+        if (isRecord) {
+            curAlpha = 0f;
+        } else {
+            curAlpha = 1f;
+        }
+        ObjectAnimator animator = ObjectAnimator.ofFloat(listView, "Alpha", curAlpha);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animator);
+        set.start();
+    }
 
-//    private void moveUI(View view) {
-//        ValueAnimator animator = new ValueAnimator();
-//        animator.setDuration(1000);
-//
-//        animator.setEvaluator();
-//
-//        animator.start();
-//
-//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//                float[] xyPos = (float[]) animation.getAnimatedValue();
-//                view.getLayoutParams().height = (int) xyPos[0];
-//            }
-//        });
-//
-//
-//    }
+    private void checkToggleButton(int index) {
+        curButton = index;
+        for (int i = 0; i< btns.size(); i++) {
+            btns.get(i).setChecked(i == index);
+        }
+    }
 
+    private void addToggleButtonToList(View view) {
+        if (view instanceof ToggleButton) {
+            ToggleButton tb = (ToggleButton) view;
+            tb.setOnClickListener(listener);
+            btns.add(tb);
+        }
+    }
 }
