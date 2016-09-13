@@ -12,7 +12,7 @@ android {
     compileSdkVersion 'Google Inc.:Google APIs:23'
     buildToolsVersion '23.0.3'
     defaultConfig {
-        applicationId "hk.com.mobileye.jason.adlaleader"
+        applicationId "com.adasleader.jason.adasleader"
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 216091201

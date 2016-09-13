@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="hk.com.mobileye.jason.adlaleader.NightViewActivity">
+    tools:context="com.adasleader.jason.adasleader.NightViewActivity">
 
     <TextView android:text="Night View"
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
 
         </LinearLayout>
         <fragment
-            android:name="hk.com.mobileye.jason.adlaleader.common.logger.LogFragment"
+            android:name="com.adasleader.jason.adasleader.common.logger.LogFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/night_view_fragment"/>

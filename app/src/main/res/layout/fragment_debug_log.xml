@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".debug.DebugLogFragment">
+    tools:context="com.adasleader.jason.adasleader.debug.DebugLogFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/debug_log_fragment"
-        android:name="hk.com.mobileye.jason.adlaleader.common.logger.LogFragment"
+        android:name="com.adasleader.jason.adasleader.common.logger.LogFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

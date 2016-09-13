@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#dddddd"
-    tools:context="hk.com.mobileye.jason.adlaleader.debug.DebugFirmwareFragment">
+    tools:context="com.adasleader.jason.adasleader.debug.DebugFirmwareFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
