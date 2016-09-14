@@ -2,15 +2,14 @@ package com.adasleader.jason.adasleader.common;
 
 /**
  * Created by Jason on 2015/1/7.
- *
  */
 public final class Constants {
-    public static final boolean DEVELOPER_MODE=false;
+    public static final boolean DEVELOPER_MODE = false;
     public static final boolean SHOW_DEBUG = false;
 
     public static final int MSG_WARNING = 1;
     public static final int MSG_SEND_HEARTBEAT = 2;
-    public static final int MSG_REFRESH_WARNING =3;
+    public static final int MSG_REFRESH_WARNING = 3;
     public static final int MSG_SWITCH_SCREEN = 4;
     public static final int MSG_LOG_CONTENT = 5;
     public static final int MSG_DVR_PLAY_FILE = 6;
@@ -28,10 +27,10 @@ public final class Constants {
     public static final int COUNTDOWN = 20000;  //20s
 
     public static final String SSID = "ADASLeader";
-//    public static final String SSID = "qddytt";
+    //    public static final String SSID = "qddytt";
     public static final String TEST_SSID = "MBK-TPLink";
     public static final String IP = "192.168.168.1";
-//    public static final String IP = "192.168.2.1";
+    //    public static final String IP = "192.168.2.1";
     public static final String TEST_IP = "192.168.0.16";
     public static final int UDP_PORT = 6666;
     public static final int TCP_PORT = 6667;
@@ -43,35 +42,37 @@ public final class Constants {
     public static final int HISTORY_DAYS = 15;
 
     //Switch Screen ID
-    public static final byte SCREEN_CAR_CAR         = 1;  //原车屏显示原内容
-    public static final byte SCREEN_CAR_ME          = 2;  //原车屏显示天眼
-    public static final byte SCREEN_CAR_DVR         = 3;  //原车屏显示DVR
-    public static final byte SCREEN_APP_CAR         = -127;  //0x81  App显示原车内容
-    public static final byte SCREEN_APP_ME          = -126;  //0x82  App显示天眼
-    public static final byte SCREEN_APP_DVR         = -125;  //0x83  App显示DVR
+    public static final byte SCREEN_CAR_CAR = 1;  //原车屏显示原内容
+    public static final byte SCREEN_CAR_ME = 2;  //原车屏显示天眼
+    public static final byte SCREEN_CAR_DVR = 3;  //原车屏显示DVR
+    public static final byte SCREEN_APP_CAR = -127;  //0x81  App显示原车内容
+    public static final byte SCREEN_APP_ME = -126;  //0x82  App显示天眼
+    public static final byte SCREEN_APP_DVR = -125;  //0x83  App显示DVR
 
     //DVR File Tpye ID
-    public static final byte DVR_FILE_TYPE_VIDEO    = 1;
-    public static final byte DVR_FILE_TYPE_PIC      = 2;
-    public static final byte DVR_FILE_TYPE_FCW      = 3;
+    public static final byte DVR_FILE_TYPE_VIDEO = 1;
+    public static final byte DVR_FILE_TYPE_PIC = 2;
+    public static final byte DVR_FILE_TYPE_FCW = 3;
 
 
     //public static final String MH_CONFIG_FILE = "AM_AWS_SETUP.CONF";
     public static final String MH_CONFIG_FILE = "WARNING.CONF";
+    public static final String UDHCPD_FILE = "UDHCPD.CONF";
+
     //public static final String HI3_FIRMWARE = "ADASGATE_.bin";
     //public static final String MH_CONFIG_FILE = "etc/AWS2Buzzer.conf";
     //public static final String MH_BUZZER_FILE = "AWS2Buzzer.conf";
-    public static final String HI3_GATE_PREFIX =        "ADASGATE_";
-    public static final String HI3_DAEMON_PREFIX =      "ADASD_";
-    public static final String HI3_RTSP_PREFIX =        "RTSP_";
-    public static final String MCU_FILE_PREFIX =        "MCU_";
-    public static final String PIC_FILE_PREFIX =        "PIC_";
-    public static final String FPGA_FILE_PREFIX =       "FPGA_";
+    public static final String HI3_GATE_PREFIX = "ADASGATE_";
+    public static final String HI3_DAEMON_PREFIX = "ADASD_";
+    public static final String HI3_RTSP_PREFIX = "RTSP_";
+    public static final String MCU_FILE_PREFIX = "MCU_";
+    public static final String PIC_FILE_PREFIX = "PIC_";
+    public static final String FPGA_FILE_PREFIX = "FPGA_";
     public static final String FIRMWARE_EXTENSION = ".BIN";
-    public static final String WARNING_CONFIG_PREFIX =  "WARNING";
+    public static final String WARNING_CONFIG_PREFIX = "WARNING";
     public static final String CAR_PARA_CONFIG_PREFIX = "CARPARA";
     public static final String CAR_DISPLAY_CONFIG_PREFIX = "CAR_DISPLAY";
-    public static final String CONFIG_EXTENSION =       ".CONF";
+    public static final String CONFIG_EXTENSION = ".CONF";
 
     public static final String queryAppUpgradeUrlStr = "http://adasleader.com.cn:10010/upgrade/tt1";
     public static final String queryFirmwareUpgradeUrlStr = "http://adasleader.com.cn:10010/upgrade/tt2";
@@ -102,7 +103,8 @@ public final class Constants {
     public static final String NETWORK_CHANGE_ACTION =
             "hk.com.mobileye.jason.adlaLeader.NETWORK_CHANGE";
 
-    /** TcpIntentService work status changed , broadcast the status.
+    /**
+     * TcpIntentService work status changed , broadcast the status.
      * The EXTENDED_TCP_STATUS int extra is set to corresponding value.
      * The EXTENDED_OWNER extra is represent the context which start the TcpIntentService.
      * If the work completed, then the EXTENDED_TCP_RECEIVE_DATA byte[] extra is set to
@@ -111,15 +113,15 @@ public final class Constants {
     public static final String TCP_WORK_STATUS_ACTION = "hk.com.mobileye.jason.adlaLeader.TCP_WORK_STATUS";
 
     // Defines the key for the status "extra" in the TcpIntentService
-    public static final String EXTENDED_TCP_STATUS =       "hk.com.mobileye.jason.adlaLeader.TCP_STATUS";
+    public static final String EXTENDED_TCP_STATUS = "hk.com.mobileye.jason.adlaLeader.TCP_STATUS";
     // Defines the key for the Receive data "extra" in the TcpIntentService
     public static final String EXTENDED_TCP_RECEIVE_DATA = "hk.com.mobileye.jason.adlaLeader.TCP_RECEIVE_DATA";
     // Defines the key for the owner "extra" which represent the original starter of the work
-    public static final String EXTENDED_OWNER =            "hk.com.mobileye.jason.adlaLeader.ORIGINATOR";
+    public static final String EXTENDED_OWNER = "hk.com.mobileye.jason.adlaLeader.ORIGINATOR";
     // Defines the key for the receiver "extra" which is the final ender of the work
-    public static final String EXTENDED_RECEIVER =         "hk.com.mobileye.jason.adlaLeader.RECEIVER";
+    public static final String EXTENDED_RECEIVER = "hk.com.mobileye.jason.adlaLeader.RECEIVER";
     // Defines the key for the description "extra" which describes the work that this service has done.
-    public static final String EXTENTED_DESCRIPTION =      "hk.com.mobileye.jason.adlaLeader.DESCRIPTION";
+    public static final String EXTENTED_DESCRIPTION = "hk.com.mobileye.jason.adlaLeader.DESCRIPTION";
 
     //Describe what is this TcpIntentService doing
     public static final int DESC_UNKNOW = -1;
@@ -139,7 +141,6 @@ public final class Constants {
     public static final int DESC_DVR_PLAY_FILE = 13;
 
 
-
     // Status values of TcpIntentService to broadcast to the Activity
     //The file service is starting
     public static final int STATE_ACTION_STARTED = 0;
@@ -154,7 +155,7 @@ public final class Constants {
     //The background thread is timeout
     public static final int STATE_ACTION_TIMEOUT = 5;
     //The background thread is send failed
-    public static  final  int STATE_ACTION_SEND_FAILED = 6;
+    public static final int STATE_ACTION_SEND_FAILED = 6;
 
     /**
      * When receive the settings from the Device, broadcast the updating settings message.
@@ -265,7 +266,6 @@ public final class Constants {
             "hk.com.mobileye.jason.adlaLeader.EXTEND_DAY_STAT_INDEX_ID";
     public static final String EXTEND_DAY_STAT_RUN_TIME =
             "hk.com.mobileye.jason.adlaLeader.EXTEND_DAY_STAT_RUN_TIME_ID";
-
 
 
     public static final String MONTH_STAT_UPDATE_ACTION =

@@ -10,12 +10,12 @@ android {
         }
     }
     compileSdkVersion 'Google Inc.:Google APIs:23'
-    buildToolsVersion '23.0.3'
+    buildToolsVersion '24.0.2'
     defaultConfig {
         applicationId "com.adasleader.jason.adasleader"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 216091201
+        versionCode 216091401
         versionName "1.4.1."
     }
 /*

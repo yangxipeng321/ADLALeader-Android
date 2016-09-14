@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,6 +52,7 @@ public class SettingsActivity extends Activity implements  WarningPrefsFragment.
         initLocalReceiver();
 
         warningPrefsFragment = new WarningPrefsFragment();
+        warningPrefsFragment.setListener(this);
         getFragmentManager().beginTransaction().replace(R.id.warningPrefs, warningPrefsFragment).commit();
     }
 
@@ -256,15 +256,15 @@ public class SettingsActivity extends Activity implements  WarningPrefsFragment.
         private void dealWriteMHConfigResult(Intent intent) {
             int length = intent.getIntExtra(Constants.EXTEND_FILE_LENGTH, -1);
             Log.d(TAG, "Deal write MH config reslut. file lenght = " + length);
-            String str;
-            if (length > 0) {
-                str = "Write Warning Config File OK";
-            } else {
-                str = "Write Warning Config File Failed";
-            }
-            Toast toast = Toast.makeText(SettingsActivity.this, str, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.TOP, 0, 20);
-            toast.show();
+//            String str;
+//            if (length > 0) {
+//                str = "Write Warning Config File OK";
+//            } else {
+//                str = "Write Warning Config File Failed";
+//            }
+//            Toast toast = Toast.makeText(SettingsActivity.this, str, Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.TOP, 0, 20);
+//            toast.show();
         }
 
         private void dealNetworkChange() {

@@ -306,15 +306,6 @@ public class CtrlDVRFragment extends Fragment {
 
     public void setPlayFile(byte fileType, byte playCtrl, String fileName) {
         mAdapter.setSelected(fileName);
-
-        if (playCtrl != curCtrl && fileType == 1) {
-            curCtrl = playCtrl;
-            if (playCtrl == 1) {
-                btnFormat.setText("暂停");
-            } else {
-                btnFormat.setText("播放");
-            }
-        }
     }
 
     private void dealVideoControl(String desc) {

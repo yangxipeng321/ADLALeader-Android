@@ -574,7 +574,8 @@ public class MainActivity2 extends TabActivity {
         if (fileName.toUpperCase().endsWith(Constants.FIRMWARE_EXTENSION)
                 || fileName.toUpperCase().startsWith(Constants.WARNING_CONFIG_PREFIX)
                 || fileName.toUpperCase().startsWith(Constants.CAR_PARA_CONFIG_PREFIX)
-                || fileName.toUpperCase().startsWith(Constants.CAR_DISPLAY_CONFIG_PREFIX)) {
+                || fileName.toUpperCase().startsWith(Constants.CAR_DISPLAY_CONFIG_PREFIX)
+                || fileName.toUpperCase().startsWith(Constants.UDHCPD_FILE)) {
             broadcastUploadFirmwareReslut(fileName, fileLen);
         }
         if (fileName != null && fileName.equals(Constants.MH_CONFIG_FILE)) {

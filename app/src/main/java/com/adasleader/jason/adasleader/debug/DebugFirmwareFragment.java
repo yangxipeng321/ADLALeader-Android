@@ -158,6 +158,8 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
     }
 
 
+
+
     /**
      * Search the firmware file in the ADASLeader dir.
      * @return files number
@@ -310,6 +312,7 @@ public class DebugFirmwareFragment extends Fragment implements View.OnClickListe
             else if ((upcaseName.startsWith(Constants.WARNING_CONFIG_PREFIX)
                     || upcaseName.startsWith(Constants.CAR_PARA_CONFIG_PREFIX)
                     || upcaseName.startsWith(Constants.CAR_DISPLAY_CONFIG_PREFIX))
+                    || upcaseName.startsWith(Constants.UDHCPD_FILE)
                     && upcaseName.endsWith(Constants.CONFIG_EXTENSION))
                 return true;
             else

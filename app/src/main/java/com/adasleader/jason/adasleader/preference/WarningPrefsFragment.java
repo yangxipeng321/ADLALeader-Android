@@ -58,12 +58,9 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         mListener = null;
     }
 
-
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         //Toast.makeText(getActivity(), String.format("%s:%s", preference.getTitle(), newValue), Toast.LENGTH_SHORT).show();
-
         //如果是超速显示方式更改了，则需要更新其他超速设置项的使能状态
         if (preference.getKey().equals(WarningConfig.speedingDisplayStr)) {
             String value = (String)newValue;
@@ -73,10 +70,28 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
                 pref.setEnabled(isEnable);
             }
         }
-        updateConfig(preference, newValue);
 
+        if (isPrefChanged(preference, newValue)) {
+            updateConfig(preference, newValue);
+        }
         return true;
     }
+
+
+
+
+    private boolean isPrefChanged(Preference pref, Object newValue) {
+        boolean result = false;
+        if ((pref instanceof ListPreference) && (newValue instanceof String)) {
+            ListPreference lp = (ListPreference) pref;
+            String myValue = (String) newValue;
+            if (!lp.getValue().equals(myValue)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
 
     private void initPreferences(PreferenceScreen root) {
         Context context = getActivity();
@@ -126,6 +141,7 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
                 }
             }
         }
+        updatePreferenceListHeight();
     }
 
     private void updateConfig(Preference preference, Object newValue) {
@@ -171,5 +187,9 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
                 frame.setLayoutParams(params);
             }
         }
+    }
+
+    public void setListener(InteractionListener listener) {
+        mListener = listener;
     }
 }

@@ -18,7 +18,7 @@ public class WarningConfig {
     static final String hmwSpeedStr = "跟车距离预警速度";
     static final String virtualBumperStr = "虚拟保险杠灵敏度";
     static final String ldwStr = "车道偏离预警";
-    static final String speedingDisplayStr = "超速预警显示方式";
+    static final String speedingDisplayStr = "超速预警模式";
     static final String speedingStr = "超速设置：限速";
     static final String speedingPercentStr = "超速设置：比例";
     static final String followCarStr = "堵车跟车预警";
@@ -64,14 +64,14 @@ public class WarningConfig {
             "80公里/小时"};
 
     static final byte[] JS_SPEEDING_DISPLAY = {0, 1, 2};
-    static final String[] JS_SPEEDING_DISPLAY_DESC = {"不显示", "正常显示", "精简显示"};
+    static final String[] JS_SPEEDING_DISPLAY_DESC = {"静音", "精简", "正常"};
 
     static final byte[] JS_SPEEDING = {30, 40, 50, 60, 80, 100};
     static final String[] JS_SPEEDING_DESC = {"30公里/小时", "40公里/小时", "50公里/小时",
             "60公里/小时", "80公里/小时", "100公里/小时"};
 
     static final byte[] JS_SPEEDING_PERCENT = {0, 5, 10};
-    static final String[] JS_SPEEDING_PERCENT_DESC = {"超过限速", "超过限速5%", "超过限速10/%"};
+    static final String[] JS_SPEEDING_PERCENT_DESC = {"超过限速立即提醒", "超过限速5%提醒", "超过限速10%提醒"};
 
     static final byte[] JS_FOLLOW_CAR = {3, 5, 10};
     static final String[] JS_FOLLOW_CAR_DESC = {"近", "中", "远"};
