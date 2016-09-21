@@ -383,14 +383,14 @@ public class AlarmActivity extends Activity {
             sendHeartBeat();
         }
         handler.removeMessages(Constants.MSG_SEND_HEARTBEAT);
-        handler.sendEmptyMessageDelayed(Constants.MSG_SEND_HEARTBEAT, Constants.HEAERBEAT_INTERVAL);
+        handler.sendEmptyMessageDelayed(Constants.MSG_SEND_HEARTBEAT, Constants.HEARTBEAT_INTERVAL);
     }
     Runnable HeartBeatRunable = new Runnable() {
         @Override
         public void run() {
             if (isSendHeartBeat){ sendHeartBeat();}
             handler.removeMessages(Constants.MSG_SEND_HEARTBEAT);
-            handler.postDelayed(this, Constants.HEAERBEAT_INTERVAL);
+            handler.postDelayed(this, Constants.HEARTBEAT_INTERVAL);
 //            Log.d(TAG, "isSendHeartBeat = " + isSendHeartBeat);
         }
     };

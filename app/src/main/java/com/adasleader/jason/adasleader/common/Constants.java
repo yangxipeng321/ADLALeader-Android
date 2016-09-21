@@ -2,10 +2,11 @@ package com.adasleader.jason.adasleader.common;
 
 /**
  * Created by Jason on 2015/1/7.
+ *
  */
 public final class Constants {
     public static final boolean DEVELOPER_MODE = false;
-    public static final boolean SHOW_DEBUG = false;
+    public static final boolean SHOW_DEBUG = true;
 
     public static final int MSG_WARNING = 1;
     public static final int MSG_SEND_HEARTBEAT = 2;
@@ -14,7 +15,7 @@ public final class Constants {
     public static final int MSG_LOG_CONTENT = 5;
     public static final int MSG_DVR_PLAY_FILE = 6;
 
-    public static final int HEAERBEAT_INTERVAL = 5000;  //ms
+    public static final int HEARTBEAT_INTERVAL = 5000;  //ms
     public static final long REFRESH_WARNING_INTERVAL = 800; //ms
 
     public static final int SOCKET_READ_TIMEOUT = 20000;  //10s
