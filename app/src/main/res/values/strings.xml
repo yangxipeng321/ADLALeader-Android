@@ -101,8 +101,4 @@
 
     <string name="dvr_format_alert">即将格式化TF卡！卡上所有的内容都将删除！</string>
     <string name="dvr_format_title">格式化TF卡</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>

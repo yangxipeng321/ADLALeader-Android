@@ -12,6 +12,7 @@
         android:id="@+id/imgA2B1"
         android:src="@drawable/a2b1"
         android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp"
         android:layout_marginTop="51dp"/>
 
 
@@ -20,14 +21,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtSpeedLimit"
         android:layout_alignLeft="@id/imgA2B1"
+        android:layout_alignStart="@id/imgA2B1"
         android:layout_alignRight="@id/imgA2B1"
+        android:layout_alignEnd="@id/imgA2B1"
         android:layout_alignTop="@id/imgA2B1"
         android:layout_alignBottom="@id/imgA2B1"
         android:gravity="center"
-        android:text="2600"
+        android:text="286"
         android:textSize="@dimen/alarm_speed_limit_text_size"
         android:textColor="#ff000000"
-        android:singleLine="true"
+        android:maxLines="1"
         android:elegantTextHeight="false" />
 
     <TextView
@@ -37,11 +40,13 @@
         android:layout_alignTop="@+id/imgA2B1"
         android:layout_alignBottom="@+id/imgA2B1"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:gravity="center"
         android:text="120"
         android:textSize="@dimen/alarm_speed_text_size"
         android:textColor="#ffffffff"
         android:layout_marginRight="21dp"
+        android:layout_marginEnd="21dp"
         android:width="100dp" />
 
     <TextView
@@ -89,7 +94,8 @@
         android:id="@+id/imgA2B5"
         android:src="@drawable/a2b5"
         android:layout_alignBottom="@id/imgA2B2"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -98,7 +104,8 @@
         android:src="@drawable/ldw_left"
         android:layout_alignBottom="@id/imgA2B2"
         android:visibility="invisible"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -106,7 +113,8 @@
         android:id="@+id/imgA2B6"
         android:src="@drawable/a2b6"
         android:layout_alignBottom="@id/imgA2B2"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"        />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -114,6 +122,7 @@
         android:id="@+id/imgA2B6Animate"
         android:src="@drawable/ldw_right"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignBottom="@id/imgA2B2"
         android:visibility="invisible"/>
 
@@ -144,13 +153,4 @@
         android:layout_above="@id/imgA2B4"
         android:layout_marginBottom="10dp"
         android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/txtInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textColor="#ffffffff"
-        android:text="hello"
-        android:visibility="gone" />
 </RelativeLayout>

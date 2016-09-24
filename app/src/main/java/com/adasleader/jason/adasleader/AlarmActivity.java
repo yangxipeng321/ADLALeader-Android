@@ -49,7 +49,6 @@ import com.adasleader.jason.adasleader.net.UdpHelper;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.SocketAddress;
-import java.util.Date;
 import java.util.Locale;
 
 import hk.com.mobileye.jason.adasleader.R;
@@ -71,7 +70,6 @@ public class AlarmActivity extends Activity {
     TextView txtSpeedLimit;
     TextView txtSpeed;
     TextView txtHMW;
-    TextView txtInfo;
 
     AnimationDrawable ldwLeftAnimation;
     AnimationDrawable ldwRightAnimation;
@@ -131,7 +129,6 @@ public class AlarmActivity extends Activity {
     protected void onResume(){
         super.onResume();
         Log.d(TAG, "onResume");
-        txtInfo.setText(String.format("%tT OnResume()", new Date()));
         //calcPosition();
         //Registers a listener whenever network connection changes.
     }
@@ -201,7 +198,6 @@ public class AlarmActivity extends Activity {
         txtSpeedLimit = (TextView) findViewById(R.id.txtSpeedLimit);
         txtSpeed = (TextView) findViewById(R.id.txtSpeed);
         txtHMW = (TextView) findViewById(R.id.txtHMW);
-        txtInfo = (TextView) findViewById(R.id.txtInfo);
 
         //Waring Animate
         ldwLeftAnimation = (AnimationDrawable) ivA2B5Animation.getDrawable();

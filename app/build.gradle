@@ -9,7 +9,7 @@ android {
             storePassword 'mobileye'
         }
     }
-    compileSdkVersion 'Google Inc.:Google APIs:23'
+    compileSdkVersion 'Google Inc.:Google APIs:24'
     buildToolsVersion '24.0.2'
     defaultConfig {
         applicationId "com.adasleader.jason.adasleader"

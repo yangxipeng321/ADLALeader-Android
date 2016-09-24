@@ -7,9 +7,9 @@
     <dimen name="editor_item_padding_bottom">8dp</dimen>
     <dimen name="editor_spinner_caption_min_width">135dp</dimen>
 
-    <dimen name="alarm_speed_limit_text_size">48dp</dimen>
-    <dimen name="alarm_speed_text_size">56dp</dimen>
-    <dimen name="alarm_hmw_text_size">80dp</dimen>
+    <dimen name="alarm_speed_limit_text_size">48sp</dimen>
+    <dimen name="alarm_speed_text_size">56sp</dimen>
+    <dimen name="alarm_hmw_text_size">80sp</dimen>
 
     <dimen name="settings_text_size">16sp</dimen>
     <dimen name="settings_info_text_size">14sp</dimen>
@@ -21,4 +21,6 @@
     <dimen name="dvr_button_size">64dp</dimen>
     <dimen name="dvr_file_item_size">28sp</dimen>
     <dimen name="toggle_button_width">60dp</dimen>
+
+    <dimen name="chart_text_size">12sp</dimen>
 </resources>
