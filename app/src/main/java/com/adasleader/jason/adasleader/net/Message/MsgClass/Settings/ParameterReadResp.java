@@ -18,10 +18,11 @@ public class ParameterReadResp extends MsgBase {
         getHeader().MsgType = MessageType.PARA_READ_RESP;
         getHeader().MsgResponseType = ResponseType.RESPONSE;
 
-        getBody().add(TLVType.TP_WIFI_PASSWORD_ID, WifiPassword.class);
-        getBody().add(TLVType.TP_TIME_ID, long.class);
-        getBody().add(TLVType.TP_DEV_VER_ID, DevVersion.class);
-        getBody().add(TLVType.TP_MH_VER_ID, MHVersion.class);
+//        getBody().add(TLVType.TP_WIFI_PASSWORD_ID, WifiPassword.class);
+//        getBody().add(TLVType.TP_TIME_ID, long.class);
+//        getBody().add(TLVType.TP_DEV_VER_ID, DevVersion.class);
+//        getBody().add(TLVType.TP_MH_VER_ID, MHVersion.class);
+//        getBody().add(TLVType.TP_FPGA_VER_ID, int.class);
     }
 
     @Override
@@ -63,6 +64,10 @@ public class ParameterReadResp extends MsgBase {
                         case TLVType.TP_DEV_VER_ID:
                             DevVersion dev = new DevVersion(getData(), index + 4, tlvLen - 4);
                             getBody().add(tlvType, dev.getClass()).setValue(dev);
+                            break;
+                        case TLVType.TP_FPGA_VER_ID:
+                            int fpgaVer = MsgUtils.bytes2Int(getData(), index + 4);
+                            getBody().add(tlvType, int.class).setValue(fpgaVer);
                             break;
                         case TLVType.TP_MH_VER_ID:
                             MHVersion mh = new MHVersion(getData(), index + 4, tlvLen - 4);

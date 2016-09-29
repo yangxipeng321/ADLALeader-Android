@@ -686,6 +686,15 @@ public class MainActivity2 extends TabActivity {
             Log.e(TAG, "MH Version is null");
         }
 
+        tlv = msg.getBody().get(TLVType.TP_FPGA_VER_ID);
+        if (null != tlv && null != tlv.getValue()) {
+            mApp.mFPGAVer = (int) tlv.getValue();
+            Log.i(TAG, String.format("Receive FPGA version [%08X]", mApp.mFPGAVer));
+            mApp.saveFPGAVersion();
+        } else {
+            Log.e(TAG, "FPGA version is null");
+        }
+
         tlv = msg.getBody().get(TLVType.TP_GATE_VER_ID);
         if (null != tlv && null != tlv.getValue()) {
             mApp.mGateVer = (int)tlv.getValue();

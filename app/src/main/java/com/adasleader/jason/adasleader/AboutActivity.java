@@ -23,6 +23,7 @@ public class AboutActivity extends Activity {
     private TextView txtGateVersion;
     private TextView txtDevVersion;
     private TextView txtMHVersion;
+    private TextView txtFPGAVersion;
     private MyApplication myApp;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -84,6 +85,7 @@ public class AboutActivity extends Activity {
         txtGateVersion = (TextView) findViewById(R.id.txtGateVersion);
         txtDevVersion = (TextView) findViewById(R.id.txtDevVersion);
         txtMHVersion = (TextView) findViewById(R.id.txtMHVersion);
+        txtFPGAVersion = (TextView) findViewById(R.id.txtFPGAVersion);
     }
 
     private void refreshVersion() {
@@ -112,6 +114,12 @@ public class AboutActivity extends Activity {
                     myApp.mMHVersion.getMHVfVer()));
         } else {
             txtMHVersion.setText("");
+        }
+
+        if (myApp.mFPGAVer == 0) {
+            txtFPGAVersion.setText("");
+        } else {
+            txtFPGAVersion.setText(String.format("\nFPGA : %08X", myApp.mFPGAVer));
         }
     }
 }

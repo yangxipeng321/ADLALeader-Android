@@ -52,6 +52,7 @@ public class MyApplication extends Application {
     public WarningConfig mMHConfigFile = null;
     public DevVersion mDevVersion = null;
     public MHVersion mMHVersion = null;
+    public int mFPGAVer = 0;
     public int mGateVer = 0;
 
     public FirmwareInfo canInfo = null;
@@ -171,6 +172,12 @@ public class MyApplication extends Application {
         editor.putString(Constants.PREFS_ITEM_MH_SN, mMHVersion.getMHSn());
         editor.putString(Constants.PREFS_ITEM_MH_SW_VER, mMHVersion.getMHSwVer());
         editor.putString(Constants.PREFS_ITEM_MH_VF_VER, mMHVersion.getMHVfVer());
+        editor.apply();
+    }
+
+    public void saveFPGAVersion() {
+        SharedPreferences.Editor editor = getSettings().edit();
+        editor.putInt(Constants.PREFS_ITEM_FPGA_VER, mFPGAVer);
         editor.apply();
     }
 

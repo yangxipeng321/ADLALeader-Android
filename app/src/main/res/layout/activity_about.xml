@@ -51,4 +51,14 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/txtDevVersion"/>
 
+    <TextView
+        android:id="@+id/txtFPGAVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/settings_text_size"
+        android:text="@string/hello_world"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txtMHVersion"/>
+
+
 </RelativeLayout>
