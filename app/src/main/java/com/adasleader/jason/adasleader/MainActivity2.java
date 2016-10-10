@@ -265,6 +265,7 @@ public class MainActivity2 extends TabActivity {
 
                 readParameter();
                 readMHConfig();
+                setTimeParameter();
             } else if (mApp.isOnline) {
                 String info = context.getString(R.string.connection_wifi);
                 showConnectionInfo(info);
@@ -473,6 +474,17 @@ public class MainActivity2 extends TabActivity {
         WifiPassword password = new WifiPassword(Constants.WIFI_PASSWORD);
         msg.getBody().get(TLVType.TP_WIFI_PASSWORD_ID).setValue(password);
         msg.getBody().get(TLVType.TP_TIME_ID).setValue(System.currentTimeMillis());
+        if (msg.encode()) {
+            TcpIntentService.startActionFileService(this, msg.getData(), Constants.DESC_WRITE_PARAM);
+        }
+    }
+
+    private void setTimeParameter() {
+        ParameterSetReq msg = (ParameterSetReq) MsgFactory.getInstance().create(
+                ServiceType.SERVICE_SETTINGS, MessageType.PARA_SET_REQ, ResponseType.REQUEST);
+        msg.getBody().clear();
+        TLVClass tlv = msg.getBody().add(TLVType.TP_TIME_ID, long.class);
+        tlv.setValue(System.currentTimeMillis()/1000);
         if (msg.encode()) {
             TcpIntentService.startActionFileService(this, msg.getData(), Constants.DESC_WRITE_PARAM);
         }

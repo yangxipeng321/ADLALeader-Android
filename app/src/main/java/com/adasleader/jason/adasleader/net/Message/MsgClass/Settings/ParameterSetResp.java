@@ -18,8 +18,8 @@ public class ParameterSetResp extends MsgBase {
         getHeader().MsgType = MessageType.PARA_SET_RESP;
         getHeader().MsgResponseType = ResponseType.RESPONSE;
 
-        getBody().add(TLVType.TP_WIFI_PASSWORD_ID, WifiPassword.class);
-        getBody().add(TLVType.TP_TIME_ID, long.class);
+//        getBody().add(TLVType.TP_WIFI_PASSWORD_ID, WifiPassword.class);
+//        getBody().add(TLVType.TP_TIME_ID, long.class);
     }
 
     @Override
