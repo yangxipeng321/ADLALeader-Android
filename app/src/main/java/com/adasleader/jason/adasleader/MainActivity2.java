@@ -49,6 +49,7 @@ import com.adasleader.jason.adasleader.upgrade.UpgradeManager;
 
 import java.io.FileOutputStream;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import hk.com.mobileye.jason.adasleader.R;
 
@@ -483,8 +484,11 @@ public class MainActivity2 extends TabActivity {
         ParameterSetReq msg = (ParameterSetReq) MsgFactory.getInstance().create(
                 ServiceType.SERVICE_SETTINGS, MessageType.PARA_SET_REQ, ResponseType.REQUEST);
         msg.getBody().clear();
+        int offset = TimeZone.getDefault().getRawOffset();
+        long appTime = (System.currentTimeMillis() + offset)/1000;
+        Log.e(TAG, String.format("timezone offset %X  time: %X", offset, appTime));
         TLVClass tlv = msg.getBody().add(TLVType.TP_TIME_ID, long.class);
-        tlv.setValue(System.currentTimeMillis()/1000);
+        tlv.setValue(appTime);
         if (msg.encode()) {
             TcpIntentService.startActionFileService(this, msg.getData(), Constants.DESC_WRITE_PARAM);
         }
