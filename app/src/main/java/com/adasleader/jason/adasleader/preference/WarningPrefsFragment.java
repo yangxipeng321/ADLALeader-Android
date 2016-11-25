@@ -73,6 +73,7 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
 
         if (isPrefChanged(preference, newValue)) {
             updateConfig(preference, newValue);
+            preference.setSummary((String)newValue);
         }
         return true;
     }
@@ -108,7 +109,7 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             pref.setKey(WarningConfig.TITLES[i]);
             pref.setTitle(WarningConfig.TITLES[i]);
             pref.setDialogTitle(WarningConfig.TITLES[i]);
-            pref.setSummary("%s");
+            pref.setSummary(" ");
             pref.setOnPreferenceChangeListener(this);
             pref.setEnabled(false);
             warningCategory.addPreference(pref);
@@ -126,6 +127,7 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             if (null != pref && (pref instanceof ListPreference)) {
                 pref.setEnabled(enabled);
                 if (enabled) {
+                    pref.setSummary("%s");
                     //根据读取的配置文件设置各项的值
                     ((ListPreference) pref).setValue(config.items.get(i).getDesc());
 
@@ -137,6 +139,7 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
                     }
                 } else {
                     //如果没有读取到配置文件，将各项值清空
+                    pref.setSummary(" ");
                     ((ListPreference) pref).setValue("");
                 }
             }

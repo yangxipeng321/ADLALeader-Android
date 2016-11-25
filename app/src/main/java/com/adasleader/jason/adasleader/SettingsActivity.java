@@ -173,7 +173,7 @@ public class SettingsActivity extends Activity implements  WarningPrefsFragment.
     }
 
     private void refreshMHConfig(WarningConfig aMHConfig) {
-        Log.d(TAG, "refreshMHConfig");
+        Log.e(TAG, "refreshMHConfig");
         if (null != warningPrefsFragment) {
             warningPrefsFragment.refresh(aMHConfig);
         }

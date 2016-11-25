@@ -44,6 +44,7 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
         mApp = (MyApplication) getActivity().getApplication();
         view.findViewById(R.id.btnSaveFrame).setOnClickListener(this);
         view.findViewById(R.id.btnDownloadFrame).setOnClickListener(this);
+        view.findViewById(R.id.btnOutputVideo).setOnClickListener(this);
 
         //DVR
         view.findViewById(R.id.btnDVRUp).setOnClickListener(this);
@@ -75,6 +76,9 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.btnDownloadFrame:
                 downloadFrame();
+                break;
+            case R.id.btnOutputVideo:
+                dealOutputVideo();
                 break;
             case R.id.btnDVRUp:
                 key = 1;
@@ -236,4 +240,13 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
             }
         }
     }
+
+    private void dealOutputVideo() {
+        byte id = (byte)(0x80);
+        Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
+        intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+    }
+
+
 }

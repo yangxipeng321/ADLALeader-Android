@@ -64,6 +64,8 @@ public class CtrlFragment extends Fragment {
         mSlidingTabLayout.setOnPageChangeListener(new CtrlPageChangeListener());
     }
 
+
+
     class ControlPagerAdapter extends FragmentPagerAdapter {
 
         public ControlPagerAdapter(FragmentManager fm) {
@@ -137,6 +139,7 @@ public class CtrlFragment extends Fragment {
     }
 
     public void setCurrentPage(int index){
-        mViewPager.setCurrentItem(index, true);
+        if (mViewPager != null )
+            mViewPager.setCurrentItem(index, true);
     }
 }

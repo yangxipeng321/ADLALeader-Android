@@ -141,7 +141,6 @@ public class ChartActivity extends Activity {
                     return;
                 }
             }
-
         }
 
         private void dealDayStatUpdateResult(Intent intent) {

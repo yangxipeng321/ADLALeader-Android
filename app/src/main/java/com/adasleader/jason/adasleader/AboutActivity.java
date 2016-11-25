@@ -76,7 +76,6 @@ public class AboutActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -117,6 +116,7 @@ public class AboutActivity extends Activity {
         }
 
         if (myApp.mFPGAVer == 0) {
+
             txtFPGAVersion.setText("");
         } else {
             txtFPGAVersion.setText(String.format("\nFPGA : %08X", myApp.mFPGAVer));

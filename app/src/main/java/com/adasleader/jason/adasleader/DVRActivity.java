@@ -64,6 +64,16 @@ public class DVRActivity extends FragmentActivity
         super.onResume();
         Log.e(TAG, "onResume");
 
+//        byte id = (byte)(0);
+//        Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
+//        intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+
         byte id = (byte)(0);
         Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
         intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
@@ -176,6 +186,9 @@ public class DVRActivity extends FragmentActivity
 
         private void dealSwitchScreenNotify(Intent intent) {
             byte id = 0;
+            if (ctrlFragment == null)
+                return;
+
             id = intent.getByteExtra(Constants.EXTEND_SCREEN_ID, id);
             switch (id) {
                 case Constants.SCREEN_CAR_CAR:
@@ -189,6 +202,7 @@ public class DVRActivity extends FragmentActivity
                 case Constants.SCREEN_CAR_DVR:
                 case Constants.SCREEN_APP_DVR:
                     ctrlFragment.setCurrentPage(2);
+                    break;
             }
         }
 
