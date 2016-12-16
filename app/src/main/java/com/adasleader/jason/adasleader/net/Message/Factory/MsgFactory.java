@@ -2,6 +2,8 @@ package com.adasleader.jason.adasleader.net.Message.Factory;
 
 import com.adasleader.jason.adasleader.net.Message.MessageType;
 import com.adasleader.jason.adasleader.net.Message.MsgBase;
+import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdCalibrateReq;
+import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdCalibrateResp;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdResetMEReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdResetMEResp;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdResetReq;
@@ -232,6 +234,9 @@ public class MsgFactory {
                     case MessageType.CMD_SWITCH_SCREEN_REQ:
                         obj = new CmdSwitchScreen();
                         break;
+                    case MessageType.MSG_CMD_CALI_REQ:
+                        obj = new CmdCalibrateReq();
+                        break;
                 }
                 break;
             case ResponseType.RESPONSE:
@@ -247,6 +252,9 @@ public class MsgFactory {
                         break;
                     case MessageType.CMD_SWITCH_SCREEN_RESP:
                         obj = new CmdSwitchScreen();
+                        break;
+                    case MessageType.MSG_CMD_CALI_RESP:
+                        obj = new CmdCalibrateResp();
                         break;
                 }
                 break;

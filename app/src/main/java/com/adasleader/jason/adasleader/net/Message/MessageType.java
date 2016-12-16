@@ -49,6 +49,13 @@ public class MessageType {
     public static final int MSG_CMD_SAVE_FRAME_REQ = 0x0B;
     public static final int MSG_CMD_SAVE_FRAME_RESP = 0x0B;
 
+    public static final int MSG_CMD_STA_MODE_REQ = 0x0C;
+    public static final int MSG_CMD_STA_MODE_RESP = 0x0C;
+
+    public static final int MSG_CMD_CALI_REQ = 0x0D;
+    public static final int MSG_CMD_CALI_RESP = 0x0D;
+
+
     public static final int DVR_KEY_INFO = 0x01;
     public static final int DVR_FILE_LIST_REQ = 0x02;
     public static final int DVR_FILE_LIST_RESP = 0x02;

@@ -15,13 +15,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/settings_row_padding_left"
         android:src="@drawable/ic_about"
+        android:contentDescription="@string/app_name"
         android:id="@+id/imageView" />
 
     <TextView
         android:id="@+id/txtVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-20dp"
         android:textSize="@dimen/settings_text_size"
         android:text="@string/hello_world"
         android:layout_below="@+id/imageView"

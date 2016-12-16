@@ -11,6 +11,7 @@ import com.adasleader.jason.adasleader.net.Message.TLVType;
 
 /**
  * Created by Jason on 2015/3/4.
+ *
  */
 public class CmdResetReq extends MsgBase {
     @Override

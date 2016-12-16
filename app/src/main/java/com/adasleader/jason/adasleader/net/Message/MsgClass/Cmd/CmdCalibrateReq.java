@@ -10,30 +10,32 @@ import com.adasleader.jason.adasleader.net.Message.TLVClass;
 import com.adasleader.jason.adasleader.net.Message.TLVType;
 
 /**
- * Created by Jason on 2015/9/17.
+ * Created by Jason on 2016/12/15.
+ *
  */
-public class CmdSwitchScreen extends MsgBase {
+
+public class CmdCalibrateReq extends MsgBase {
     @Override
     public void initMsg() {
         getHeader().MsgResponseType = ResponseType.REQUEST;
         getHeader().MsgServiceType = ServiceType.SERVICE_CMD;
-        getHeader().MsgType = MessageType.CMD_SWITCH_SCREEN_REQ;
+        getHeader().MsgType = MessageType.MSG_CMD_CALI_REQ;
 
-        getBody().add(TLVType.TP_SWITCH_SCREEN, byte.class);
+        getBody().add(TLVType.TP_CALIBRATE_CMD_ID, byte.class);
     }
 
     @Override
     public boolean encode() {
         boolean result = true;
         try {
-            byte[] bytesTLVs = new byte[5];
+            byte[] bytesTLVs = new byte[8];
             int index = 0;
-            TLVClass tlv = getBody().get(TLVType.TP_SWITCH_SCREEN);
+            TLVClass tlv = getBody().get(TLVType.TP_CALIBRATE_CMD_ID);
             if (null == tlv && null == tlv.getValueBytes()) {
-                throw new Exception("The DVR Key tlv is null or valuebytes is null");
+                throw new Exception("The delay tlv is null or valuebytes is null ");
             }
             System.arraycopy(tlv.getTLVBytes(), 0, bytesTLVs, index, tlv.getLength());
-            index += tlv.getLength();
+            index +=tlv.getLength();
 
             this.setVar(MsgConst.MSG_LEN_HEADER + index);
             this.setCRC(MsgUtils.getCrc32(bytesTLVs, index));
@@ -48,31 +50,7 @@ public class CmdSwitchScreen extends MsgBase {
             e.printStackTrace();
             result = false;
         }
-        return result;
-    }
-
-    @Override
-    public boolean decode() {
-        boolean result = true;
-        try {
-            //Decode the message header
-            if (!super.decode()) {return false;}
-            getBody().clear();
-            int index = MsgConst.MSG_LEN_HEADER;
-            int tlvType, tlvLen;
-            if (getData().length < (index + 4)) { return  false; }
-
-            tlvType = (getData()[index] & 0xff)
-                    + ((getData()[index + 1] & 0xff) << 8);
-            tlvLen = (getData()[index + 2] & 0xff)
-                    + ((getData()[index + 3] & 0xff) << 8);
-            if (tlvLen!=5) {return false;}
-            byte screenId = getData()[index + 4];
-            getBody().add(tlvType, byte.class).setValue(screenId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            result = false;
-        }
         return  result;
     }
+
 }

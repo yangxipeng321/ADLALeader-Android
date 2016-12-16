@@ -22,6 +22,7 @@ public class DvrPlay implements TLVValue {
             String fileExt;
             switch (mFileType) {
                 case 1:
+                case 3:
                     fileExt = ".MP4";
                     break;
                 case 2:

@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.MyApplication;
 import com.adasleader.jason.adasleader.common.logger.Log;
+import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdCalibrateReq;
+import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdResetReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdSaveFrame;
+import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdStaModeReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.DVR.DvrKey;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugDVRCmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugFPGACmd;
@@ -42,9 +45,12 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_debug_test, container, false);
         mApp = (MyApplication) getActivity().getApplication();
-        view.findViewById(R.id.btnSaveFrame).setOnClickListener(this);
-        view.findViewById(R.id.btnDownloadFrame).setOnClickListener(this);
+        view.findViewById(R.id.btnReset).setOnClickListener(this);
+        view.findViewById(R.id.btnStaMode).setOnClickListener(this);
         view.findViewById(R.id.btnOutputVideo).setOnClickListener(this);
+
+        view.findViewById(R.id.btnStartCali).setOnClickListener(this);
+        view.findViewById(R.id.btnStopCali).setOnClickListener(this);
 
         //DVR
         view.findViewById(R.id.btnDVRUp).setOnClickListener(this);
@@ -71,14 +77,22 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         byte key;
         switch (v.getId()) {
-            case R.id.btnSaveFrame:
-                saveFrame();
+            case R.id.btnReset:
+                reset();
+                //saveFrame();
                 break;
-            case R.id.btnDownloadFrame:
-                downloadFrame();
+            case R.id.btnStaMode:
+                staMode();
+                //downloadFrame();
                 break;
             case R.id.btnOutputVideo:
                 dealOutputVideo();
+                break;
+            case R.id.btnStartCali:
+                dealCali(1);
+                break;
+            case R.id.btnStopCali:
+                dealCali(2);
                 break;
             case R.id.btnDVRUp:
                 key = 1;
@@ -178,6 +192,30 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    // send reset command to 3518
+    private void reset() {
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            CmdResetReq msg = new CmdResetReq();
+            int delay = 2000;  //2 seconds
+            msg.getBody().get(TLVType.TP_CMD_DELAY).setValue(delay);
+            if (msg.encode()) {
+                TcpIntentService.startActionFileService(getActivity(), msg.getData(),
+                        Constants.DESC_RESET_DEVICE);
+            }
+        }
+
+    }
+
+    // change 3518's wifi to sta mode
+    private void staMode() {
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            CmdStaModeReq msg = new CmdStaModeReq();
+            if (msg.encode()) {
+                TcpIntentService.startActionFileService(getActivity(), msg.getData(),
+                        Constants.DESC_CMD_STA_MODE);
+            }
+        }
+    }
 
     private void dealDVRKey(byte key) {
         Log.e(TAG, "dealDVRKey");
@@ -248,5 +286,18 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
-
+    private void dealCali(int cmd) {
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            CmdCalibrateReq msg = new CmdCalibrateReq();
+            msg.getBody().get(TLVType.TP_CALIBRATE_CMD_ID).setValue((byte)cmd);
+            msg.setSeq(UdpHelper.getSeq());
+            if (msg.encode()) {
+                byte[] buf = new byte[msg.getMsgLength()];
+                System.arraycopy(msg.getData(), 0, buf, 0, buf.length);
+                Intent intent = new Intent(Constants.UDP_SEND_ACTION);
+                intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buf);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            }
+        }
+    }
 }

@@ -12,21 +12,36 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnSaveFrame"
+            android:id="@+id/btnReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SaveFrame"/>
+            android:text="Reset"/>
         <Button
-            android:id="@+id/btnDownloadFrame"
+            android:id="@+id/btnStaMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DownloadFrame"/>
+            android:text="Sta_Mode"/>
         <Button
             android:id="@+id/btnOutputVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OutputVideo"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnStartCali"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="StartCali"/>
+        <Button
+            android:id="@+id/btnStopCali"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="StopCali"/>
     </LinearLayout>
 
     <RelativeLayout

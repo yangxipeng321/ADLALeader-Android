@@ -5,7 +5,7 @@
     <item android:drawable="@android:color/black"/>
     <!--Your product log - 144dp color version fo your app icon-->
     <item>
-        <bitmap android:src="@drawable/ic_about"
+        <bitmap android:src="@drawable/logo"
             android:gravity="center"
             />
     </item>

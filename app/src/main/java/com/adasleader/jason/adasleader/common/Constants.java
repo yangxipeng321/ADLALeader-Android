@@ -141,6 +141,7 @@ public final class Constants {
     public static final int DESC_CMD_DOWNLOAD_FRAME = 11;
     public static final int DESC_DVR_FILE_LIST = 12;
     public static final int DESC_DVR_PLAY_FILE = 13;
+    public static final int DESC_CMD_STA_MODE = 14;
 
 
     // Status values of TcpIntentService to broadcast to the Activity
