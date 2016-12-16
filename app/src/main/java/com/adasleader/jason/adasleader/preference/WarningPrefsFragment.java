@@ -1,5 +1,6 @@
 package com.adasleader.jason.adasleader.preference;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -7,6 +8,8 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -73,33 +76,54 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
 
         if (isPrefChanged(preference, newValue)) {
             updateConfig(preference, newValue);
-            preference.setSummary((String)newValue);
+
+            //only ListPreference need update summary
+            if (preference instanceof ListPreference)
+                preference.setSummary((String)newValue);
         }
         return true;
     }
 
-
-
-
     private boolean isPrefChanged(Preference pref, Object newValue) {
         boolean result = false;
         if ((pref instanceof ListPreference) && (newValue instanceof String)) {
+            //warning preferences
             ListPreference lp = (ListPreference) pref;
             String myValue = (String) newValue;
             if (!lp.getValue().equals(myValue)) {
                 result = true;
             }
+        } else if ((pref instanceof SwitchPreference) && (newValue instanceof Boolean)) {
+            //statement preference
+            SwitchPreference sp = (SwitchPreference) pref;
+            boolean myValue = (boolean) newValue;
+            if (sp.isChecked() != myValue) {
+                result = true;
+            }
+
+            if (!sp.isChecked() && result)
+                showStatementAlert();
         }
         return result;
     }
 
+    private void showStatementAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.dialog_statement, null));
+
+        builder.setPositiveButton(R.string.statement_ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
     private void initPreferences(PreferenceScreen root) {
         Context context = getActivity();
         PreferenceCategory warningCategory = new PreferenceCategory(context);
-        warningCategory.setTitle(WarningConfig.TITLE);
+        warningCategory.setTitle(WarningConfig.TITLE_WARN);
         root.addPreference(warningCategory);
 
+        //init warning preferences
         for (int i = 0; i< WarningConfig.DESCS.length; i++) {
             ListPreference pref = new ListPreference(context);
             pref.setPersistent(false);
@@ -114,6 +138,19 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             pref.setEnabled(false);
             warningCategory.addPreference(pref);
         }
+
+        //init statement preference
+        PreferenceCategory stateCategory = new PreferenceCategory(context);
+        stateCategory.setTitle(WarningConfig.TITLE_STATE);
+        root.addPreference(stateCategory);
+
+        SwitchPreference pref = new SwitchPreference(context);
+        pref.setPersistent(false);
+        pref.setKey(WarningConfig.stateTitle);
+        pref.setTitle(WarningConfig.stateTitle);
+        pref.setOnPreferenceChangeListener(this);
+        pref.setEnabled(false);
+        stateCategory.addPreference(pref);
     }
 
     //刷新报警设置
@@ -122,6 +159,7 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
     public void refresh(WarningConfig config) {
         mConfig = config;
         boolean enabled = (mConfig != null);
+        //refresh warning preferences
         for (int i = 0; i < WarningConfig.TITLES.length; i++) {
             Preference pref = findPreference(WarningConfig.TITLES[i]);
             if (null != pref && (pref instanceof ListPreference)) {
@@ -144,6 +182,21 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
                 }
             }
         }
+
+        //refresh statement preference
+        Preference pref = findPreference(WarningConfig.stateTitle);
+        if (null != pref && (pref instanceof SwitchPreference)) {
+            pref.setEnabled(enabled);
+            if (enabled) {
+                ((SwitchPreference) pref).setChecked(config.getStatementSwitch());
+                pref.setSummary(WarningConfig.stateSummary);
+            } else {
+                //如果没有读取到配置文件，将各项值清空
+                pref.setSummary(" ");
+                ((SwitchPreference) pref).setChecked(false);
+            }
+        }
+
         updatePreferenceListHeight();
     }
 
@@ -151,18 +204,23 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         if (null == mConfig || null == preference || null == newValue)
             return;
 
+        boolean needUpdate = false;
         String itemTitle = preference.getKey();
+        // warning preference
         WarningConfigItem item = mConfig.findItemByTitle(itemTitle);
         if (null != item) {
             item.setDesc((String)newValue);
-//            Toast toast = Toast.makeText(getActivity(), String.format("%s: %s ---> %s",
-//                    item.getTitle(), ((ListPreference) preference).getValue(), item.getDesc()),
-//                    Toast.LENGTH_SHORT);
-//            toast.setGravity(Gravity.TOP, 0, 20);
-//            toast.show();
-            if (null != mListener) {
-                mListener.warningPreferencesChanged(this, mConfig);
-            }
+            needUpdate = true;
+        }
+
+        // Statement preference
+        if (itemTitle.equals(WarningConfig.stateTitle)) {
+            mConfig.setStatementSwitch((boolean)newValue);
+            needUpdate = true;
+        }
+
+        if (needUpdate && null != mListener) {
+            mListener.warningPreferencesChanged(this, mConfig);
         }
     }
 

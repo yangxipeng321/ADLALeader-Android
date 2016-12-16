@@ -101,4 +101,14 @@
 
     <string name="dvr_format_alert">即将格式化TF卡！卡上所有的内容都将删除！</string>
     <string name="dvr_format_title">格式化TF卡</string>
+
+
+    <string name="statement_title">特别提示</string>
+    <string name="statement_content1">1、车辆驾驶员始终是车辆安全驾驶的第一责任人，驾驶员应当遵守与道路交通管理、驾驶员和驾驶行为管理相关的所有国家法律、法规、规章及其它规范性文件，安全驾驶。</string>
+    <string name="statement_content2">2、本产品(事故规避智能预警系统)并非在任何条件下都能正常工作，产品的设计目标仅为实现驾驶辅助设备功能，产品及系统并不能完全避免交通事故的发生，产品及其研发生产商不对安装有本产品及系统的车辆所发生的任何交通事故或交通违章承担任何责任。</string>
+    <string name="statement_content3">3、本系统不能代替驾驶员观察路况。驾驶员在驾驶过程中应始终保持警觉，并依据自己观察或听到的路况进行驾驶。</string>
+    <string name="statement_content4">4、本系统在探测车辆、行人、车道或针对潜在的道路交通伤害发出警告时不能保证百分之百的准确性。此外，路面、天气及其他情况会对本系统的识别与反应能力有一定的影响。遮挡摄像机部分或全部视野均可导致本系统功能失效或性能降低，请务必保持摄像机视野清晰。</string>
+    <string name="statement_content5">5、驾驶员始终负有保持适当车距和车速的责任，切勿等待发出碰撞警告后，驾驶员才采取相应紧急措施。驾驶员应始终对确保车辆安全驾驶承担最终责任。</string>
+    <string name="statement_content6">安全驾驶，请遵守交通规则。</string>
+    <string name="statement_ok">了解</string>
 </resources>

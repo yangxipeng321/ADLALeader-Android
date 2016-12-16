@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.ExitManager;
@@ -609,13 +611,13 @@ public class MainActivity2 extends TabActivity {
             Log.d(TAG, "Receive file name : " + fileName);
         } else {
             Log.e(TAG, "Receive file name is null !");
+            return;
         }
 
         if (((FileReadResp) msg).getFileLen() > 0) {
             tlv = msg.getBody().get(TLVType.TP_FILE_PARA_ID);
             if (null != tlv && null != tlv.getValueBytes()) {
                 byte[] buffer = tlv.getValueBytes();
-
                 Log.i(TAG, String.format(Locale.getDefault(),"Receive file size is %d bytes",
                         buffer.length));
 
@@ -624,16 +626,29 @@ public class MainActivity2 extends TabActivity {
                 Log.d(TAG, String.format(Locale.getDefault(), "%d -- CRC calculated      %d -- " +
                         "CRC in message", crc, ((FileReadResp) msg).getFileCRC()));
 
-                //mApp.mMHConfigFile = new AM_AWS_SETUP(buffer, 0, buffer.length);
-                mApp.mMHConfigFile = new WarningConfig(buffer, 0, buffer.length);
-                //writeMHConfigToPhone(buffer);
+                if (fileName.equalsIgnoreCase(Constants.MH_CONFIG_FILE))
+                    processWarningConfigFile(buffer);
+
             } else {
                 Log.e(TAG, "Receive file para is null !");
             }
         } else {
             Log.e(TAG, "Receive file length is 0 !");
-            //Todo: add refresh function
         }
+    }
+
+    private void processWarningConfigFile(byte[] buffer) {
+        //mApp.mMHConfigFile = new AM_AWS_SETUP(buffer, 0, buffer.length);
+        mApp.mMHConfigFile = new WarningConfig(buffer, 0, buffer.length);
+
+        if (buffer[15] > 0){
+            Toast toast = Toast.makeText(this, Constants.MH_CONFIG_FILE + buffer[15], Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+
+        if (false)
+            writeMHConfigToPhone(buffer);
     }
 
     private void writeMHConfigToPhone(byte[] buffer) {

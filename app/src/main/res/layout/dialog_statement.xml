@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:text="@string/statement_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/statementTitle"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:textSize="24sp"
+        android:padding="10dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:text="@string/statement_content1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif" />
+            <TextView
+                android:text="@string/statement_content2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="16sp" />
+            <TextView
+                android:text="@string/statement_content3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="16sp" />
+            <TextView
+                android:text="@string/statement_content4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="16sp" />
+            <TextView
+                android:text="@string/statement_content5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="16sp" />
+            <TextView
+                android:text="@string/statement_content6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textStyle="normal|bold"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:padding="5dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

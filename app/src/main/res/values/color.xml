@@ -2,7 +2,7 @@
 <resources>
     <!--<color name="apptheme_color">#22B14C</color>-->
     <!--<color name="warning_green">#ff22B14C</color>-->
-    <color name="warning_green">#ff6ba93e</color>
+    <color name="warning_green">#6ba93e</color>
     <color name="warning_red">#ffff0000</color>
     <color name="warning_yellow">#ffffff00</color>
     <color name="waring_white">#ffffffff</color>

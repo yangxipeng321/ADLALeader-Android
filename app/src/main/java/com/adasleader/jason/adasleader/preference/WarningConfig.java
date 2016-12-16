@@ -1,16 +1,25 @@
 package com.adasleader.jason.adasleader.preference;
 
+import com.adasleader.jason.adasleader.common.Constants;
+
 import java.util.ArrayList;
 
 /**
  * Created by Jason on 2016/9/5.
+ *
  */
 public class WarningConfig {
-    static final int FILE_SIZE = 64;
+    private static final int FILE_SIZE = 64;
 
-    static final String FILE_NAME = "WARNING.CONF";
+    private static final String FILE_NAME = Constants.MH_CONFIG_FILE;
 
-    static final String TITLE = "预警设置";
+    static final String TITLE_WARN = "预警设置";
+
+    static final String TITLE_STATE = "特别提示";
+    static final String stateTitle = "关闭特别提示";
+    static final String stateSummary = "开关打开后，将关闭原车屏上的特别提示。";
+
+
 
     //预警设置各项的标题
     static final String volumeStr = "报警音量";
@@ -131,5 +140,46 @@ public class WarningConfig {
             }
         }
         return null;
+    }
+
+    public boolean isDataHas40FF() {
+        return mData[15] > 0;
+    }
+
+    public void clearData()  {
+        mData[0] = 65;
+        mData[1] = 68;
+        mData[2] = 65;
+        mData[3] = 83;
+        mData[4] = 76;
+        mData[5] = 101;
+        mData[6] = 97;
+        mData[7] = 100;
+        mData[8] = 101;
+        mData[9] = 114;
+
+        mData[10] = 0;
+        mData[11] = 0;
+        mData[12] = 0;
+        mData[13] = 0;
+
+        mData[15] = 0;
+
+        mData[24] = 0;
+        mData[25] = (byte)(mData[25] & 0x01);
+        for (int i=26; i <=59; i++) {
+            mData[i] = 0;
+        }
+    }
+
+    public boolean getStatementSwitch() {
+        return (mData[25] & 0x01) > 0 ;
+    }
+
+    public void setStatementSwitch(boolean state) {
+        if (state)
+            mData[25] = (byte) (mData[25] | 0x01);
+        else
+            mData[25] = (byte) (mData[25] & 0xFE);
     }
 }
