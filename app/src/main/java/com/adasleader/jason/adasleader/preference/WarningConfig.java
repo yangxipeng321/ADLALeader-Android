@@ -16,8 +16,10 @@ public class WarningConfig {
     static final String TITLE_WARN = "预警设置";
 
     static final String TITLE_STATE = "特别提示";
-    static final String stateTitle = "关闭特别提示";
-    static final String stateSummary = "开关打开后，将关闭原车屏上的特别提示。";
+    static final String stateTitle = "特别提示";
+    //static final String stateSummary = "开关打开后，将关闭原车屏上的特别提示。";
+    static final String stateSummaryOn = "原车屏的特别提示已打开。";
+    static final String stateSummaryOff = "原车屏上的特别提示已关闭。";
 
 
 
@@ -173,13 +175,13 @@ public class WarningConfig {
     }
 
     public boolean getStatementSwitch() {
-        return (mData[25] & 0x01) > 0 ;
+        return (mData[25] & 0x01) == 0 ;
     }
 
     public void setStatementSwitch(boolean state) {
         if (state)
-            mData[25] = (byte) (mData[25] | 0x01);
-        else
             mData[25] = (byte) (mData[25] & 0xFE);
+        else
+            mData[25] = (byte) (mData[25] | 0x01);
     }
 }

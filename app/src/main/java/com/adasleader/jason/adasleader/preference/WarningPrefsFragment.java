@@ -77,9 +77,18 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         if (isPrefChanged(preference, newValue)) {
             updateConfig(preference, newValue);
 
-            //only ListPreference need update summary
+            //ListPreference need update summary
             if (preference instanceof ListPreference)
                 preference.setSummary((String)newValue);
+            //update summary and show alert dialog
+            if (preference instanceof SwitchPreference) {
+                SwitchPreference sp = (SwitchPreference) preference;
+                boolean myValue = (boolean) newValue;
+                if (sp.isChecked())
+                    showStatementAlert();
+
+                preference.setSummary(myValue ? WarningConfig.stateSummaryOn : WarningConfig.stateSummaryOff);
+            }
         }
         return true;
     }
@@ -100,9 +109,6 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             if (sp.isChecked() != myValue) {
                 result = true;
             }
-
-            if (!sp.isChecked() && result)
-                showStatementAlert();
         }
         return result;
     }
@@ -189,7 +195,8 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             pref.setEnabled(enabled);
             if (enabled) {
                 ((SwitchPreference) pref).setChecked(config.getStatementSwitch());
-                pref.setSummary(WarningConfig.stateSummary);
+                pref.setSummary(config.getStatementSwitch() ? WarningConfig.stateSummaryOn :
+                        WarningConfig.stateSummaryOff);
             } else {
                 //如果没有读取到配置文件，将各项值清空
                 pref.setSummary(" ");

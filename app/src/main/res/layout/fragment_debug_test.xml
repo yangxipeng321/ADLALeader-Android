@@ -20,6 +20,7 @@
             android:id="@+id/btnStaMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="Sta_Mode"/>
         <Button
             android:id="@+id/btnOutputVideo"
@@ -36,11 +37,13 @@
             android:id="@+id/btnStartCali"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="visible"
             android:text="StartCali"/>
         <Button
             android:id="@+id/btnStopCali"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="visible"
             android:text="StopCali"/>
     </LinearLayout>
 

@@ -100,7 +100,7 @@ public class AboutActivity extends Activity {
             txtGateVersion.setText(String.format("\nGate : %08X", myApp.mGateVer));
 
         if (myApp.mDevVersion != null) {
-            txtDevVersion.setText(String.format("\nDev SN : %08X\nDev SW : %08X\nDev HW : %08X",
+            txtDevVersion.setText(String.format("\nMedel ID : %08X\n\nDev SW : %08X\nDev HW : %08X",
                     myApp.mDevVersion.getDevSn(), myApp.mDevVersion.getDevSwVer(),
                     myApp.mDevVersion.getDevHwVer()));
         } else {

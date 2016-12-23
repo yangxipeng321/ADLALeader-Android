@@ -6,7 +6,7 @@ package com.adasleader.jason.adasleader.common;
  */
 public final class Constants {
     public static final boolean DEVELOPER_MODE = false;
-    public static final boolean SHOW_DEBUG = false;
+    public static final boolean SHOW_DEBUG = true;
 
     public static final int MSG_WARNING = 1;
     public static final int MSG_SEND_HEARTBEAT = 2;
