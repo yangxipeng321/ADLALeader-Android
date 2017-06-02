@@ -13,15 +13,22 @@ public class WarningConfig {
 
     private static final String FILE_NAME = Constants.MH_CONFIG_FILE;
 
-    static final String TITLE_WARN = "预警设置";
+    static final String CATEGORY_TITLE_WARN = "预警设置";
+    static final String CAGTEGORY_TITLE_DISPLAY = "显示设置";
 
-    static final String TITLE_STATE = "特别提示";
     static final String stateTitle = "特别提示";
     //static final String stateSummary = "开关打开后，将关闭原车屏上的特别提示。";
     static final String stateSummaryOn = "原车屏的特别提示已打开。";
     static final String stateSummaryOff = "原车屏上的特别提示已关闭。";
 
+    static final String displayLogo = "显示ADASLeader标志";
+    static final String displayLogo0 = "在所有界面显示";
+    static final String displayLogo1 = "原车界面不显示";
+    static final String displayLogo3 = "所有界面都不显示";
 
+    static final String autoReturnADAS = "自动回到ADASLeader界面";
+    static final String autoReturnADASOn = "自动回到ADASLeader界面";
+    static final String autoReturnADASOff = "手动进入ADASLeader界面";
 
     //预警设置各项的标题
     static final String volumeStr = "报警音量";
@@ -82,27 +89,34 @@ public class WarningConfig {
             "60公里/小时", "80公里/小时", "100公里/小时"};
 
     static final byte[] JS_SPEEDING_PERCENT = {0, 5, 10};
-    static final String[] JS_SPEEDING_PERCENT_DESC = {"超过限速立即提醒", "超过限速5%提醒", "超过限速10%提醒"};
+    static final String[] JS_SPEEDING_PERCENT_DESC = {"超过限速立即提醒", "超过限速5％提醒", "超过限速10％提醒"};
 
     static final byte[] JS_FOLLOW_CAR = {3, 5, 10};
     static final String[] JS_FOLLOW_CAR_DESC = {"近", "中", "远"};
 
-    static final String[] TITLES = {volumeStr, hmwStr, hmwSpeedStr, virtualBumperStr, ldwStr,
-            speedingDisplayStr, speedingStr, speedingPercentStr};
+    static final byte[] JS_DISPLAY_LOGO = {0, 2, 6};
+    static final String[] JS_DISPLAY_LOG_DESC = {displayLogo0, displayLogo1, displayLogo3};
 
+    //报警设置中显示的内容
+    static final String[] TITLES = {volumeStr, hmwStr, hmwSpeedStr, virtualBumperStr,
+            ldwStr, speedingDisplayStr, speedingStr, speedingPercentStr};
     static final int[] INDEXS = {volumeIndex, hmwIndex, hmwSpeedIndex, virtualBumperIndex,
             ldwIndex, speedingDisplayIndex, speedingIndex, speedingPercentIndex};
-
-    static final byte[] DEFAULT_KEYS = {volumeDefault, hmwDefault, hmwSpeedDefault,
-            virtualBumperDefault, ldwDefault, speedingDisplayDefault, speedingDefault, speedingPercentDefault};
-
+    static final byte[] DEFAULT_KEYS = {volumeDefault, hmwDefault, hmwSpeedDefault, virtualBumperDefault,
+            ldwDefault, speedingDisplayDefault, speedingDefault, speedingPercentDefault};
     static final String[][] DESCS = {JS_VOLUME_DESC, JS_HMW_DESC, JS_HMW_SPEED_DESC, JS_VB_DESC,
             JS_LDW_DESC, JS_SPEEDING_DISPLAY_DESC, JS_SPEEDING_DESC, JS_SPEEDING_PERCENT_DESC};
     static final byte[][] KEYS = {JS_VOLUME, JS_HMW, JS_HMW_SPEED, JS_VB,
             JS_LDW, JS_SPEEDING_DISPLAY, JS_SPEEDING, JS_SPEEDING_PERCENT};
-
+    //作为例外的速度设置项
     static final int SPEED_INDEX_MIN = 5;
     static final int SPEED_INDEX_MAX = 7;
+
+
+    //显示设置中显示的内容
+    static final String[][]DISPLAY_DESC = {};
+    static final byte[][]DISPLAY_KEYS = {};
+
 
 
     private byte[] mData;
@@ -122,6 +136,9 @@ public class WarningConfig {
                     mData[WarningConfig.INDEXS[i]]);
             items.add(item);
         }
+
+        displayLogoItem = new WarningConfigItem(displayLogo, JS_DISPLAY_LOG_DESC, JS_DISPLAY_LOGO,
+                (byte)0, (byte)(mData[25] & 0x06));
     }
 
     public byte[] getData() {
@@ -168,11 +185,13 @@ public class WarningConfig {
         mData[15] = 0;
 
         mData[24] = 0;
-        mData[25] = (byte)(mData[25] & 0x01);
+        mData[25] = (byte)(mData[25] & 0x0f);
         for (int i=26; i <=59; i++) {
             mData[i] = 0;
         }
     }
+
+    public WarningConfigItem displayLogoItem;
 
     public boolean getStatementSwitch() {
         return (mData[25] & 0x01) == 0 ;
@@ -183,5 +202,20 @@ public class WarningConfig {
             mData[25] = (byte) (mData[25] & 0xFE);
         else
             mData[25] = (byte) (mData[25] | 0x01);
+    }
+
+    public boolean getAutoReturnADASSwitch() {
+        return (mData[25] & 0x08) == 0;
+    }
+
+    public void setAutoReturnADASwitch(boolean isAuto){
+        if (isAuto)
+            mData[25] = (byte) (mData[25] & 0xF7);
+        else
+            mData[25] = (byte) (mData[25] | 0x08);
+    }
+
+    public void setDisplayLogo() {
+        mData[25] = (byte)(mData[25] & 0xF9 | displayLogoItem.getKey());
     }
 }

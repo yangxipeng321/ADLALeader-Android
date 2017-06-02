@@ -20,7 +20,7 @@
             android:id="@+id/btnStaMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             android:text="Sta_Mode"/>
         <Button
             android:id="@+id/btnOutputVideo"

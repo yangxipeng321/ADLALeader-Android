@@ -80,14 +80,18 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             //ListPreference need update summary
             if (preference instanceof ListPreference)
                 preference.setSummary((String)newValue);
-            //update summary and show alert dialog
+            //update switch prefernece summary
             if (preference instanceof SwitchPreference) {
                 SwitchPreference sp = (SwitchPreference) preference;
                 boolean myValue = (boolean) newValue;
-                if (sp.isChecked())
-                    showStatementAlert();
 
-                preference.setSummary(myValue ? WarningConfig.stateSummaryOn : WarningConfig.stateSummaryOff);
+                if (preference.getKey().equals(WarningConfig.stateTitle)){
+                    if (sp.isChecked())
+                        showStatementAlert(); //show alert dialog
+                    preference.setSummary(myValue ? WarningConfig.stateSummaryOn : WarningConfig.stateSummaryOff);
+                } else if (preference.getKey().equals(WarningConfig.autoReturnADAS)) {
+                    preference.setSummary(myValue? WarningConfig.autoReturnADASOn: WarningConfig.autoReturnADASOff);
+                }
             }
         }
         return true;
@@ -125,11 +129,12 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
 
     private void initPreferences(PreferenceScreen root) {
         Context context = getActivity();
-        PreferenceCategory warningCategory = new PreferenceCategory(context);
-        warningCategory.setTitle(WarningConfig.TITLE_WARN);
-        root.addPreference(warningCategory);
 
         //init warning preferences
+        PreferenceCategory warningCategory = new PreferenceCategory(context);
+        warningCategory.setTitle(WarningConfig.CATEGORY_TITLE_WARN);
+        root.addPreference(warningCategory);
+
         for (int i = 0; i< WarningConfig.DESCS.length; i++) {
             ListPreference pref = new ListPreference(context);
             pref.setPersistent(false);
@@ -145,18 +150,42 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             warningCategory.addPreference(pref);
         }
 
-        //init statement preference
-        PreferenceCategory stateCategory = new PreferenceCategory(context);
-        stateCategory.setTitle(WarningConfig.TITLE_STATE);
-        root.addPreference(stateCategory);
+        //init Display preference
+        PreferenceCategory displayCategory = new PreferenceCategory(context);
+        displayCategory.setTitle(WarningConfig.CAGTEGORY_TITLE_DISPLAY);
+        root.addPreference(displayCategory);
 
+        //显示ADASLeader标志
+        ListPreference logoPref = new ListPreference(context);
+        logoPref.setPersistent(false);
+        String[] values =WarningConfig.JS_DISPLAY_LOG_DESC;
+        logoPref.setEntries(values);
+        logoPref.setEntryValues(values);
+        logoPref.setKey(WarningConfig.displayLogo);
+        logoPref.setTitle(WarningConfig.displayLogo);
+        logoPref.setDialogTitle(WarningConfig.displayLogo);
+        logoPref.setSummary(" ");
+        logoPref.setOnPreferenceChangeListener(this);
+        logoPref.setEnabled(false);
+        displayCategory.addPreference(logoPref);
+
+        //特别提示
         SwitchPreference pref = new SwitchPreference(context);
         pref.setPersistent(false);
         pref.setKey(WarningConfig.stateTitle);
         pref.setTitle(WarningConfig.stateTitle);
         pref.setOnPreferenceChangeListener(this);
         pref.setEnabled(false);
-        stateCategory.addPreference(pref);
+        displayCategory.addPreference(pref);
+
+        //自动回到ADASLeader界面
+        SwitchPreference autoPref = new SwitchPreference(context);
+        autoPref.setPersistent(false);
+        autoPref.setKey(WarningConfig.autoReturnADAS);
+        autoPref.setTitle(WarningConfig.autoReturnADAS);
+        autoPref.setOnPreferenceChangeListener(this);
+        autoPref.setEnabled(false);
+        displayCategory.addPreference(autoPref);
     }
 
     //刷新报警设置
@@ -189,14 +218,41 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             }
         }
 
+        Preference pref = findPreference(WarningConfig.displayLogo);
+        if (null!= pref && (pref instanceof ListPreference)){
+            pref.setEnabled(enabled);
+            if (enabled){
+                pref.setSummary("%s");
+                ((ListPreference) pref).setValue(config.displayLogoItem.getDesc());
+            } else {
+                //如果没有读取到配置文件，将各项值清空
+                pref.setSummary(" ");
+                ((ListPreference) pref).setValue("");
+            }
+        }
+
         //refresh statement preference
-        Preference pref = findPreference(WarningConfig.stateTitle);
+        pref = findPreference(WarningConfig.stateTitle);
         if (null != pref && (pref instanceof SwitchPreference)) {
             pref.setEnabled(enabled);
             if (enabled) {
                 ((SwitchPreference) pref).setChecked(config.getStatementSwitch());
                 pref.setSummary(config.getStatementSwitch() ? WarningConfig.stateSummaryOn :
                         WarningConfig.stateSummaryOff);
+            } else {
+                //如果没有读取到配置文件，将各项值清空
+                pref.setSummary(" ");
+                ((SwitchPreference) pref).setChecked(false);
+            }
+        }
+
+        pref = findPreference(WarningConfig.autoReturnADAS);
+        if (null != pref && (pref instanceof SwitchPreference)) {
+            pref.setEnabled(enabled);
+            if (enabled){
+                boolean isChecked = config.getAutoReturnADASSwitch();
+                ((SwitchPreference)pref).setChecked(isChecked);
+                pref.setSummary(isChecked ? WarningConfig.autoReturnADASOn : WarningConfig.autoReturnADASOff);
             } else {
                 //如果没有读取到配置文件，将各项值清空
                 pref.setSummary(" ");
@@ -223,6 +279,13 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         // Statement preference
         if (itemTitle.equals(WarningConfig.stateTitle)) {
             mConfig.setStatementSwitch((boolean)newValue);
+            needUpdate = true;
+        }else if (itemTitle.equals(WarningConfig.autoReturnADAS)) {
+            mConfig.setAutoReturnADASwitch((boolean)newValue);
+            needUpdate = true;
+        } else if (itemTitle.equals(WarningConfig.displayLogo)) {
+            mConfig.displayLogoItem.setDesc((String)newValue);
+            mConfig.setDisplayLogo();
             needUpdate = true;
         }
 
