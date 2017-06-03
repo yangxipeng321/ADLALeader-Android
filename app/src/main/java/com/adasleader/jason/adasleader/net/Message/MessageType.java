@@ -20,6 +20,8 @@ public class MessageType {
     public static final int WARN_DAY_STAT_RESP = 0x02;
     public static final int WARN_MONTH_STAT_REQ = 0x03;
     public static final int WARN_MONTH_STAT_RESP = 0x03;
+    public static final int WARN_CLEAR_STAT_REQ = 0x04;
+    public static final int WARN_CLEAR_STAT_RESP = 0x04;
 
     public static final int PARA_READ_REQ = 0x01;
     public static final int PARA_READ_RESP = 0x01;

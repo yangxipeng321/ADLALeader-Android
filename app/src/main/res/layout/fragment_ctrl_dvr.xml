@@ -15,7 +15,7 @@
                 android:id="@+id/dvrImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/dvr2" />
+                android:src="@drawable/dvr3" />
         </FrameLayout>
         <FrameLayout
             android:layout_width="match_parent"

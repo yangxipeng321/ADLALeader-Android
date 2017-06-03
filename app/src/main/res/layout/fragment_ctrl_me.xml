@@ -11,7 +11,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/me2" />
+            android:src="@drawable/me3" />
         <!--<TextView-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->

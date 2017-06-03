@@ -21,6 +21,7 @@ import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugDVRCmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugFPGACmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugMCUCmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.File.FileReadReq;
+import com.adasleader.jason.adasleader.net.Message.MsgClass.Warning.WarnClearStat;
 import com.adasleader.jason.adasleader.net.Message.TLVType;
 import com.adasleader.jason.adasleader.net.TcpIntentService;
 import com.adasleader.jason.adasleader.net.UdpHelper;
@@ -49,6 +50,7 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
         view.findViewById(R.id.btnStaMode).setOnClickListener(this);
         view.findViewById(R.id.btnOutputVideo).setOnClickListener(this);
 
+        view.findViewById(R.id.btnClearStat).setOnClickListener(this);
         view.findViewById(R.id.btnStartCali).setOnClickListener(this);
         view.findViewById(R.id.btnStopCali).setOnClickListener(this);
 
@@ -87,6 +89,9 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.btnOutputVideo:
                 dealOutputVideo();
+                break;
+            case R.id.btnClearStat:
+                dealClearStat();
                 break;
             case R.id.btnStartCali:
                 dealCali(1);
@@ -290,6 +295,20 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             CmdCalibrateReq msg = new CmdCalibrateReq();
             msg.getBody().get(TLVType.TP_CALIBRATE_CMD_ID).setValue((byte)cmd);
+            msg.setSeq(UdpHelper.getSeq());
+            if (msg.encode()) {
+                byte[] buf = new byte[msg.getMsgLength()];
+                System.arraycopy(msg.getData(), 0, buf, 0, buf.length);
+                Intent intent = new Intent(Constants.UDP_SEND_ACTION);
+                intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buf);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            }
+        }
+    }
+
+    private void dealClearStat() {
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            WarnClearStat msg = new WarnClearStat();
             msg.setSeq(UdpHelper.getSeq());
             if (msg.encode()) {
                 byte[] buf = new byte[msg.getMsgLength()];
