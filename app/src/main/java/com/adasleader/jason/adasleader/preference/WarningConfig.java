@@ -14,7 +14,8 @@ public class WarningConfig {
     private static final String FILE_NAME = Constants.MH_CONFIG_FILE;
 
     static final String CATEGORY_TITLE_WARN = "预警设置";
-    static final String CAGTEGORY_TITLE_DISPLAY = "显示设置";
+    static final String CATEGORY_TITLE_DISPLAY = "显示设置";
+    static final String CATEGORY_TITLE_DVR = "紧急视频";
 
     static final String stateTitle = "特别提示";
     //static final String stateSummary = "开关打开后，将关闭原车屏上的特别提示。";
@@ -26,9 +27,14 @@ public class WarningConfig {
     static final String displayLogo1 = "原车界面不显示";
     static final String displayLogo3 = "所有界面都不显示";
 
-    static final String autoReturnADAS = "自动回到ADASLeader界面";
+    static final String autoReturnADAS = "自动切换界面";
     static final String autoReturnADASOn = "自动回到ADASLeader界面";
     static final String autoReturnADASOff = "手动进入ADASLeader界面";
+
+    static final String dvrVirtualBumper = "虚拟保险杠";
+    static final String dvrVirtualBumperOn = "虚拟保险杠预警时自动保存紧急视频";
+    static final String dvrVirtualBumperOff = "虚拟保险杠预警时不保存紧急视频";
+
 
     //预警设置各项的标题
     static final String volumeStr = "报警音量";
@@ -217,5 +223,16 @@ public class WarningConfig {
 
     public void setDisplayLogo() {
         mData[25] = (byte)(mData[25] & 0xF9 | displayLogoItem.getKey());
+    }
+
+    public boolean getDVRVirtualBumperSwitch() {
+        return (mData[26] & 0x01) == 0;
+    }
+
+    public void setDVRVirtualBumperSwitch(boolean isOn) {
+        if (isOn)
+            mData[26] = (byte) (mData[26] & 0xFE);
+        else
+            mData[26] = (byte) (mData[26] | 0x01);
     }
 }

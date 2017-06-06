@@ -91,6 +91,8 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
                     preference.setSummary(myValue ? WarningConfig.stateSummaryOn : WarningConfig.stateSummaryOff);
                 } else if (preference.getKey().equals(WarningConfig.autoReturnADAS)) {
                     preference.setSummary(myValue? WarningConfig.autoReturnADASOn: WarningConfig.autoReturnADASOff);
+                } else if (preference.getKey().equals(WarningConfig.dvrVirtualBumper)) {
+                    preference.setSummary(myValue? WarningConfig.dvrVirtualBumperOn: WarningConfig.dvrVirtualBumperOff);
                 }
             }
         }
@@ -150,9 +152,23 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             warningCategory.addPreference(pref);
         }
 
+        //init dvr preference
+        PreferenceCategory dvrCategory = new PreferenceCategory(context);
+        dvrCategory.setTitle(WarningConfig.CATEGORY_TITLE_DVR);
+        root.addPreference(dvrCategory);
+
+        //虚拟保险杠触发紧急视频
+        SwitchPreference vbPref = new SwitchPreference(context);
+        vbPref.setPersistent(false);
+        vbPref.setKey(WarningConfig.dvrVirtualBumper);
+        vbPref.setTitle(WarningConfig.dvrVirtualBumper);
+        vbPref.setOnPreferenceChangeListener(this);
+        vbPref.setEnabled(false);
+        dvrCategory.addPreference(vbPref);
+
         //init Display preference
         PreferenceCategory displayCategory = new PreferenceCategory(context);
-        displayCategory.setTitle(WarningConfig.CAGTEGORY_TITLE_DISPLAY);
+        displayCategory.setTitle(WarningConfig.CATEGORY_TITLE_DISPLAY);
         root.addPreference(displayCategory);
 
         //显示ADASLeader标志
@@ -218,7 +234,20 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             }
         }
 
-        Preference pref = findPreference(WarningConfig.displayLogo);
+        Preference pref = findPreference(WarningConfig.dvrVirtualBumper);
+        if (null != pref && (pref instanceof SwitchPreference)) {
+            pref.setEnabled(enabled);
+            if (enabled) {
+                ((SwitchPreference) pref).setChecked(config.getDVRVirtualBumperSwitch());
+                pref.setSummary(config.getDVRVirtualBumperSwitch() ?
+                        WarningConfig.dvrVirtualBumperOn : WarningConfig.dvrVirtualBumperOff);
+            } else {
+                pref.setSummary(" ");
+                ((SwitchPreference) pref).setChecked(false );
+            }
+        }
+
+        pref = findPreference(WarningConfig.displayLogo);
         if (null!= pref && (pref instanceof ListPreference)){
             pref.setEnabled(enabled);
             if (enabled){
@@ -286,6 +315,9 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         } else if (itemTitle.equals(WarningConfig.displayLogo)) {
             mConfig.displayLogoItem.setDesc((String)newValue);
             mConfig.setDisplayLogo();
+            needUpdate = true;
+        } else if (itemTitle.equals(WarningConfig.dvrVirtualBumper)) {
+            mConfig.setDVRVirtualBumperSwitch((boolean) newValue);
             needUpdate = true;
         }
 
