@@ -30,6 +30,7 @@ import com.adasleader.jason.adasleader.net.TcpIntentService;
 import com.adasleader.jason.adasleader.net.UdpHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import hk.com.mobileye.jason.adasleader.R;
 
@@ -298,6 +299,7 @@ public class CtrlDVRFragment extends Fragment {
 
     public void SetListView(ArrayList<String> list) {
         Log.d(TAG, "SetListView");
+        Collections.sort(list);
         mlist.clear();
         mlist.addAll(list);
         mAdapter.notifyDataSetChanged();

@@ -28,8 +28,8 @@ public class WarningConfig {
     static final String displayLogo3 = "所有界面都不显示";
 
     static final String autoReturnADAS = "自动切换界面";
-    static final String autoReturnADASOn = "自动回到ADASLeader界面";
-    static final String autoReturnADASOff = "手动进入ADASLeader界面";
+    static final String autoReturnADASOn = "倒车完成后自动切换回原视频界面";
+    static final String autoReturnADASOff = "倒车完成后保持在原车界面";
 
     static final String dvrVirtualBumper = "虚拟保险杠";
     static final String dvrVirtualBumperOn = "虚拟保险杠预警时自动保存紧急视频";

@@ -15,7 +15,7 @@ android {
         applicationId "com.adasleader.jason.adasleader"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 217060601
+        versionCode 217061201
         versionName "1.4.7"
     }
 /*
