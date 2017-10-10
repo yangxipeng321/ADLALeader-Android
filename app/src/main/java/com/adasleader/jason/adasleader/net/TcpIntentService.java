@@ -4,10 +4,10 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.MyApplication;
+import com.adasleader.jason.adasleader.common.logger.Log;
 import com.adasleader.jason.adasleader.net.Message.MsgConst;
 import com.adasleader.jason.adasleader.net.Message.MsgUtils;
 import com.adasleader.jason.adasleader.net.Message.ServiceType;
@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Locale;
+
+//import android.util.Log;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
