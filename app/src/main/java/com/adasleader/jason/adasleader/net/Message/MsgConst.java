@@ -14,7 +14,7 @@ public class MsgConst {
     //TLV constants
     public static final int TLV_MIN_LEN = 4;
 
-    public static final int TP_WARNING_VALUE_LEN = 5;
+    public static final int TP_WARNING_VALUE_LEN = 5;  //最后一个字节保留，没有用
     public static final int TP_WIFI_PASSWORD_VALUE_LEN = 9;
     public static final int MH_SN_LEN = 20;
     public static final int MH_SW_VER_LEN = 20;

@@ -7,7 +7,7 @@ import com.adasleader.jason.adasleader.net.Message.MsgConst;
  * Created by Jason on 2015/1/5.
  */
 public class WarningData extends MsgBase{
-//    private byte[] mData = null;
+    private byte[] mWarningData = null;
     public byte fcw = 0;
     public byte ufcw = 0;
     public byte ldwLeft = 0;
@@ -26,9 +26,6 @@ public class WarningData extends MsgBase{
     public boolean decode() {
         boolean result = true;
 
-        if (getData().length <= MsgConst.TP_WARNING_VALUE_LEN) {
-            return false;
-        }
         try {
             //decode header
             if (!super.decode()) {
@@ -38,6 +35,13 @@ public class WarningData extends MsgBase{
             byte[] mData = getData();
 //            System.arraycopy(mData, 0, mData, 0, mData.length);
             int index = MsgConst.MSG_LEN_HEADER +4 ;
+            if (mData.length < index + MsgConst.TP_WARNING_VALUE_LEN) {
+                return false;
+            }
+
+            mWarningData = new byte[MsgConst.TP_WARNING_VALUE_LEN];
+            System.arraycopy(mData, index, mWarningData, 0, mWarningData.length);
+
             fcw = (byte) ((mData[index] & 0x80) >>> 7);
             ufcw = (byte) (mData[index] & 0x40);
             ldwLeft = (byte) (mData[index] & 0x20);
@@ -64,5 +68,9 @@ public class WarningData extends MsgBase{
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public byte[] getWarnData() {
+        return mWarningData;
     }
 }

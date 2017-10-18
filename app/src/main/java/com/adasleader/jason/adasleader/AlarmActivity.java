@@ -38,6 +38,7 @@ import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdSwitchScreen;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdTestReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.DVR.DvrPlay;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Warning.WarningData;
+import com.adasleader.jason.adasleader.net.Message.MsgConst;
 import com.adasleader.jason.adasleader.net.Message.ResponseType;
 import com.adasleader.jason.adasleader.net.Message.ServiceType;
 import com.adasleader.jason.adasleader.net.Message.TLVClass;
@@ -45,10 +46,15 @@ import com.adasleader.jason.adasleader.net.Message.TLVType;
 import com.adasleader.jason.adasleader.net.NetManager;
 import com.adasleader.jason.adasleader.net.TcpIntentService;
 import com.adasleader.jason.adasleader.net.UdpHelper;
+import com.adasleader.jason.adasleader.upgrade.UpgradeManager;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.SocketAddress;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Locale;
 
 import hk.com.mobileye.jason.adasleader.R;
@@ -311,7 +317,10 @@ public class AlarmActivity extends Activity {
 //        Log.d(TAG, String.format("deal warning data \n%s", MsgUtils.bytes2HexString(buf)));
         WarningData data = (WarningData) (MsgFactory.getInstance().create(buf));
 
+
         if (data != null && data.decode()) {
+            //saveWarningData(data);
+
             alarmLaneLeft(data.ldwLeft > 0);
             alarmLaneRight(data.ldwRight > 0);
             alarmPedestrian(data.pcw == 2);
@@ -785,5 +794,49 @@ public class AlarmActivity extends Activity {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
             }
         }
+    }
+
+    private static final int WARN_MAX_COUNT = 100;
+    byte[] fileBuf = new byte[MsgConst.TP_WARNING_VALUE_LEN*WARN_MAX_COUNT];
+    int curCount = 0;
+
+    private void saveWarningData(WarningData warningData) {
+        if (warningData != null && warningData.getWarnData() != null) {
+            System.arraycopy(warningData.getWarnData(), 0, fileBuf,
+                    MsgConst.TP_WARNING_VALUE_LEN * curCount, MsgConst.TP_WARNING_VALUE_LEN);
+            curCount++;
+        }
+
+
+        if (warningData == null || curCount >= WARN_MAX_COUNT) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMdd", Locale.getDefault());
+            String fileName = getString(R.string.WarnRecordsFileName, simpleDateFormat.format(new Date()));
+
+            fileName = UpgradeManager.getExternalStorageFilePath(fileName);
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream(fileName, true);
+                outputStream.write(fileBuf, 0, fileBuf.length);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (null != outputStream) {
+                        outputStream.close();
+                    }
+                } catch (Exception e) {
+                    //Dose nothing
+                }
+            }
+            Arrays.fill(fileBuf, (byte)0);
+            curCount = 0;
+        }
+    }
+
+
+
+
+    private void saveHMWData(WarningData warningData) {
+
     }
 }

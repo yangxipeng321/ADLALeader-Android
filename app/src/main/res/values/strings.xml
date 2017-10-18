@@ -111,4 +111,5 @@
     <string name="statement_content5">5、驾驶员始终负有保持适当车距和车速的责任，切勿等待发出碰撞警告后，驾驶员才采取相应紧急措施。驾驶员应始终对确保车辆安全驾驶承担最终责任。</string>
     <string name="statement_content6">安全驾驶，请遵守交通规则。</string>
     <string name="statement_ok">了解</string>
+    <string name="WarnRecordsFileName">Warn%s.bin</string>
 </resources>

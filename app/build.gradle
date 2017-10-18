@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'ADASLeader'
             keyPassword 'mobileye'
-            storeFile file('D:/AndroidOutput/Key/ADASLeader.jks')
+            //storeFile file('D:/AndroidOutput/Key/ADASLeader.jks')
             storePassword 'mobileye'
         }
     }
