@@ -14,7 +14,6 @@ import com.adasleader.jason.adasleader.common.MyApplication;
 
 import java.util.Locale;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 public class AboutActivity extends Activity {
 

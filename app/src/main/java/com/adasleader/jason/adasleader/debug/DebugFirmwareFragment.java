@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.MyApplication;
 import com.adasleader.jason.adasleader.common.logger.Log;
@@ -40,7 +41,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 /**
  * A simple {@link Fragment} subclass.

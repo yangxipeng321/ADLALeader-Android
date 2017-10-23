@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="hk.com.mobileye.jason.adasleader">
+    package="com.adasleader.jason.adasleader">
 
     <uses-feature android:name="android.hardware.wifi" />
 

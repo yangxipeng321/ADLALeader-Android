@@ -10,9 +10,9 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 /**
  * Created by Jason on 2015/3/4.

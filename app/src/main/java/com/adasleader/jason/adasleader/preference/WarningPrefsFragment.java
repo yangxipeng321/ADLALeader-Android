@@ -16,7 +16,7 @@ import android.widget.Adapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import hk.com.mobileye.jason.adasleader.R;
+import com.adasleader.jason.adasleader.R;
 
 
 /**

@@ -7,7 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hk.com.mobileye.jason.adasleader.R;
+import com.adasleader.jason.adasleader.R;
+
 
 /**
  * A simple {@link Fragment} subclass.

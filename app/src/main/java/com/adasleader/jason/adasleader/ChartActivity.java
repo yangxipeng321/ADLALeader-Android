@@ -45,7 +45,6 @@ import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 
 public class ChartActivity extends Activity {

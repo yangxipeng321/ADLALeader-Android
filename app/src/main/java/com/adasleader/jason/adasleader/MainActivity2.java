@@ -53,7 +53,6 @@ import java.io.FileOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 
 public class MainActivity2 extends TabActivity {

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.MyApplication;
 import com.adasleader.jason.adasleader.common.logger.Log;
@@ -26,7 +27,6 @@ import com.adasleader.jason.adasleader.net.Message.TLVType;
 import com.adasleader.jason.adasleader.net.TcpIntentService;
 import com.adasleader.jason.adasleader.net.UdpHelper;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 /**
  *

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.MyApplication;
 import com.adasleader.jason.adasleader.common.logger.Log;
@@ -32,7 +33,6 @@ import com.adasleader.jason.adasleader.net.UdpHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 /**
   DVR Control Fragment.

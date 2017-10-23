@@ -57,7 +57,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 
 public class AlarmActivity extends Activity {

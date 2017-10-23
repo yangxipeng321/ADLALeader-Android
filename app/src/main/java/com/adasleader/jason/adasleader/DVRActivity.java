@@ -25,7 +25,6 @@ import com.adasleader.jason.adasleader.control.CtrlInteractionListener;
 
 import java.util.ArrayList;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 
 public class DVRActivity extends FragmentActivity

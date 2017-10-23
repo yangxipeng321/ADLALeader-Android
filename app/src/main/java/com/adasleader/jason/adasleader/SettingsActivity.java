@@ -31,7 +31,6 @@ import com.adasleader.jason.adasleader.preference.WarningPrefsFragment;
 
 import java.lang.ref.WeakReference;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 public class SettingsActivity extends Activity implements  WarningPrefsFragment.InteractionListener {
 

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.adasleader.jason.adasleader.control.CtrlInteractionListener;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 
 public class DVRControlFragment extends Fragment implements View.OnClickListener {

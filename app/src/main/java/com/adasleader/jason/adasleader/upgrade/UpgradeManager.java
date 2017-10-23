@@ -11,12 +11,12 @@ import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.SettingsActivity;
 import com.adasleader.jason.adasleader.common.Constants;
 
 import java.io.File;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 /**
  * Created by Jason on 2015/2/5.

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ToggleButton;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.MyApplication;
 import com.adasleader.jason.adasleader.common.logger.Log;
@@ -25,7 +26,6 @@ import com.adasleader.jason.adasleader.net.Message.MsgConst;
 import com.adasleader.jason.adasleader.net.Message.TLVClass;
 import com.adasleader.jason.adasleader.net.Message.TLVType;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 /**
  * A simple {@link Fragment} subclass.

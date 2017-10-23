@@ -13,7 +13,6 @@ import com.adasleader.jason.adasleader.common.logger.LogFragment;
 import com.adasleader.jason.adasleader.common.logger.LogWrapper;
 import com.adasleader.jason.adasleader.common.logger.MessageOnlyLogFilter;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 
 public class NightViewActivity extends Activity {

@@ -9,11 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.MyApplication;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.DVR.DvrFormat;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 /**
  * Created by Jason on 2016/9/13.

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 
 /**

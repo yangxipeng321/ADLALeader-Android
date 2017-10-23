@@ -18,11 +18,11 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.logger.Log;
 import com.adasleader.jason.adasleader.view.SlidingTabLayout;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 public class DebugActivity extends FragmentActivity {
     private static final String TAG = "DebugActivity";

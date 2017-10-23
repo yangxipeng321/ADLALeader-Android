@@ -14,10 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.view.SlidingTabLayout;
 
-import hk.com.mobileye.jason.adasleader.R;
 
 public class CtrlFragment extends Fragment {
 
