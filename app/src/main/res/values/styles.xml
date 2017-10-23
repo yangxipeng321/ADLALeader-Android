@@ -33,7 +33,7 @@
         <item name="android:progressDrawable">@drawable/apptheme_progress_horizontal</item>
     </style>
 
-    <style name="SplashScreenTheme" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
