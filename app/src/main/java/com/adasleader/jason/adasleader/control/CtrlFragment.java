@@ -21,8 +21,7 @@ import com.adasleader.jason.adasleader.view.SlidingTabLayout;
 
 public class CtrlFragment extends Fragment {
 
-    private CtrlInteractionListener mListener;
-    public static CtrlDVRFragment dvrFragment;
+    public CtrlDVRFragment dvrFragment;
 
 
     @Override
@@ -77,8 +76,7 @@ public class CtrlFragment extends Fragment {
             Fragment fragment;
             switch (position) {
                 case 0:
-                    fragment = CtrlCarFragment.newInstance(Integer.toString(position),
-                            Integer.toString(position));
+                    fragment = new CtrlCarFragment();
                     break;
                 case 1:
                     fragment = new CtrlMeFragment();

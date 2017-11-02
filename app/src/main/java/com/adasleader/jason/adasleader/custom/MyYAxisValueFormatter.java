@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 
 /**
  * Created by Jason on 2016/2/27.
+ *
  */
 public class MyYAxisValueFormatter implements YAxisValueFormatter {
 

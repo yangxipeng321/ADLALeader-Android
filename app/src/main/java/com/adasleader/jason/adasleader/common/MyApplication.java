@@ -9,7 +9,6 @@ import com.adasleader.jason.adasleader.net.Message.MsgClass.Settings.DevVersion;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Settings.MHVersion;
 import com.adasleader.jason.adasleader.preference.WarningConfig;
 import com.adasleader.jason.adasleader.statistics.StatisticsData;
-import com.adasleader.jason.adasleader.upgrade.FirmwareInfo;
 
 /**
  * Created by Jason on 2015/1/30.
@@ -54,8 +53,6 @@ public class MyApplication extends Application {
     public MHVersion mMHVersion = null;
     public int mFPGAVer = 0;
     public int mGateVer = 0;
-
-    public FirmwareInfo canInfo = null;
 
     private String mAppUpgradeUrl = null;
     private String mFirmwareUpgradeUrl = null;

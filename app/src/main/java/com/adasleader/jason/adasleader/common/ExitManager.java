@@ -11,10 +11,11 @@ import java.util.List;
 
 /**
  * Created by Jason on 2014/12/31.
+ *
  */
 public class ExitManager extends Application{
     private static final String TAG = "ExitManager";
-    private List<Activity> activityList = new LinkedList<Activity>();
+    private List<Activity> activityList = new LinkedList<>();
 
     private static ExitManager mInstance;
     private ExitManager() { }

@@ -172,18 +172,18 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         root.addPreference(displayCategory);
 
         //显示ADASLeader标志
-        ListPreference logoPref = new ListPreference(context);
-        logoPref.setPersistent(false);
-        String[] values =WarningConfig.JS_DISPLAY_LOG_DESC;
-        logoPref.setEntries(values);
-        logoPref.setEntryValues(values);
-        logoPref.setKey(WarningConfig.displayLogo);
-        logoPref.setTitle(WarningConfig.displayLogo);
-        logoPref.setDialogTitle(WarningConfig.displayLogo);
-        logoPref.setSummary(" ");
-        logoPref.setOnPreferenceChangeListener(this);
-        logoPref.setEnabled(false);
-        displayCategory.addPreference(logoPref);
+//        ListPreference logoPref = new ListPreference(context);
+//        logoPref.setPersistent(false);
+//        String[] values =WarningConfig.JS_DISPLAY_LOG_DESC;
+//        logoPref.setEntries(values);
+//        logoPref.setEntryValues(values);
+//        logoPref.setKey(WarningConfig.displayLogo);
+//        logoPref.setTitle(WarningConfig.displayLogo);
+//        logoPref.setDialogTitle(WarningConfig.displayLogo);
+//        logoPref.setSummary(" ");
+//        logoPref.setOnPreferenceChangeListener(this);
+//        logoPref.setEnabled(false);
+//        displayCategory.addPreference(logoPref);
 
         //特别提示
         SwitchPreference pref = new SwitchPreference(context);
@@ -247,18 +247,18 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
             }
         }
 
-        pref = findPreference(WarningConfig.displayLogo);
-        if (null!= pref && (pref instanceof ListPreference)){
-            pref.setEnabled(enabled);
-            if (enabled){
-                pref.setSummary("%s");
-                ((ListPreference) pref).setValue(config.displayLogoItem.getDesc());
-            } else {
-                //如果没有读取到配置文件，将各项值清空
-                pref.setSummary(" ");
-                ((ListPreference) pref).setValue("");
-            }
-        }
+//        pref = findPreference(WarningConfig.displayLogo);
+//        if (null!= pref && (pref instanceof ListPreference)){
+//            pref.setEnabled(enabled);
+//            if (enabled){
+//                pref.setSummary("%s");
+//                ((ListPreference) pref).setValue(config.displayLogoItem.getDesc());
+//            } else {
+//                //如果没有读取到配置文件，将各项值清空
+//                pref.setSummary(" ");
+//                ((ListPreference) pref).setValue("");
+//            }
+//        }
 
         //refresh statement preference
         pref = findPreference(WarningConfig.stateTitle);
@@ -312,10 +312,10 @@ public class WarningPrefsFragment extends PreferenceFragment implements Preferen
         }else if (itemTitle.equals(WarningConfig.autoReturnADAS)) {
             mConfig.setAutoReturnADASwitch((boolean)newValue);
             needUpdate = true;
-        } else if (itemTitle.equals(WarningConfig.displayLogo)) {
-            mConfig.displayLogoItem.setDesc((String)newValue);
-            mConfig.setDisplayLogo();
-            needUpdate = true;
+//        } else if (itemTitle.equals(WarningConfig.displayLogo)) {
+//            mConfig.displayLogoItem.setDesc((String)newValue);
+//            mConfig.setDisplayLogo();
+//            needUpdate = true;
         } else if (itemTitle.equals(WarningConfig.dvrVirtualBumper)) {
             mConfig.setDVRVirtualBumperSwitch((boolean) newValue);
             needUpdate = true;

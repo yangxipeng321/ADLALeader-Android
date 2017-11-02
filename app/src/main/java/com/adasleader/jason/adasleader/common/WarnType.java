@@ -2,6 +2,7 @@ package com.adasleader.jason.adasleader.common;
 
 /**
  * Created by Jason on 2016/2/29.
+ *
  */
 
 public enum WarnType {

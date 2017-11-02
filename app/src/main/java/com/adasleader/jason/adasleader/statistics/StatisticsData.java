@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by Jason on 2016/3/1.
+ *
  */
 public class StatisticsData {
 
@@ -55,7 +56,7 @@ public class StatisticsData {
     /**
      * 获取几天前的统计记录
      * @param index  0 表示今天的，1表示昨天，2表示两天前，
-     * @return
+     * @return statics data
      */
     public DayStat getDayStatByIndex(int index) {
         //int i = (index + todayIndex) % Constants.HISTORY_DAYS;

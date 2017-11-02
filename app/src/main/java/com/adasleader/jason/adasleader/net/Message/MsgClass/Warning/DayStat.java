@@ -10,6 +10,7 @@ import com.adasleader.jason.adasleader.net.Message.TLVValue;
 
 /**
  * Created by Jason on 2016/2/3.
+ *
  */
 public class DayStat implements TLVValue {
     private byte[] mBytes = new byte[MsgConst.WARN_DAY_STAT_OFFSET + MsgConst.WARN_ITEM_LEN * MsgConst.WARN_ITEM_COUNT

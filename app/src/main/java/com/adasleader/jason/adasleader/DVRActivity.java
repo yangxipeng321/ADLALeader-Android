@@ -1,11 +1,9 @@
 package com.adasleader.jason.adasleader;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -14,21 +12,17 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.ExitManager;
 import com.adasleader.jason.adasleader.control.CtrlFragment;
-import com.adasleader.jason.adasleader.control.CtrlInteractionListener;
 
 import java.util.ArrayList;
 
 
 
-public class DVRActivity extends FragmentActivity
-        implements CtrlInteractionListener {
+public class DVRActivity extends FragmentActivity {
 
     public static final String TAG = "DVRActivity";
 
@@ -41,14 +35,7 @@ public class DVRActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dvr);
 
-//        Fragment fragment = getFragmentManager().findFragmentById(R.id.videoContainer);
-//        if (fragment.getView() != null)
-//            videoView = (VideoView) fragment.getView().findViewById(R.id.videoView);
-
-
         if (savedInstanceState == null) {
-//            android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//            DVRControlFragment ctrlFragment = new DVRControlFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             ctrlFragment = new CtrlFragment();
             transaction.replace(R.id.controlContainer, ctrlFragment);
@@ -56,17 +43,6 @@ public class DVRActivity extends FragmentActivity
         }
 
         initLocalReceiver();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e(TAG, "onResume");
-
-//        byte id = (byte)(0);
-//        Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
-//        intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
-//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override
@@ -125,18 +101,7 @@ public class DVRActivity extends FragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void onFragmentInteraction(View view) {
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.videoContainer);
-        if (fragment.getView() != null) {
-            TextView textView = (TextView) fragment.getView().findViewById(R.id.textView);
-            textView.setText(view.getContentDescription());
-        }
-    }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     private LocalBroadCastReceiver localReceiver;
 
@@ -208,8 +173,8 @@ public class DVRActivity extends FragmentActivity
         private void dealFileList(Intent intent) {
             ArrayList<String> fileList = intent.getStringArrayListExtra(Constants.EXTEND_DVR_FILE_LIST);
             if (null != fileList && fileList.size() > 0) {
-                if (null != CtrlFragment.dvrFragment) {
-                    CtrlFragment.dvrFragment.SetListView(fileList);
+                if (null!= ctrlFragment && null != ctrlFragment.dvrFragment) {
+                    ctrlFragment.dvrFragment.SetListView(fileList);
                 }
             }
         }
@@ -219,8 +184,9 @@ public class DVRActivity extends FragmentActivity
             byte playCtrl = intent.getByteExtra(Constants.EXTEND_DVR_PLAY_CTRL, (byte)0);
             String fileName = intent.getStringExtra(Constants.EXTEND_DVR_PLAY_FILE_NAME);
 
-            if (fileType > 0 && null != fileName && null != CtrlFragment.dvrFragment) {
-                CtrlFragment.dvrFragment.setPlayFile(fileType, playCtrl, fileName);
+            if (fileType > 0 && null != fileName && null!=ctrlFragment
+                    && null != ctrlFragment.dvrFragment) {
+                ctrlFragment.dvrFragment.setPlayFile(fileType, playCtrl, fileName);
             }
         }
     }

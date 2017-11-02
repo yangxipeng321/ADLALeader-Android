@@ -61,8 +61,6 @@ public final class Constants {
     public static final String UDHCPD_FILE = "UDHCPD.CONF";
 
     //public static final String HI3_FIRMWARE = "ADASGATE_.bin";
-    //public static final String MH_CONFIG_FILE = "etc/AWS2Buzzer.conf";
-    //public static final String MH_BUZZER_FILE = "AWS2Buzzer.conf";
     public static final String HI3_GATE_PREFIX = "ADASGATE_";
     public static final String HI3_DAEMON_PREFIX = "ADASD_";
     public static final String HI3_RTSP_PREFIX = "RTSP_";

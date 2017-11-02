@@ -1,27 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <!--<fragment-->
-        <!--android:id="@+id/videoContainer"-->
-        <!--android:name="hk.com.mobileye.jason.adlaleader.DVRActivityFragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="2"-->
-        <!--tools:layout="@layout/fragment_dvr"-->
-        <!--/>-->
-
-    <!--<fragment-->
-        <!--android:id="@+id/controlContainer"-->
-        <!--android:name="hk.com.mobileye.jason.adlaleader.DVRControlFragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="3"-->
-        <!--tools:layout="@layout/fragment_dvrcontrol" />-->
-
     <FrameLayout
         android:id="@+id/controlContainer"
         android:layout_width="match_parent"
@@ -29,10 +10,3 @@
         android:layout_weight="2"/>
 </LinearLayout>
 
-<!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--xmlns:tools="http://schemas.android.com/tools"-->
-<!--android:id="@+id/fragment"-->
-<!--android:name="hk.com.mobileye.jason.adlaleader.DVRActivityFragment"-->
-<!--tools:layout="@layout/fragment_dvr"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent" />-->

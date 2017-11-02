@@ -9,6 +9,7 @@ import com.adasleader.jason.adasleader.net.Message.TLVType;
 
 /**
  * Created by Jason on 2016/2/3.
+ *
  */
 public class WarnDayStatResp extends MsgBase{
 

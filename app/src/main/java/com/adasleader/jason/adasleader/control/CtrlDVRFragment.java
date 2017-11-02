@@ -50,7 +50,6 @@ public class CtrlDVRFragment extends Fragment {
     private ListView listView;
     private FileAdapter mAdapter;
     private Button btnFormat;
-    private byte curCtrl = 0;
     private float curAlpha = 0f;
     private int curButton = 0; //0 录像 1 视频 2 紧急视频 3 照片
     private ArrayList<ToggleButton> btns = new ArrayList<>();
@@ -72,7 +71,7 @@ public class CtrlDVRFragment extends Fragment {
         mApp = (MyApplication) getActivity().getApplication();
 
         listener = new BtnClickListener();
-        btnFormat = (Button) view.findViewById(R.id.btnDVRFormat);
+        btnFormat = view.findViewById(R.id.btnDVRFormat);
         btnFormat.setOnClickListener(listener);
         view.findViewById(R.id.btnScrVideo).setOnClickListener(listener);
 
@@ -92,7 +91,7 @@ public class CtrlDVRFragment extends Fragment {
             mAdapter = new FileAdapter(mlist);
         }
 
-        listView = (ListView) view.findViewById(R.id.listView);
+        listView = view.findViewById(R.id.listView);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new ListView.OnItemClickListener(){
             @Override
@@ -153,15 +152,15 @@ public class CtrlDVRFragment extends Fragment {
         private ArrayList<String> mFileList = null;
         private int mSelectedPosition = -1;
 
-        public FileAdapter(ArrayList<String> fileList) {
+        FileAdapter(ArrayList<String> fileList) {
             mFileList = fileList;
         }
 
-        public void setSelectedPosition(int position) {
+        void setSelectedPosition(int position) {
             mSelectedPosition = position;
         }
 
-        public String getSelectedFile() {
+        String getSelectedFile() {
             if (mSelectedPosition >= 0) {
                 return mFileList.get(mSelectedPosition);
             } else {
@@ -217,7 +216,7 @@ public class CtrlDVRFragment extends Fragment {
             notifyDataSetChanged();
         }
 
-        public void setSelected(String fileName) {
+        void setSelected(String fileName) {
             int index = mFileList.indexOf(fileName);
             if (index >= 0 && mSelectedPosition != index) {
                 mSelectedPosition = index;

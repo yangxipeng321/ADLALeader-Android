@@ -637,7 +637,6 @@ public class MainActivity2 extends TabActivity {
     }
 
     private void processWarningConfigFile(byte[] buffer) {
-        //mApp.mMHConfigFile = new AM_AWS_SETUP(buffer, 0, buffer.length);
         mApp.mMHConfigFile = new WarningConfig(buffer, 0, buffer.length);
 
         if (buffer[15] > 0){
