@@ -1,14 +1,11 @@
 apply plugin: 'com.android.application'
 
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
-    signingConfigs {
-        config {
-            keyAlias 'ADASLeader'
-            keyPassword 'mobileye'
-            //storeFile file('D:/AndroidOutput/Key/ADASLeader.jks')
-            storePassword 'mobileye'
-        }
-    }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
@@ -18,6 +15,16 @@ android {
         versionCode 217103001
         versionName "1.4.8"
     }
+
+    signingConfigs {
+        release {
+            //storeFile file('D:/AndroidOutput/Key/ADASLeader.jks')
+            storeFile file(keystoreProperties["storeFile"])
+            storePassword keystoreProperties["storePassword"]
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties["keyPassword"]
+        }
+    }
 /*
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -25,31 +32,42 @@ android {
     }
 */
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    output.outputFileName = "ADASLeader_${variant.versionCode}_${variant.flavorName}_${variant.buildType.name}.apk"
+                }
+            }
 
-//            applicationVariants.all { variant ->
-//                variant.outputs.each { output ->
-//                    def outputFile = output.outputFile
-//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                        //output file name is ADASLeader215040901_wandoujia.apk
-//                        def fileName = "ADASLeader${defaultConfig.versionCode}_${variant.productFlavors[0].name}.apk"
-//                        output.outputFile = new File(outputFile.parent, fileName)
-//                    }
-//                }
-//            }
+            signingConfig signingConfigs.release
         }
     }
-//    productFlavors {
-//        wandoujia {}
-//        _360 {
-//            signingConfig signingConfigs.config
-//        }
-//    }
-//    productFlavors.all { flavor ->
-//        flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
-//    }
+
+    flavorDimensions "mode"
+
+    productFlavors {
+        pro {
+            dimension "mode"
+            applicationIdSuffix ".pro"
+        }
+        sale {
+            dimension "mode"
+        }
+    }
+
+    variantFilter{ variant->
+        def names = variant.flavors*.name
+        if (names.contains("pro") && variant.buildType.name=="release"){
+            setIgnore(true)
+        }
+    }
+
 }
 
 repositories {
