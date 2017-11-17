@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adasleader.jason.adasleader.DriverBehaviorAnalysis.AnalysisManager;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.ExitManager;
 import com.adasleader.jason.adasleader.common.MyApplication;
@@ -91,6 +92,7 @@ public class AlarmActivity extends Activity {
     //receive alarm message
     public Handler handler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Constants.DEVELOPER_MODE) {
@@ -115,6 +117,7 @@ public class AlarmActivity extends Activity {
         initNet();
         initNetworReceiver();
         initLocalReceiver();
+        AnalysisManager.getInstance().setApplicationContext(getApplicationContext());
     }
 
     @Override
@@ -317,8 +320,10 @@ public class AlarmActivity extends Activity {
         WarningData data = (WarningData) (MsgFactory.getInstance().create(buf));
 
 
+
         if (data != null && data.decode()) {
             //saveWarningData(data);
+            AnalysisManager.getInstance().push(data);
 
             alarmLaneLeft(data.ldwLeft > 0);
             alarmLaneRight(data.ldwRight > 0);

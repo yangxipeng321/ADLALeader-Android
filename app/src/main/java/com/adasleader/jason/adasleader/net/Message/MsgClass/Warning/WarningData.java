@@ -5,6 +5,7 @@ import com.adasleader.jason.adasleader.net.Message.MsgConst;
 
 /**
  * Created by Jason on 2015/1/5.
+ *
  */
 public class WarningData extends MsgBase{
     private byte[] mWarningData = null;
