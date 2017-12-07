@@ -6,8 +6,6 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import static java.util.Arrays.copyOf;
-
 /**
  * Created by jason on 2017/11/16.
  *
@@ -15,14 +13,14 @@ import static java.util.Arrays.copyOf;
 
 class HMWRecord {
     private static final int HMW_SIZE = 1024;
-    private int interval;
-    private long startTime;
+    private final int interval;
+    private final long startTime;
     private long stopTime;
     private int count;
     private int minValue;
-    private byte[] values = new byte[HMW_SIZE];
+    private final byte[] values = new byte[HMW_SIZE];
 
-    public HMWRecord(int interval) {
+    HMWRecord(int interval) {
         this.interval = interval;
         startTime = System.currentTimeMillis();
     }
@@ -44,13 +42,13 @@ class HMWRecord {
         }
     }
 
-    public boolean isFull() {
+    boolean isFull() {
         return count >= values.length;
     }
 
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append("HMWRecord");
         buffer.append("\nStartTime: ").append(startTime);
         buffer.append("\tStopTime: ").append(stopTime);
@@ -64,7 +62,7 @@ class HMWRecord {
     }
 
 
-    public JSONObject toJSON() {
+    JSONObject toJSON() {
         JSONObject json = new JSONObject();
         try {
             json.put("StartTime", startTime);

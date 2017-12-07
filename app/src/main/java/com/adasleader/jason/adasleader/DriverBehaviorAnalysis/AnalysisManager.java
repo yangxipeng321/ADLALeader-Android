@@ -1,13 +1,11 @@
 package com.adasleader.jason.adasleader.DriverBehaviorAnalysis;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 
-import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Warning.WarningData;
 import com.adasleader.jason.adasleader.upgrade.UpgradeManager;
 
@@ -35,7 +33,6 @@ public class AnalysisManager {
 
     private static final int INTERVAL = 1000;
 
-    private Context mContext;
     private Handler mHandler = null;
     private AnalyzeHMW analyzeHMW;
 
@@ -62,9 +59,6 @@ public class AnalysisManager {
 
     }
 
-    public void setApplicationContext(Context context) {
-        mContext = context;
-    }
 
     public void push(WarningData warningData) {
         mHandler.obtainMessage(MSG_DATA, warningData).sendToTarget();

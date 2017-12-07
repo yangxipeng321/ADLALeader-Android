@@ -11,8 +11,8 @@ class AnalyzeHMW {
     private static final String TAG = "AnalyzeHMW";
 
     private final AnalysisManager mManager;
-    private int interval;
-    private int timeout;
+    private final int interval;
+    private final int timeout;
     private long lastUpdate;
 
     private HMWRecord record;
@@ -21,7 +21,7 @@ class AnalyzeHMW {
      *
      * @param interval 数据采样间隔
      */
-    public AnalyzeHMW(AnalysisManager manager, int interval) {
+    AnalyzeHMW(AnalysisManager manager, int interval) {
         super();
         mManager = manager;
         this.interval = interval;
@@ -44,7 +44,7 @@ class AnalyzeHMW {
         }
     }
 
-    void start(int data) {
+    private void start(int data) {
         Log.d(TAG, "start");
         record = new HMWRecord(interval);
         record.add(data);
@@ -52,7 +52,7 @@ class AnalyzeHMW {
         mManager.setTimeout(timeout);
     }
 
-    void update(int data) {
+    private void update(int data) {
         Log.d(TAG, "update");
         record.add(data);
         lastUpdate = System.currentTimeMillis();
@@ -63,7 +63,7 @@ class AnalyzeHMW {
         }
     }
 
-    void stop() {
+    private void stop() {
         Log.d(TAG, "stop");
         mManager.saveHMW(record);
         record = null;

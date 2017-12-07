@@ -117,12 +117,12 @@ public class AlarmActivity extends Activity {
         initNet();
         initNetworReceiver();
         initLocalReceiver();
-        AnalysisManager.getInstance().setApplicationContext(getApplicationContext());
+        //AnalysisManager.getInstance().setApplicationContext(getApplicationContext());
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, TAG + "onDestory");
+        Log.d(TAG, TAG + "onDestroy");
 
         //Unregisters BroadcastReceiver when activity is destroied.
         releaseNetReceiver();

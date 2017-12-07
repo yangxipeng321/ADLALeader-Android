@@ -5,9 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
@@ -59,7 +57,7 @@ import java.util.TimeZone;
 
 public class MainActivity2 extends TabActivity {
 
-    TabHost tabHost;
+    private TabHost tabHost;
 
     private static final String TAG = "MainActivity";
     //The BroadcastReceiver that tracks network connectivity changes.
@@ -93,9 +91,9 @@ public class MainActivity2 extends TabActivity {
 
         //if (Constants.SHOW_DEBUG) {
         if (BuildConfig.FLAVOR.equals("pro")){
-            TabSpec debugSpce = tabHost.newTabSpec("Debug").setIndicator("Debug").setContent(
+            TabSpec debugSpec = tabHost.newTabSpec("Debug").setIndicator("Debug").setContent(
                     new Intent(this, DebugActivity.class));
-            tabHost.addTab(debugSpce);
+            tabHost.addTab(debugSpec);
         } else {
             findViewById(R.id.rbtnDebugView).setVisibility(View.GONE);
         }
@@ -111,12 +109,12 @@ public class MainActivity2 extends TabActivity {
 //            debugViewBtn.setVisibility(View.GONE);
 //        }
 
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChanged());
 
         mApp = (MyApplication)getApplication();
 
-        initConnectnionInfoBar();
+        initConnectionInfoBar();
 
         initNetworkReceiver();
         initLocalReceiver();
@@ -124,7 +122,7 @@ public class MainActivity2 extends TabActivity {
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestory");
+        Log.d(TAG, "onDestroy");
         releaseNetworkReceiver();
         releaseLocalReceiver();        mApp = null;
         //Must always call the super method at the end.
@@ -195,7 +193,7 @@ public class MainActivity2 extends TabActivity {
             clickCount++;
             if (clickCount > 5) {
                 clickCount = 0;
-                RadioButton rBtn = (RadioButton) findViewById(R.id.rbtnDebugView);
+                RadioButton rBtn = findViewById(R.id.rbtnDebugView);
                 rBtn.setVisibility(View.VISIBLE);
             }
         }
@@ -209,12 +207,12 @@ public class MainActivity2 extends TabActivity {
         startActivity(intent);
     }
 
-    LinearLayout connectionInfoBar;
-    TextView connectionInfoText;
+    private LinearLayout connectionInfoBar;
+    private TextView connectionInfoText;
 
-    private void initConnectnionInfoBar() {
-        connectionInfoBar = (LinearLayout) findViewById(R.id.connectionInfoBar);
-        connectionInfoText = (TextView) findViewById(R.id.connectionInfoText);
+    private void initConnectionInfoBar() {
+        connectionInfoBar = findViewById(R.id.connectionInfoBar);
+        connectionInfoText = findViewById(R.id.connectionInfoText);
         connectionInfoBar.setVisibility(View.INVISIBLE);
     }
 
@@ -331,6 +329,8 @@ public class MainActivity2 extends TabActivity {
                 String action = intent.getAction();
                 String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
 
+                if (action==null) return;
+
                 // Both this activity and SettingActivity can start a TcpIntentService.
                 // But only this receives and processes the status which the service broadcast.
                 if (action.equals(Constants.TCP_WORK_STATUS_ACTION)) {
@@ -374,7 +374,7 @@ public class MainActivity2 extends TabActivity {
                         decodeMessage(buffer);
                     } else {
                         if (description==Constants.DESC_WRITE_FIRMWARE) {
-                            broadcastUploadFirmwareReslut(null, 0);
+                            broadcastUploadFirmwareResult(null, 0);
                         } else if (description == Constants.DESC_RESET_DEVICE) {
                             broadcastCmdResetResp(-1);
                         } else if (description == Constants.DESC_RESET_MOBILEYE) {
@@ -412,7 +412,7 @@ public class MainActivity2 extends TabActivity {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void broadcastUploadFirmwareReslut(String fileName, int length) {
+    private void broadcastUploadFirmwareResult(String fileName, int length) {
         Log.d(TAG, "broadcast upload firmware result");
         Intent intent = new Intent(Constants.FIRMWARE_UPLOAD_RESULT_ACTION);
         if (fileName != null)
@@ -597,9 +597,9 @@ public class MainActivity2 extends TabActivity {
                 || fileName.toUpperCase().startsWith(Constants.CAR_PARA_CONFIG_PREFIX)
                 || fileName.toUpperCase().startsWith(Constants.CAR_DISPLAY_CONFIG_PREFIX)
                 || fileName.toUpperCase().startsWith(Constants.UDHCPD_FILE)) {
-            broadcastUploadFirmwareReslut(fileName, fileLen);
+            broadcastUploadFirmwareResult(fileName, fileLen);
         }
-        if (fileName != null && fileName.equals(Constants.MH_CONFIG_FILE)) {
+        if (fileName.equals(Constants.MH_CONFIG_FILE)) {
             broadcastWriteMHConfigResult(fileLen);
         }
     }
@@ -832,7 +832,6 @@ public class MainActivity2 extends TabActivity {
 
     private void processWarnMonthStatResp(MsgBase msg) {
         Log.d(TAG, "Warn month statistic response");
-
     }
 
     private void processDVRFileListResp(MsgBase msg) {
