@@ -323,7 +323,7 @@ public class AlarmActivity extends Activity {
 
         if (data != null && data.decode()) {
             //saveWarningData(data);
-            AnalysisManager.getInstance().push(data);
+            //AnalysisManager.getInstance().push(data);
 
             alarmLaneLeft(data.ldwLeft > 0);
             alarmLaneRight(data.ldwRight > 0);
