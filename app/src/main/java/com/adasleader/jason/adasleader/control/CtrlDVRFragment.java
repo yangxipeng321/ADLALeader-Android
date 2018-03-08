@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,11 +36,11 @@ import java.util.Collections;
 
 
 /**
-  DVR Control Fragment.
-  1. Show DVR screen
-  2. List and play video files
-  3. List and play emergency video files
-  4. List and play picture files.
+ * DVR Control Fragment.
+ * 1. Show DVR screen
+ * 2. List and play video files
+ * 3. List and play emergency video files
+ * 4. List and play picture files.
  */
 public class CtrlDVRFragment extends Fragment {
 
@@ -93,12 +94,12 @@ public class CtrlDVRFragment extends Fragment {
 
         listView = view.findViewById(R.id.listView);
         listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(new ListView.OnItemClickListener(){
+        listView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.setSelectedPosition(position);
                 mAdapter.notifyDataSetChanged();
-                dealPlayFile((byte)1);
+                dealPlayFile((byte) 1);
             }
         });
         listView.setAlpha(curAlpha);
@@ -228,7 +229,7 @@ public class CtrlDVRFragment extends Fragment {
 
     private void dealScreenVideo() {
         Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
-        byte id =  Constants.SCREEN_APP_DVR;
+        byte id = Constants.SCREEN_APP_DVR;
         intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
@@ -253,8 +254,8 @@ public class CtrlDVRFragment extends Fragment {
         mFileType = fileType;
         mAdapter.clear();
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
-            DvrFileListReq msg= new DvrFileListReq();
-            msg.getBody().get(TLVType.TP_DVR_FILE_TYPE_ID).setValue((short)fileType);
+            DvrFileListReq msg = new DvrFileListReq();
+            msg.getBody().get(TLVType.TP_DVR_FILE_TYPE_ID).setValue((short) fileType);
             if (msg.encode()) {
                 Log.d(TAG, "Get DVR file list req");
                 //Intent can't send data over 48K, it will report error
@@ -273,7 +274,17 @@ public class CtrlDVRFragment extends Fragment {
             return;
         }
 
-        Toast.makeText(getActivity(), fileName,Toast.LENGTH_LONG).show();
+
+        // Check current speed
+        if (mApp.speed > 5) {
+            Toast toast = Toast.makeText(getActivity(), R.string.dvr_not_allow_play, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return;
+        }
+
+
+        Toast.makeText(getActivity(), fileName, Toast.LENGTH_LONG).show();
 
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             DvrPlayFileReq msg = new DvrPlayFileReq();
@@ -349,7 +360,7 @@ public class CtrlDVRFragment extends Fragment {
 
     private void checkToggleButton(int index) {
         curButton = index;
-        for (int i = 0; i< btns.size(); i++) {
+        for (int i = 0; i < btns.size(); i++) {
             btns.get(i).setChecked(i == index);
         }
     }
