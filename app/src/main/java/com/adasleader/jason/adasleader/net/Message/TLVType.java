@@ -30,4 +30,5 @@ public class TLVType {
     public static final int TP_DEBUG_CMD_ID =       0x19;
     public static final int TP_DVR_RESOLUTION_ID =  0x1A;
     public static final int TP_CALIBRATE_CMD_ID =   0x1B;
+    public static final int TP_DVR_VER_ID =        0X1F;
 }

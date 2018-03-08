@@ -81,6 +81,7 @@
     <string name="dvr_fcw_video_list">紧急视频</string>
     <string name="dvr_pic_list">照片列表</string>
     <string name="dvr_format">格式化</string>
+    <string name="dvr_not_allow_play">行驶中不允许播放</string>
 
     <string name="screen_car">原车屏</string>
     <string name="screen_mobileye">天眼</string>

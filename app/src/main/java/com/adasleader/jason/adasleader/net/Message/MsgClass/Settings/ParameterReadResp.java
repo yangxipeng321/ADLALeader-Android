@@ -10,6 +10,7 @@ import com.adasleader.jason.adasleader.net.Message.TLVType;
 
 /**
  * Created by Jason on 2015/1/27.
+ *
  */
 public class ParameterReadResp extends MsgBase {
     @Override
@@ -76,6 +77,10 @@ public class ParameterReadResp extends MsgBase {
                         case TLVType.TP_GATE_VER_ID:
                             int gateVer = MsgUtils.bytes2Int(getData(), index + 4);
                             getBody().add(tlvType, int.class).setValue(gateVer);
+                            break;
+                        case TLVType.TP_DVR_VER_ID:
+                            int dvrVer = MsgUtils.bytes2Int(getData(), index + 4);
+                            getBody().add(tlvType, int.class).setValue(dvrVer);
                             break;
                         default:
                             //result = false;

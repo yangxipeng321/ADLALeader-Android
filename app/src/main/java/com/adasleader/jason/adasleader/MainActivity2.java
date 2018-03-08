@@ -737,6 +737,15 @@ public class MainActivity2 extends TabActivity {
             Log.e(TAG, "Gate Version is null");
         }
 
+        tlv = msg.getBody().get(TLVType.TP_DVR_VER_ID);
+        if (null !=tlv && null != tlv.getValue()){
+            mApp.mDVRVer = (int)tlv.getValue();
+            Log.i(TAG, String.format("Receive DVRVersion [%08X", mApp.mDVRVer));
+            mApp.saveDVRVersion();
+        } else {
+            Log.e(TAG, "DVR version is null");
+        }
+
         tlv = msg.getBody().get(TLVType.TP_WIFI_PASSWORD_ID);
         if (null != tlv && null != tlv.getValue()) {
             WifiPassword password = (WifiPassword) (tlv.getValue());

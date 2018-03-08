@@ -23,6 +23,7 @@ public class AboutActivity extends Activity {
     private TextView txtDevVersion;
     private TextView txtMHVersion;
     private TextView txtFPGAVersion;
+    private TextView txtDVRVersion;
     private MyApplication myApp;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -79,11 +80,12 @@ public class AboutActivity extends Activity {
     }
 
     private void initControls() {
-        txtVersion = (TextView) findViewById(R.id.txtVersion);
-        txtGateVersion = (TextView) findViewById(R.id.txtGateVersion);
-        txtDevVersion = (TextView) findViewById(R.id.txtDevVersion);
-        txtMHVersion = (TextView) findViewById(R.id.txtMHVersion);
-        txtFPGAVersion = (TextView) findViewById(R.id.txtFPGAVersion);
+        txtVersion =  findViewById(R.id.txtVersion);
+        txtGateVersion =  findViewById(R.id.txtGateVersion);
+        txtDevVersion =  findViewById(R.id.txtDevVersion);
+        txtMHVersion =  findViewById(R.id.txtMHVersion);
+        txtFPGAVersion = findViewById(R.id.txtFPGAVersion);
+        txtDVRVersion = findViewById(R.id.txtDVRVersion);
     }
 
     private void refreshVersion() {
@@ -115,10 +117,15 @@ public class AboutActivity extends Activity {
         }
 
         if (myApp.mFPGAVer == 0) {
-
             txtFPGAVersion.setText("");
         } else {
             txtFPGAVersion.setText(String.format("\nFPGA : %08X", myApp.mFPGAVer));
+        }
+
+        if (myApp.mDVRVer == 0) {
+            txtDVRVersion.setText("\nDVR : ---");
+        } else {
+            txtDVRVersion.setText(String.format("\nDVR : %08X", myApp.mDVRVer));
         }
     }
 }

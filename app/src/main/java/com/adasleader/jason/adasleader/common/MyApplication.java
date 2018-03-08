@@ -53,6 +53,7 @@ public class MyApplication extends Application {
     public MHVersion mMHVersion = null;
     public int mFPGAVer = 0;
     public int mGateVer = 0;
+    public int mDVRVer = 0;
 
     private String mAppUpgradeUrl = null;
     private String mFirmwareUpgradeUrl = null;
@@ -185,6 +186,11 @@ public class MyApplication extends Application {
     }
 
 
+    public void saveDVRVersion(){
+        SharedPreferences.Editor editor = getSettings().edit();
+        editor.putInt(Constants.PREFS_ITEM_DVR_VER, mDVRVer);
+        editor.apply();
+    }
 
     private SharedPreferences getSettings() {
         return getSharedPreferences(Constants.PREFS_FILE, MODE_PRIVATE);

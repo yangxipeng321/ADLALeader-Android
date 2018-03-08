@@ -93,6 +93,8 @@ public final class Constants {
     public static final String PREFS_ITEM_MH_VF_VER = "MHVfVer";
     public static final String PREFS_ITEM_FPGA_VER = "FPGAVer";
     public static final String PREFS_ITEM_GATE_VER = "GateVer";
+    public static final String PREFS_ITEM_DVR_VER = "DVRVer";
+
 
 
     //saves device version info for firmware upgrade
