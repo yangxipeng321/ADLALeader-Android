@@ -13,6 +13,8 @@ import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.MyApplication;
 import com.adasleader.jason.adasleader.common.logger.Log;
+import com.adasleader.jason.adasleader.net.Message.Factory.MsgFactory;
+import com.adasleader.jason.adasleader.net.Message.MessageType;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdCalibrateReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdResetReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Cmd.CmdSaveFrame;
@@ -22,7 +24,10 @@ import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugDVRCmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugFPGACmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugMCUCmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.File.FileReadReq;
+import com.adasleader.jason.adasleader.net.Message.MsgClass.Settings.ParameterReadReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Warning.WarnClearStat;
+import com.adasleader.jason.adasleader.net.Message.ResponseType;
+import com.adasleader.jason.adasleader.net.Message.ServiceType;
 import com.adasleader.jason.adasleader.net.Message.TLVType;
 import com.adasleader.jason.adasleader.net.TcpIntentService;
 import com.adasleader.jason.adasleader.net.UdpHelper;
@@ -270,6 +275,20 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
     }
 
     private void dealDebugDvr(int key) {
+        if (key == 4)
+        {
+            ParameterReadReq msg = (ParameterReadReq) MsgFactory.getInstance().create(
+                    ServiceType.SERVICE_SETTINGS,
+                    MessageType.PARA_READ_REQ,
+                    ResponseType.REQUEST);
+            if (msg.encode()) {
+                TcpIntentService.startActionFileService(getActivity(), msg.getData(), Constants.DESC_READ_PARAM);
+            }
+            return;
+        }
+
+
+
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             DebugDVRCmd msg = new DebugDVRCmd();
             msg.getBody().get(TLVType.TP_DEBUG_CMD_ID).setValue(key);
