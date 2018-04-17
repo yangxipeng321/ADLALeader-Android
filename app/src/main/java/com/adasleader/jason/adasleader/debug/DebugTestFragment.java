@@ -8,6 +8,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.adasleader.jason.adasleader.R;
 import com.adasleader.jason.adasleader.common.Constants;
@@ -38,7 +40,9 @@ import com.adasleader.jason.adasleader.net.UdpHelper;
  */
 public class DebugTestFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "DebugTestFragment";
+    private static final int OFFSET = 50;
     private MyApplication mApp;
+    private NumberPicker picker;
 
     private byte count = 10;
 
@@ -77,6 +81,9 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
         view.findViewById(R.id.btnDebugDvr2).setOnClickListener(this);
         view.findViewById(R.id.btnDebugDvr3).setOnClickListener(this);
         view.findViewById(R.id.btnDebugDvr4).setOnClickListener(this);
+
+        initFoeYOffset(view);
+
         return view;
     }
 
@@ -172,12 +179,17 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
                 key = 4;
                 dealDebugDvr(key);
                 break;
+            case R.id.btnFoeYOffset:
+                dealSetFoeYOffset();
+                break;
+
+
         }
     }
 
-    private void saveFrame(){
+    private void saveFrame() {
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
-             CmdSaveFrame msg= new CmdSaveFrame();
+            CmdSaveFrame msg = new CmdSaveFrame();
 
             msg.getBody().get(TLVType.TP_FRAME_COUNT_ID).setValue(count);
             if (msg.encode()) {
@@ -191,10 +203,10 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
 
     }
 
-    private void downloadFrame(){
+    private void downloadFrame() {
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             FileReadReq msg = new FileReadReq();
-            msg.getBody().get(TLVType.TP_FILE_PARA_ID).setValue(""+String.valueOf(count));
+            msg.getBody().get(TLVType.TP_FILE_PARA_ID).setValue("" + String.valueOf(count));
             if (msg.encode()) {
                 TcpIntentService.startActionFileService(getActivity(), msg.getData(),
                         Constants.DESC_CMD_DOWNLOAD_FRAME);
@@ -275,8 +287,7 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
     }
 
     private void dealDebugDvr(int key) {
-        if (key == 4)
-        {
+        if (key == 4) {
             ParameterReadReq msg = (ParameterReadReq) MsgFactory.getInstance().create(
                     ServiceType.SERVICE_SETTINGS,
                     MessageType.PARA_READ_REQ,
@@ -286,7 +297,6 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
             }
             return;
         }
-
 
 
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
@@ -304,7 +314,7 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
     }
 
     private void dealOutputVideo() {
-        byte id = (byte)(0x80);
+        byte id = (byte) (0x80);
         Intent intent = new Intent(Constants.CMD_SWITCH_SCREEN_REQ_ACTION);
         intent.putExtra(Constants.EXTEND_SCREEN_ID, id);
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
@@ -313,7 +323,7 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
     private void dealCali(int cmd) {
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
             CmdCalibrateReq msg = new CmdCalibrateReq();
-            msg.getBody().get(TLVType.TP_CALIBRATE_CMD_ID).setValue((byte)cmd);
+            msg.getBody().get(TLVType.TP_CALIBRATE_CMD_ID).setValue((byte) cmd);
             msg.setSeq(UdpHelper.getSeq());
             if (msg.encode()) {
                 byte[] buf = new byte[msg.getMsgLength()];
@@ -335,6 +345,47 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
                 Intent intent = new Intent(Constants.UDP_SEND_ACTION);
                 intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buf);
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            }
+        }
+    }
+
+    private void initFoeYOffset(View rootView) {
+        rootView.findViewById(R.id.btnFoeYOffset).setOnClickListener(this);
+
+        picker = rootView.findViewById(R.id.yOffsetPicker);
+
+        String[] values = new String[2 * OFFSET + 1];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = String.valueOf(i - OFFSET);
+        }
+        picker.setDisplayedValues(values);
+        picker.setMinValue(0);
+        picker.setMaxValue(values.length - 1);
+        picker.setValue(OFFSET);
+
+
+    }
+
+    private void dealSetFoeYOffset() {
+        if (null == picker) return;
+
+        int value = picker.getValue() - OFFSET;
+        int key = ((value & 0xFF) << 8) + 3;
+        String txt = String.format("SetFoeYOffset value %X   key %X", value & 0xff, key);
+
+        Log.d(TAG, txt);
+
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            DebugMCUCmd msg = new DebugMCUCmd();
+            msg.getBody().get(TLVType.TP_DEBUG_CMD_ID).setValue(key);
+            msg.setSeq(UdpHelper.getSeq());
+            if (msg.encode()) {
+                byte[] buffer = new byte[msg.getMsgLength()];
+                System.arraycopy(msg.getData(), 0, buffer, 0, buffer.length);
+                Intent intent = new Intent(Constants.UDP_SEND_ACTION);
+                intent.putExtra(Constants.EXTEND_UDP_SEND_BUFFER, buffer);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                Toast.makeText(getActivity().getApplicationContext(), txt, Toast.LENGTH_LONG).show();
             }
         }
     }
