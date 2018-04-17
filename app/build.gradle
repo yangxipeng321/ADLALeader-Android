@@ -11,8 +11,8 @@ android {
         applicationId "com.adasleader.jason.adasleader"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 218030502
-        versionName "1.4.10"
+        versionCode 218041701
+        versionName "1.4.11"
     }
 
     signingConfigs {
