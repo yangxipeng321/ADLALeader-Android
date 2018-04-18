@@ -29,7 +29,7 @@ public final class Constants {
 
     public static final String SSID = "ADASLeader";
     //    public static final String SSID = "qddytt";
-    public static final String TEST_SSID = "MBK-TPLink";
+    public static final String TEST_SSID = "kingdee";
     public static final String IP = "192.168.168.1";
     //    public static final String IP = "192.168.2.1";
     public static final String TEST_IP = "192.168.0.16";
