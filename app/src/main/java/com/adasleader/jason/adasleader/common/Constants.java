@@ -85,6 +85,7 @@ public final class Constants {
     public static final String PREFS_ITEM_FIRMWARE_URL = "firmwareUrl";
     public static final String PREFS_ITEM_FIRMWARE_FILE_PATH = "firmwareFilePath";
     public static final String PREFS_ITEM_APP_URL = "appUrl";
+    public static final String PREFS_ITEM_GATE_VER = "GateVer";
     public static final String PREFS_ITEM_DEV_SN = "devSn";
     public static final String PREFS_ITEM_DEV_SW_VER = "devSwVer";
     public static final String PREFS_ITEM_DEV_HW_VER = "devHwVer";
@@ -92,10 +93,7 @@ public final class Constants {
     public static final String PREFS_ITEM_MH_SW_VER = "MHSvVer";
     public static final String PREFS_ITEM_MH_VF_VER = "MHVfVer";
     public static final String PREFS_ITEM_FPGA_VER = "FPGAVer";
-    public static final String PREFS_ITEM_GATE_VER = "GateVer";
     public static final String PREFS_ITEM_DVR_VER = "DVRVer";
-
-
 
     //saves device version info for firmware upgrade
     public static final String PREFS_ITEM_DEV_SN_FOR_FIRMWARE = "devSnForFirmware";

@@ -261,8 +261,13 @@ public class MainActivity2 extends TabActivity {
 
 
             if (mApp.isOnCAN) {
+                //连接上设备后，首先清除版本信息。避免在设备的版本信息读取成功之前，将老版本号误认为当前设备的版本号
                 mApp.mDevVersion.clear();
                 mApp.mMHVersion.clear();
+                mApp.mGateVer = 0;
+                mApp.mFPGAVer = 0;
+                mApp.mDVRVer = 0;
+
                 mApp.mIp = netManager.getTcpServerAddr().getAddress().getHostAddress();
                 mApp.mPort = netManager.getTcpServerAddr().getPort();
                 showConnectionInfo(null);

@@ -38,6 +38,10 @@ public class MyApplication extends Application {
 
         mGateVer = getSettings().getInt(Constants.PREFS_ITEM_GATE_VER, 0);
 
+        mFPGAVer = getSettings().getInt(Constants.PREFS_ITEM_FPGA_VER, 0);
+
+        mDVRVer = getSettings().getInt(Constants.PREFS_ITEM_DVR_VER, 0);
+
         mDayStats = new StatisticsData();
     }
 
@@ -51,6 +55,7 @@ public class MyApplication extends Application {
     public WarningConfig mMHConfigFile = null;
     public DevVersion mDevVersion = null;
     public MHVersion mMHVersion = null;
+    public DevVersion mDevInfoForFirmware = null;
     public int mFPGAVer = 0;
     public int mGateVer = 0;
     public int mDVRVer = 0;
@@ -58,7 +63,7 @@ public class MyApplication extends Application {
     private String mAppUpgradeUrl = null;
     private String mFirmwareUpgradeUrl = null;
     private String mFirmwareFilePath = null;
-    public DevVersion mDevInfoForFirmware = null;
+
 
     public int speed = -1;
 

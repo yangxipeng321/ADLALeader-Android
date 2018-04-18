@@ -39,7 +39,7 @@ public class AboutActivity extends Activity {
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
             actionBar.setDisplayShowHomeEnabled(false);
         }
-        myApp = (MyApplication)getApplication();
+        myApp = (MyApplication) getApplication();
         initControls();
     }
 
@@ -80,10 +80,10 @@ public class AboutActivity extends Activity {
     }
 
     private void initControls() {
-        txtVersion =  findViewById(R.id.txtVersion);
-        txtGateVersion =  findViewById(R.id.txtGateVersion);
-        txtDevVersion =  findViewById(R.id.txtDevVersion);
-        txtMHVersion =  findViewById(R.id.txtMHVersion);
+        txtVersion = findViewById(R.id.txtVersion);
+        txtGateVersion = findViewById(R.id.txtGateVersion);
+        txtDevVersion = findViewById(R.id.txtDevVersion);
+        txtMHVersion = findViewById(R.id.txtMHVersion);
         txtFPGAVersion = findViewById(R.id.txtFPGAVersion);
         txtDVRVersion = findViewById(R.id.txtDVRVersion);
     }
@@ -96,20 +96,24 @@ public class AboutActivity extends Activity {
                 myApp.getAppVersionCode()));
 
         if (myApp.mGateVer == 0)
-            txtGateVersion.setText("");
+            txtGateVersion.setText("\nGate : ");
         else
             txtGateVersion.setText(String.format("\nGate : %08X", myApp.mGateVer));
 
         if (myApp.mDevVersion != null) {
-            txtDevVersion.setText(String.format("\nMedel ID : %08X\n\nDev SW : %08X\nDev HW : %08X",
-                    myApp.mDevVersion.getDevSn(), myApp.mDevVersion.getDevSwVer(),
-                    myApp.mDevVersion.getDevHwVer()));
+            //如果DevSn为0，说明还没有获取到设备的版本信息
+            if (myApp.mDevVersion.getDevSn() == 0)
+                txtDevVersion.setText("\nModel ID : \n\nDev SW : \nDev HW : ");
+            else
+                txtDevVersion.setText(String.format("\nModel ID : %08X\n\nDev SW : %08X\nDev HW : %08X",
+                        myApp.mDevVersion.getDevSn(), myApp.mDevVersion.getDevSwVer(),
+                        myApp.mDevVersion.getDevHwVer()));
         } else {
             txtDevVersion.setText("");
         }
 
         if (myApp.mMHVersion != null) {
-            txtMHVersion.setText(String.format("\nMH SN : %s \nMH SW : %s\nMH VF : %s \n",
+            txtMHVersion.setText(String.format("\nMH SN : %s \nMH SW : %s\nMH VF : %s",
                     myApp.mMHVersion.getMHSn(), myApp.mMHVersion.getMHSwVer(),
                     myApp.mMHVersion.getMHVfVer()));
         } else {
@@ -117,13 +121,13 @@ public class AboutActivity extends Activity {
         }
 
         if (myApp.mFPGAVer == 0) {
-            txtFPGAVersion.setText("");
+            txtFPGAVersion.setText("\nFPGA : ");
         } else {
             txtFPGAVersion.setText(String.format("\nFPGA : %08X", myApp.mFPGAVer));
         }
 
         if (myApp.mDVRVer == 0) {
-            txtDVRVersion.setText("\nDVR : ---");
+            txtDVRVersion.setText("\nDVR : ");
         } else {
             txtDVRVersion.setText(String.format("\nDVR : %08X", myApp.mDVRVer));
         }
