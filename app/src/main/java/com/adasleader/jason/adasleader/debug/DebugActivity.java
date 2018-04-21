@@ -29,6 +29,7 @@ public class DebugActivity extends FragmentActivity {
 
     private DebugFirmwareFragment mFirmwareFragment;
     private DebugLogFragment mLogFragment;
+    private DebugTestFragment mTestFramgent;
     private LocalBroadcastReceiver localReceiver;
 
 
@@ -58,7 +59,6 @@ public class DebugActivity extends FragmentActivity {
     }
 
 
-
     private void initLocalReceiver() {
         localReceiver = new LocalBroadcastReceiver();
 
@@ -66,6 +66,9 @@ public class DebugActivity extends FragmentActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
         filter = new IntentFilter(Constants.LOG_CONTENT_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
+
+        filter = new IntentFilter(Constants.FOE_READ_CARPARA_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
     }
 
@@ -81,6 +84,7 @@ public class DebugActivity extends FragmentActivity {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             //final String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
+            if (null == action) return;
             switch (action) {
                 case Constants.FIRMWARE_UPLOAD_RESULT_ACTION:
                     dealFirmwareUploadResult(intent);
@@ -88,17 +92,28 @@ public class DebugActivity extends FragmentActivity {
                 case Constants.LOG_CONTENT_ACTION:
                     dealLogContent(intent);
                     break;
+                case Constants.FOE_READ_CARPARA_ACTION:
+                    dealReadCARPARA(intent);
+                    break;
             }
         }
 
         private void dealFirmwareUploadResult(Intent intent) {
             if (mFirmwareFragment != null)
                 mFirmwareFragment.dealUpdateResult(intent);
+            if (mTestFramgent != null)
+                mTestFramgent.dealWriteCARPARResult(intent);
         }
 
         private void dealLogContent(Intent intent) {
             if (null != mLogFragment) {
                 mLogFragment.dealLogContent(intent);
+            }
+        }
+
+        private void dealReadCARPARA(Intent intent) {
+            if (null != mTestFramgent) {
+                mTestFramgent.dealReadCARPARAResult(intent);
             }
         }
     }
@@ -108,6 +123,7 @@ public class DebugActivity extends FragmentActivity {
         public DebugPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+
         @Override
         public Fragment getItem(int position) {
             Fragment fragment;
@@ -124,7 +140,9 @@ public class DebugActivity extends FragmentActivity {
                     fragment = mLogFragment;
                     break;
                 case 2:
-                    fragment = new DebugTestFragment();
+                    if (null == mTestFramgent)
+                        mTestFramgent = new DebugTestFragment();
+                    fragment = mTestFramgent;
                     break;
                 default:
                     fragment = null;

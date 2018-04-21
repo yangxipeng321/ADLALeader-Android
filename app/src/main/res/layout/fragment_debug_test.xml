@@ -180,13 +180,26 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/btnFoeYOffset"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
-            android:text="FoeYOffset"/>
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/btnFoeYOffset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FoeYOffset"/>
+            <Button
+                android:id="@+id/btnReadFoeOffset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ReadOffset"/>
+            <Button
+                android:id="@+id/btnWriteFoeOffset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WriteOffset"/>
+        </LinearLayout>
 
         <NumberPicker
             android:id="@+id/yOffsetPicker"

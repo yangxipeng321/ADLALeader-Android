@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
@@ -26,13 +28,17 @@ import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugDVRCmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugFPGACmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Debug.DebugMCUCmd;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.File.FileReadReq;
+import com.adasleader.jason.adasleader.net.Message.MsgClass.File.FileWriteReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Settings.ParameterReadReq;
 import com.adasleader.jason.adasleader.net.Message.MsgClass.Warning.WarnClearStat;
+import com.adasleader.jason.adasleader.net.Message.MsgUtils;
 import com.adasleader.jason.adasleader.net.Message.ResponseType;
 import com.adasleader.jason.adasleader.net.Message.ServiceType;
 import com.adasleader.jason.adasleader.net.Message.TLVType;
 import com.adasleader.jason.adasleader.net.TcpIntentService;
 import com.adasleader.jason.adasleader.net.UdpHelper;
+
+import java.util.Locale;
 
 
 /**
@@ -43,6 +49,7 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
     private static final int OFFSET = 50;
     private MyApplication mApp;
     private NumberPicker picker;
+    private byte[] mCarpara = null;
 
     private byte count = 10;
 
@@ -182,8 +189,12 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
             case R.id.btnFoeYOffset:
                 dealSetFoeYOffset();
                 break;
-
-
+            case R.id.btnReadFoeOffset:
+                dealReadFoeOffset();
+                break;
+            case R.id.btnWriteFoeOffset:
+                dealWriteFoeOffset();
+                break;
         }
     }
 
@@ -350,20 +361,26 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
     }
 
     private void initFoeYOffset(View rootView) {
-        rootView.findViewById(R.id.btnFoeYOffset).setOnClickListener(this);
+        Button btn = rootView.findViewById(R.id.btnFoeYOffset);
+        btn.setOnClickListener(this);
+        btn.setEnabled(false);
 
-        picker = rootView.findViewById(R.id.yOffsetPicker);
+        btn = rootView.findViewById(R.id.btnReadFoeOffset);
+        btn.setOnClickListener(this);
+
+        btn = rootView.findViewById(R.id.btnWriteFoeOffset);
+        btn.setOnClickListener(this);
+        btn.setEnabled(false);
 
         String[] values = new String[2 * OFFSET + 1];
         for (int i = 0; i < values.length; i++) {
             values[i] = String.valueOf(i - OFFSET);
         }
+        picker = rootView.findViewById(R.id.yOffsetPicker);
         picker.setDisplayedValues(values);
         picker.setMinValue(0);
         picker.setMaxValue(values.length - 1);
         picker.setValue(OFFSET);
-
-
     }
 
     private void dealSetFoeYOffset() {
@@ -387,6 +404,88 @@ public class DebugTestFragment extends Fragment implements View.OnClickListener 
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
                 Toast.makeText(getActivity().getApplicationContext(), txt, Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    private void dealReadFoeOffset() {
+        Log.d(TAG, "read CARPARA");
+
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            FileReadReq fileReadReq = (FileReadReq) MsgFactory.getInstance().create(
+                    ServiceType.SERVICE_FILE,
+                    MessageType.FILE_READ_REQ,
+                    ResponseType.REQUEST);
+            fileReadReq.getBody().get(TLVType.TP_FILE_NAME_ID).setValue(Constants.CAR_PARA_CONFIG_PREFIX);
+            if (fileReadReq.encode()) {
+                TcpIntentService.startActionFileService(getActivity(), fileReadReq.getData(), Constants.DESC_READ_CARPARA);
+            }
+        }
+    }
+
+    public void dealReadCARPARAResult(Intent intent) {
+        byte[] buf = intent.getByteArrayExtra(Constants.EXTEND_CARPARA);
+        if (null == buf || buf.length != Constants.CARPARA_LEN) return;
+
+        mCarpara = buf;
+
+        picker.setValue(mCarpara[Constants.CARPARA_FOE_Y_OFFSET_INDEX] + OFFSET);
+
+        View view = getView();
+        if (view != null) {
+            getView().findViewById(R.id.btnFoeYOffset).setEnabled(true);
+            getView().findViewById(R.id.btnWriteFoeOffset).setEnabled(true);
+        }
+    }
+
+    private void dealWriteFoeOffset() {
+        if (null == mCarpara || mCarpara.length != Constants.CARPARA_LEN) return;
+
+        byte[] buf = new byte[Constants.CARPARA_LEN];
+        int bodyLen = Constants.CARPARA_LEN - 4;
+        System.arraycopy(mCarpara, 0, buf, 0, bodyLen);
+        buf[Constants.CARPARA_FOE_Y_OFFSET_INDEX] = (byte) (picker.getValue() - OFFSET);
+
+        int crc = MsgUtils.getCrc32(buf, bodyLen);
+        byte[] temp = MsgUtils.int2Bytes(crc);
+        System.arraycopy(temp, 0, buf, bodyLen, 4);
+
+        Log.d(TAG, String.format(Locale.getDefault(), "src [39]= %d\n%s",
+                mCarpara[Constants.CARPARA_FOE_Y_OFFSET_INDEX], MsgUtils.bytes2HexString(mCarpara)));
+        Log.d(TAG, String.format(Locale.getDefault(), "out [39]= %d\n%s",
+                buf[Constants.CARPARA_FOE_Y_OFFSET_INDEX], MsgUtils.bytes2HexString(buf)));
+
+        writeCARPARA(buf);
+    }
+
+    private void writeCARPARA(byte[] buf) {
+        Log.d(TAG, String.format(Locale.getDefault(), "Write file name : %s  ip : %s   port : %d",
+                Constants.CAR_PARA_CONFIG_PREFIX, mApp.mIp, mApp.mPort));
+        if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
+            FileWriteReq msg = (FileWriteReq) MsgFactory.getInstance().create(
+                    ServiceType.SERVICE_FILE,
+                    MessageType.FILE_WRITE_REQ,
+                    ResponseType.REQUEST);
+            //add file name tlv value
+            msg.getBody().get(TLVType.TP_FILE_NAME_ID).setValue(
+                    Constants.CAR_PARA_CONFIG_PREFIX);
+            //add file content tlv value  length + crc + content
+            msg.getBody().get(TLVType.TP_FILE_PARA_ID).setValue(buf);
+            if (msg.encode()) {
+                TcpIntentService.startActionFileService(getActivity(), msg.getData(), Constants.DESC_WRITE_CARPARA);
+            }
+        }
+    }
+
+    public void dealWriteCARPARResult(Intent intent) {
+        String fileName = intent.getStringExtra(Constants.EXTEND_FILE_NAME).toUpperCase();
+        int len = intent.getIntExtra(Constants.EXTEND_FILE_LENGTH, 0);
+
+        if (fileName.startsWith(Constants.CAR_PARA_CONFIG_PREFIX)) {
+            String msg = String.format(Locale.getDefault(), "Write %s len=%d success !",
+                    fileName, len);
+            Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0,0);
+            toast.show();
         }
     }
 }
