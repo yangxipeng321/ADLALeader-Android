@@ -54,7 +54,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 
-
 public class MainActivity2 extends TabActivity {
 
     private TabHost tabHost;
@@ -68,7 +67,7 @@ public class MainActivity2 extends TabActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (getActionBar()!=null)
+        if (getActionBar() != null)
             getActionBar().hide();
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
@@ -90,7 +89,7 @@ public class MainActivity2 extends TabActivity {
 
 
         //if (Constants.SHOW_DEBUG) {
-        if (BuildConfig.FLAVOR.equals("pro")){
+        if (BuildConfig.FLAVOR.equals("pro")) {
             TabSpec debugSpec = tabHost.newTabSpec("Debug").setIndicator("Debug").setContent(
                     new Intent(this, DebugActivity.class));
             tabHost.addTab(debugSpec);
@@ -112,7 +111,7 @@ public class MainActivity2 extends TabActivity {
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChanged());
 
-        mApp = (MyApplication)getApplication();
+        mApp = (MyApplication) getApplication();
 
         initConnectionInfoBar();
 
@@ -124,7 +123,8 @@ public class MainActivity2 extends TabActivity {
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
         releaseNetworkReceiver();
-        releaseLocalReceiver();        mApp = null;
+        releaseLocalReceiver();
+        mApp = null;
         //Must always call the super method at the end.
         super.onDestroy();
     }
@@ -186,6 +186,7 @@ public class MainActivity2 extends TabActivity {
     //Show debug view
     private long lastClickTime;
     private int clickCount;
+
     public void onShowDebugClicked(View view) {
         if (System.currentTimeMillis() - lastClickTime > 2000) {
             clickCount = 1;
@@ -261,8 +262,13 @@ public class MainActivity2 extends TabActivity {
 
 
             if (mApp.isOnCAN) {
+                //连接上设备后，首先清除版本信息。避免在设备的版本信息读取成功之前，将老版本号误认为当前设备的版本号
                 mApp.mDevVersion.clear();
                 mApp.mMHVersion.clear();
+                mApp.mGateVer = 0;
+                mApp.mFPGAVer = 0;
+                mApp.mDVRVer = 0;
+
                 mApp.mIp = netManager.getTcpServerAddr().getAddress().getHostAddress();
                 mApp.mPort = netManager.getTcpServerAddr().getPort();
                 showConnectionInfo(null);
@@ -329,7 +335,7 @@ public class MainActivity2 extends TabActivity {
                 String action = intent.getAction();
                 String sender = intent.getStringExtra(Constants.EXTENDED_OWNER);
 
-                if (action==null) return;
+                if (action == null) return;
 
                 // Both this activity and SettingActivity can start a TcpIntentService.
                 // But only this receives and processes the status which the service broadcast.
@@ -373,7 +379,7 @@ public class MainActivity2 extends TabActivity {
                     if (buffer != null) {
                         decodeMessage(buffer);
                     } else {
-                        if (description==Constants.DESC_WRITE_FIRMWARE) {
+                        if (description == Constants.DESC_WRITE_FIRMWARE) {
                             broadcastUploadFirmwareResult(null, 0);
                         } else if (description == Constants.DESC_RESET_DEVICE) {
                             broadcastCmdResetResp(-1);
@@ -385,7 +391,7 @@ public class MainActivity2 extends TabActivity {
                             broadcastWriteMHConfigResult(0);
                         }
                     }
-                    if (description ==Constants.DESC_READ_MH_CONFIG)
+                    if (description == Constants.DESC_READ_MH_CONFIG)
                         broadcastReadMHConfigResult();
                     break;
                 default:
@@ -490,7 +496,7 @@ public class MainActivity2 extends TabActivity {
                 ServiceType.SERVICE_SETTINGS, MessageType.PARA_SET_REQ, ResponseType.REQUEST);
         msg.getBody().clear();
         int offset = TimeZone.getDefault().getRawOffset();
-        long appTime = (System.currentTimeMillis() + offset)/1000;
+        long appTime = (System.currentTimeMillis() + offset) / 1000;
         Log.e(TAG, String.format("timezone offset %X  time: %X", offset, appTime));
         TLVClass tlv = msg.getBody().add(TLVType.TP_TIME_ID, long.class);
         tlv.setValue(appTime);
@@ -583,8 +589,8 @@ public class MainActivity2 extends TabActivity {
         } else {
             Log.e(TAG, "File name is null !");
         }
-        int fileLen = ((FileWriteResp)msg).getFileLength();
-        if (fileLen>0){
+        int fileLen = ((FileWriteResp) msg).getFileLength();
+        if (fileLen > 0) {
             Log.d(TAG, String.format(Locale.getDefault(), "file length : %d", fileLen));
         } else {
             Log.e(TAG, String.format(Locale.getDefault(), "file length : %d", fileLen));
@@ -621,7 +627,7 @@ public class MainActivity2 extends TabActivity {
             tlv = msg.getBody().get(TLVType.TP_FILE_PARA_ID);
             if (null != tlv && null != tlv.getValueBytes()) {
                 byte[] buffer = tlv.getValueBytes();
-                Log.i(TAG, String.format(Locale.getDefault(),"Receive file size is %d bytes",
+                Log.i(TAG, String.format(Locale.getDefault(), "Receive file size is %d bytes",
                         buffer.length));
 
                 //Calculate the file crc
@@ -631,6 +637,9 @@ public class MainActivity2 extends TabActivity {
 
                 if (fileName.equalsIgnoreCase(Constants.MH_CONFIG_FILE))
                     processWarningConfigFile(buffer);
+                else if (fileName.equalsIgnoreCase(Constants.CAR_PARA_CONFIG_PREFIX))
+                    processCarParaFile(buffer);
+
 
             } else {
                 Log.e(TAG, "Receive file para is null !");
@@ -643,7 +652,7 @@ public class MainActivity2 extends TabActivity {
     private void processWarningConfigFile(byte[] buffer) {
         mApp.mMHConfigFile = new WarningConfig(buffer, 0, buffer.length);
 
-        if (buffer[15] > 0){
+        if (buffer[15] > 0) {
             Toast toast = Toast.makeText(this, Constants.MH_CONFIG_FILE + buffer[15], Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
@@ -730,7 +739,7 @@ public class MainActivity2 extends TabActivity {
 
         tlv = msg.getBody().get(TLVType.TP_GATE_VER_ID);
         if (null != tlv && null != tlv.getValue()) {
-            mApp.mGateVer = (int)tlv.getValue();
+            mApp.mGateVer = (int) tlv.getValue();
             Log.i(TAG, String.format("Receive GATEVersion [%08X]", mApp.mGateVer));
             mApp.saveGateVersion();
         } else {
@@ -738,8 +747,8 @@ public class MainActivity2 extends TabActivity {
         }
 
         tlv = msg.getBody().get(TLVType.TP_DVR_VER_ID);
-        if (null !=tlv && null != tlv.getValue()){
-            mApp.mDVRVer = (int)tlv.getValue();
+        if (null != tlv && null != tlv.getValue()) {
+            mApp.mDVRVer = (int) tlv.getValue();
             Log.i(TAG, String.format("Receive DVRVersion [%08X", mApp.mDVRVer));
             mApp.saveDVRVersion();
         } else {
@@ -818,13 +827,13 @@ public class MainActivity2 extends TabActivity {
 
         TLVClass tlv = msg.getBody().get(TLVType.TP_WARN_DAT_STAT);
         if (tlv != null && tlv.getValue() != null) {
-            DayStat stat = (DayStat)tlv.getValue();
+            DayStat stat = (DayStat) tlv.getValue();
             int statDate = stat.getDate();
             int runTime = stat.getRunTime();
             double mileage = stat.getMileage() / 10.0;
             int statIndex = stat.getIndex();
             Log.d(TAG, String.format(Locale.getDefault(), "Receive day statistics index: %d " +
-                    "date: %d run time: %d mileage: %f",  statIndex, statDate, runTime, mileage));
+                    "date: %d run time: %d mileage: %f", statIndex, statDate, runTime, mileage));
             //mApp.mDayStats[0] = stat;
             if (runTime > 0)
                 mApp.mDayStats.update(stat);
@@ -857,5 +866,14 @@ public class MainActivity2 extends TabActivity {
         } else {
             Log.e(TAG, "Receive file list is null");
         }
+    }
+
+
+    private void processCarParaFile(byte[] buf) {
+        Log.d(TAG, String.format(Locale.getDefault(), "Broadcast CARPARA:\n%s",
+                MsgUtils.bytes2HexString(buf)));
+        Intent intent = new Intent(Constants.FOE_READ_CARPARA_ACTION);
+        intent.putExtra(Constants.EXTEND_CARPARA, buf);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

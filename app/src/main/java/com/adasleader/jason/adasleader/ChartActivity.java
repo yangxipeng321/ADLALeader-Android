@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -457,9 +458,34 @@ public class ChartActivity extends Activity {
 //        mChart.setBackgroundColor(Color.GRAY);
 
 
+        updateDataSetVisible();
+
         //All methods modifying the viewport need to be called on the Char after setting data!!!
         mChart.setVisibleXRange(4, 30);
         //mChart.moveViewToX((Constants.HISTORY_DAYS - 1));
+        mChart.invalidate();
+    }
+
+    private void updateDataSetVisible()
+    {
+        LineData lineData = mChart.getData();
+
+        if (null == lineData)
+            return;
+
+        LinearLayout view = findViewById(R.id.btnContainer);
+        if (null == view) return;
+
+        for (int i=0; i< view.getChildCount(); i++){
+            ToggleButton btn = (ToggleButton)view.getChildAt(i);
+            LineDataSet set = (LineDataSet) lineData.getDataSetByLabel(
+                    btn.getContentDescription().toString(), true);
+            if (null != set){
+                set.setVisible(btn.isChecked());
+                set.setDrawValues(btn.isChecked());
+                set.setValueTextColor(Color.WHITE);
+            }
+        }
         mChart.invalidate();
     }
 }

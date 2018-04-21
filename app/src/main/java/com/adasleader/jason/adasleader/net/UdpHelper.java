@@ -105,7 +105,7 @@ public class UdpHelper implements Runnable {
         byte serviceType = buf[10];
         byte msgType = buf[11];
 
-        if (serviceType != ServiceType.SERVICE_WARNING) {
+        if (serviceType != ServiceType.SERVICE_WARNING  && serviceType != ServiceType.SERVICE_HEARTBEAT) {
             Log.e(TAG, MsgUtils.bytes2HexString(buf));
         }
 

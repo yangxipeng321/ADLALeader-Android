@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adasleader.jason.adasleader.DriverBehaviorAnalysis.AnalysisManager;
 import com.adasleader.jason.adasleader.common.Constants;
 import com.adasleader.jason.adasleader.common.ExitManager;
 import com.adasleader.jason.adasleader.common.MyApplication;
@@ -57,7 +56,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
-
 
 
 public class AlarmActivity extends Activity {
@@ -106,7 +104,7 @@ public class AlarmActivity extends Activity {
         }
         super.onCreate(savedInstanceState);
 
-        if (getActionBar()!=null)
+        if (getActionBar() != null)
             getActionBar().hide();
 
         setContentView(R.layout.activity_alarm);
@@ -134,7 +132,7 @@ public class AlarmActivity extends Activity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
         //calcPosition();
@@ -210,10 +208,10 @@ public class AlarmActivity extends Activity {
         //Waring Animate
         ldwLeftAnimation = (AnimationDrawable) ivA2B5Animation.getDrawable();
         ldwRightAnimation = (AnimationDrawable) ivA2B6Animation.getDrawable();
-        carRedAnimation = (AnimationDrawable)ivA2B4Animation.getDrawable();
+        carRedAnimation = (AnimationDrawable) ivA2B4Animation.getDrawable();
         carGreenAnimation = (AnimationDrawable) ivA2B9Animation.getDrawable();
         pedestrianAnimation = (AnimationDrawable) ivA2B10Animation.getDrawable();
-        pedestrianYellowAnimation = (AnimationDrawable)ivA2B11Animation.getDrawable();
+        pedestrianYellowAnimation = (AnimationDrawable) ivA2B11Animation.getDrawable();
 
         hmwSet = (AnimatorSet) AnimatorInflater.loadAnimator(AlarmActivity.this, R.animator.speeding);
         hmwSet.setTarget(txtHMW);
@@ -231,8 +229,8 @@ public class AlarmActivity extends Activity {
         Log.v(TAG, "A2B6 Width = " + width);
     }
 
-    public boolean onTouchEvent(MotionEvent event){
-        if (event.getAction()== MotionEvent.ACTION_DOWN){
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
         }
         return super.onTouchEvent(event);
     }
@@ -311,14 +309,13 @@ public class AlarmActivity extends Activity {
 
         if (recvThread != null) {
             recvThread.interrupt();
-            recvThread=null;
+            recvThread = null;
         }
     }
 
     private void dealWarningData(byte[] buf) {
 //        Log.d(TAG, String.format("deal warning data \n%s", MsgUtils.bytes2HexString(buf)));
         WarningData data = (WarningData) (MsgFactory.getInstance().create(buf));
-
 
 
         if (data != null && data.decode()) {
@@ -339,7 +336,7 @@ public class AlarmActivity extends Activity {
                 showRedCar(true);
                 showGreenCar(false);
                 alarmHMW(0);
-            //Second show hmw
+                //Second show hmw
             } else if (data.hmw >= 100) {
                 alarmHMW(data.hmw);
                 alarmRedCar(false);
@@ -385,19 +382,22 @@ public class AlarmActivity extends Activity {
     }
 
     //Monitor wifi state,if connect ADAL wifi , send heart beat.
-    private static boolean isSendHeartBeat=false;
+    private static boolean isSendHeartBeat = false;
 
     private void dealSendHeartBeat() {
-        if (isSendHeartBeat){
+        if (isSendHeartBeat) {
             sendHeartBeat();
         }
         handler.removeMessages(Constants.MSG_SEND_HEARTBEAT);
         handler.sendEmptyMessageDelayed(Constants.MSG_SEND_HEARTBEAT, Constants.HEARTBEAT_INTERVAL);
     }
+
     Runnable HeartBeatRunable = new Runnable() {
         @Override
         public void run() {
-            if (isSendHeartBeat){ sendHeartBeat();}
+            if (isSendHeartBeat) {
+                sendHeartBeat();
+            }
             handler.removeMessages(Constants.MSG_SEND_HEARTBEAT);
             handler.postDelayed(this, Constants.HEARTBEAT_INTERVAL);
 //            Log.d(TAG, "isSendHeartBeat = " + isSendHeartBeat);
@@ -434,10 +434,10 @@ public class AlarmActivity extends Activity {
     private String sendByUdp(byte[] buffer) throws IOException {
 //        Log.d(TAG, String.format("Server : %s \nData : %s", serverAddr.toString(),
 //                MsgUtils.bytes2HexString(buffer)));
-        if (serverAddr!=null) {
+        if (serverAddr != null) {
             udpHelper.send(buffer, serverAddr);
             return getString(R.string.send_ok);
-        }else {
+        } else {
             return getString(R.string.socket_null);
         }
     }
@@ -458,8 +458,7 @@ public class AlarmActivity extends Activity {
             if (txtHMW.getVisibility() != View.VISIBLE) {
                 txtHMW.setVisibility(View.VISIBLE);
             }
-        }
-        else {
+        } else {
             if (txtHMW.getVisibility() == View.VISIBLE) {
                 txtHMW.setVisibility(View.INVISIBLE);
             }
@@ -494,21 +493,22 @@ public class AlarmActivity extends Activity {
         }
 
         //Speeding
-        if (overSpeed > 0 && speedLimit > 0) {
+        if (overSpeed > 0 && speedLimit > 0 && speed >= speedLimit) {
             if (!speedSet.isRunning())
                 speedSet.start();
 
-            double overRate = (speed - speedLimit) * 100.0 / speedLimit;
-            if (overRate > +10.0) {
+            double overRate = (double) (speed - speedLimit) / (double) speedLimit;
+            if (overRate > 0.1) {
                 txtSpeed.setTextColor(getResources().getColor(R.color.warning_red));
-            } else if (overRate > +5.0) {
+            } else if (overRate > 0.05) {
                 txtSpeed.setTextColor(getResources().getColor(R.color.warning_yellow));
             } else {
                 txtSpeed.setTextColor(getResources().getColor(R.color.waring_white));
             }
             //Not speeding
         } else {
-            if (speedSet.isRunning()) {
+            //if (speedSet.isRunning())
+            {
                 speedSet.end();
                 txtSpeed.setTextSize(TypedValue.COMPLEX_UNIT_SP, 56);
                 txtSpeed.setTextColor(getResources().getColor(R.color.waring_white));
@@ -618,6 +618,7 @@ public class AlarmActivity extends Activity {
     }
 
     private int speed = -1;
+
     private void broadcastSpeedChanged(int newSpeed) {
         mApp.speed = newSpeed;
         if (speed == newSpeed) return;
@@ -630,6 +631,7 @@ public class AlarmActivity extends Activity {
 
     private long mLastClickTime = 0;
     private int mClickCount = 0;
+
     public void onTestClicked(View view) {
         String msg;
         if ((System.currentTimeMillis() - mLastClickTime) > 2000) {
@@ -648,16 +650,16 @@ public class AlarmActivity extends Activity {
         mLastClickTime = System.currentTimeMillis();
     }
 
-    private boolean enterTestMode(){
+    private boolean enterTestMode() {
         Log.d(TAG, "Test Mode");
         boolean result = true;
 
         if (mApp.isOnCAN && null != mApp.mIp && mApp.mPort > 0) {
-            CmdTestReq msg = (CmdTestReq)MsgFactory.getInstance().create(
+            CmdTestReq msg = (CmdTestReq) MsgFactory.getInstance().create(
                     ServiceType.SERVICE_CMD,
                     MessageType.CMD_TEST_REQ,
                     ResponseType.REQUEST);
-            msg.getBody().get(TLVType.TP_WORK_TIME).setValue(1000*130);
+            msg.getBody().get(TLVType.TP_WORK_TIME).setValue(1000 * 130);
             if (msg.encode()) {
                 TcpIntentService.startActionFileService(this, msg.getData(),
                         Constants.DESC_TEST);
@@ -693,6 +695,7 @@ public class AlarmActivity extends Activity {
             localReceiver = null;
         }
     }
+
     private class LocalBroadcastReceiver extends BroadcastReceiver {
         private LocalBroadcastReceiver() {
             //Prevents instantiation by other packages
@@ -762,7 +765,7 @@ public class AlarmActivity extends Activity {
 
         if (data != null && data.decode()) {
             TLVClass tlv = data.getBody().get(TLVType.TP_SWITCH_SCREEN);
-            if (null != tlv && null != tlv.getValue()){
+            if (null != tlv && null != tlv.getValue()) {
                 Log.e(TAG, String.format(Locale.getDefault(), "screen id %d", mApp.curScreen));
                 mApp.curScreen = (byte) tlv.getValue();
                 Intent intent = new Intent(Constants.CMD_SWITHCH_SCREEN_NOTIFY_ACTION);
@@ -788,7 +791,7 @@ public class AlarmActivity extends Activity {
             if (null != tlv && null != tlv.getValue()) {
                 DvrPlay dvrPlay = (DvrPlay) tlv.getValue();
                 Log.d(TAG, String.format(Locale.getDefault(),
-                        "Receive Play file resp. Type:%d Ctrl:%d Name:%s",  dvrPlay.getFileType(),
+                        "Receive Play file resp. Type:%d Ctrl:%d Name:%s", dvrPlay.getFileType(),
                         dvrPlay.getCtrl(), dvrPlay.getFileName()));
 
                 Intent intent = new Intent(Constants.DVR_PLAY_FILE_ACTION);
@@ -801,7 +804,7 @@ public class AlarmActivity extends Activity {
     }
 
     private static final int WARN_MAX_COUNT = 100;
-    byte[] fileBuf = new byte[MsgConst.TP_WARNING_VALUE_LEN*WARN_MAX_COUNT];
+    byte[] fileBuf = new byte[MsgConst.TP_WARNING_VALUE_LEN * WARN_MAX_COUNT];
     int curCount = 0;
 
     private void saveWarningData(WarningData warningData) {
@@ -832,12 +835,10 @@ public class AlarmActivity extends Activity {
                     //Dose nothing
                 }
             }
-            Arrays.fill(fileBuf, (byte)0);
+            Arrays.fill(fileBuf, (byte) 0);
             curCount = 0;
         }
     }
-
-
 
 
     private void saveHMWData(WarningData warningData) {

@@ -2,7 +2,6 @@ package com.adasleader.jason.adasleader.common;
 
 /**
  * Created by Jason on 2015/1/7.
- *
  */
 public final class Constants {
     public static final boolean DEVELOPER_MODE = false;
@@ -18,10 +17,10 @@ public final class Constants {
     public static final int HEARTBEAT_INTERVAL = 5000;  //ms
     public static final long REFRESH_WARNING_INTERVAL = 800; //ms
 
-    public static final int SOCKET_READ_TIMEOUT = 20000;  //10s
+    public static final int SOCKET_READ_TIMEOUT = 20000;  //20s
     public static final int SOCKET_CONNECT_TIMEOUT = 1000; //1s
 
-    public static final int HTTP_CONNECT_TIMEOUT = 5000;  //2s
+    public static final int HTTP_CONNECT_TIMEOUT = 5000;  //5s
     public static final int HTTP_READ_TIMEOUT = 10000;    //10s
 
     public static final int RESET_DELAY = 1000; //1s
@@ -29,7 +28,7 @@ public final class Constants {
 
     public static final String SSID = "ADASLeader";
     //    public static final String SSID = "qddytt";
-    public static final String TEST_SSID = "MBK-TPLink";
+    public static final String TEST_SSID = "kingdee";
     public static final String IP = "192.168.168.1";
     //    public static final String IP = "192.168.2.1";
     public static final String TEST_IP = "192.168.0.16";
@@ -41,6 +40,10 @@ public final class Constants {
 
     //Constants for warning statistics
     public static final int HISTORY_DAYS = 15;
+
+    // CARPARA Length
+    public static final int CARPARA_LEN = 256;
+    public static final int CARPARA_FOE_Y_OFFSET_INDEX = 39;
 
     //Switch Screen ID
     public static final byte SCREEN_CAR_CAR = 1;  //原车屏显示原内容
@@ -85,6 +88,7 @@ public final class Constants {
     public static final String PREFS_ITEM_FIRMWARE_URL = "firmwareUrl";
     public static final String PREFS_ITEM_FIRMWARE_FILE_PATH = "firmwareFilePath";
     public static final String PREFS_ITEM_APP_URL = "appUrl";
+    public static final String PREFS_ITEM_GATE_VER = "GateVer";
     public static final String PREFS_ITEM_DEV_SN = "devSn";
     public static final String PREFS_ITEM_DEV_SW_VER = "devSwVer";
     public static final String PREFS_ITEM_DEV_HW_VER = "devHwVer";
@@ -92,10 +96,7 @@ public final class Constants {
     public static final String PREFS_ITEM_MH_SW_VER = "MHSvVer";
     public static final String PREFS_ITEM_MH_VF_VER = "MHVfVer";
     public static final String PREFS_ITEM_FPGA_VER = "FPGAVer";
-    public static final String PREFS_ITEM_GATE_VER = "GateVer";
     public static final String PREFS_ITEM_DVR_VER = "DVRVer";
-
-
 
     //saves device version info for firmware upgrade
     public static final String PREFS_ITEM_DEV_SN_FOR_FIRMWARE = "devSnForFirmware";
@@ -142,6 +143,8 @@ public final class Constants {
     public static final int DESC_DVR_FILE_LIST = 12;
     public static final int DESC_DVR_PLAY_FILE = 13;
     public static final int DESC_CMD_STA_MODE = 14;
+    public static final int DESC_READ_CARPARA = 15;
+    public static final int DESC_WRITE_CARPARA = 16;
 
 
     // Status values of TcpIntentService to broadcast to the Activity
@@ -297,5 +300,10 @@ public final class Constants {
             "hk.com.mobileye.jason.adlaLeader.LOG_CONTENT";
     public static final String EXTEND_LOG_CONTENT =
             "hk.com.mobileye.jason.adlaLeader.EXTEND_LOG_CONTENT";
+
+    public static final String FOE_READ_CARPARA_ACTION =
+            "hk.com.mobileye.jason.adlaLeader.READ_CARPARA";
+    public static final String EXTEND_CARPARA =
+            "hk.com.mobileye.jason.adlaLeader.EXTEND_CARPARA";
 }
 
